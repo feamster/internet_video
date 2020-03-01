@@ -1,3 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link href="http://vjs.zencdn.net/5-unsafe/video-js.css" rel="stylesheet"/>
+  <title>Video Player Demo</title>
+  <link rel="stylesheet" href="https://vjs.zencdn.net/7.6.6/video-js.css" type="text/css" media="screen" title="Video JS">
+</head>
+<body>
+  <div class="video-js-box">
+    <script src="http://vjs.zencdn.net/5-unsafe/video.js"></script>
+<script>
+    /*! videojs-resolution-switcher - 2015-7-26
+ * Copyright (c) 2016 Kasper Moskwiak
+ * Modified by Pierre Kraft and Derk-Jan Hartman
+ * Licensed under the Apache-2.0 license. */
+
 (function() {
   /* jshint eqnull: true*/
   /* global require */
@@ -360,3 +377,6 @@
     videojs.plugin('videoJsResolutionSwitcher', videoJsResolutionSwitcher);
   })(window, videojs);
 })();
+</script>
+
+    <video id="example_video_1" class="video-js" width="1280" height="720" controls="controls" preload="auto">

@@ -1,0 +1,46 @@
+</video>
+  <script>
+    function getYoutubeID(){
+      var reg = new RegExp("[?&]v=([^&#]*)");
+      var result = window.location.search.match(reg)[1];
+      return result;
+    }
+  </script>
+  <script>
+    videojs('example_video_1').videoJsResolutionSwitcher();
+    var youtube_id=getYoutubeID();
+  </script>
+  <script type="text/javascript">
+    var player = videojs('example_video_1');
+    player.on('resolutionchange', function(){
+      console.info('Source changed to %s', player.src())
+    })
+  </script>
+  <script>
+    var player = videojs('example_video_1');
+    var eventPoller = setInterval(function() {
+      var buffered = player.buffered();
+      var curTime = player.currentTime();
+      var currentResolution = player.currentResolutionState.label;
+      var source = player.src();
+      var mod_num = Math.round(curTime);
+      for(i=0;i<buffered.length;i++)
+      {
+        if (buffered.start(i) <= curTime && curTime <= buffered.end(i))
+        {
+          console.log("Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution);
+        }
+      }
+      if (mod_num % 10 == 0) {
+        if (mod_num % 20 ==0){
+            player.currentResolution('low')
+        }
+        else {
+            player.currentResolution('high')
+        }
+      }
+    }, 1000)
+  </script>
+  </div>
+</body>
+</html>
