@@ -1,0 +1,15 @@
+{
+  "name": "YouTube Redirector",
+  "description": "Redirect YouTube urls",
+  "version": "1.0",
+  "manifest_version": 2,
+  "background": {"scripts":["background.js"]},
+  "options_page": "options.html",
+  "permissions": [
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
+    "tabs"
+  ],
+  "content_security_policy": "script-src 'self' https://*.googleapis.com https://*.bootstrapcdn.com; object-src 'self'"
+}
