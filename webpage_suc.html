@@ -16,9 +16,10 @@
       var currentResolution = player.currentResolutionState.label;
       var source = player.src();
       var mod_num = Math.round(curTime);
+      var timestamp = new Date().getTime();
       for(i=0;i<buffered.length;i++) {
        if (buffered.start(i) <= curTime && curTime <= buffered.end(i)) {
-        console.log("Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution);
+        console.log("Timestamp: " + timestamp + ", "+ "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution);
        }
       }
     }, 1000)
