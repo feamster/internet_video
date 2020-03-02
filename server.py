@@ -72,4 +72,4 @@ def render_static(page_name):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, host='linux.cs.uchicago.edu', port=5000)
