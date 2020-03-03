@@ -17,11 +17,26 @@
       var source = player.src();
       var mod_num = Math.round(curTime);
       var timestamp = new Date().getTime();
+      var url = '/play/post/'
+
+      var httpRequest = new XMLHttpRequest();
+      var report = "";
+
+      httpRequest.open('POST', url, true);
+      httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+
       for(i=0;i<buffered.length;i++) {
        if (buffered.start(i) <= curTime && curTime <= buffered.end(i)) {
         console.log("Timestamp: " + timestamp + ", "+ "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution);
+        report = "Timestamp: " + timestamp + ", "+ "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution;
        }
       }
+
+      httpRequest.send(report);
+      httpRequest.onreadystatechange = function () {
+         var json = httpRequest.responseText;
+      };
     }, 1000)
   </script>
   </div>

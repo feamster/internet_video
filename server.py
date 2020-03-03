@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from youtube_dl import YoutubeDL
 import os
 import time
@@ -70,6 +70,14 @@ def f(youtube_id):
 def render_static(page_name):
     return render_template('%s.html' % page_name)
 
+@app.route('/play/post/', methods=['POST'])
+def save_data():
+    print(request.form)
+    return 'welcome'
+
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='linux.cs.uchicago.edu', port=5000)
+    # app.run(debug=True, host='linux.cs.uchicago.edu', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)
+
