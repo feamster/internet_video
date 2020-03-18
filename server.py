@@ -87,8 +87,7 @@ def extract_url(youtube_id):
 
 @app.route('/')
 def hello_world():
-    return 'hello world!'
-
+    return 'Welcome to UChicago Internet Video QoE Project Website!'
 
 @app.route('/video/<youtube_id>')
 def f(youtube_id):
@@ -106,5 +105,5 @@ def save_data():
     return 'welcome'
 
 if __name__ == '__main__':
-    app.run(debug=True, host='linux.cs.uchicago.edu', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)
     # app.run(debug=True, host='127.0.0.1', port=5000)

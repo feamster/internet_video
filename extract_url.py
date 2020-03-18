@@ -9,5 +9,6 @@ def sys_main():
         print(x['format'], x['url'])
     return 0
 
+
 if __name__ == '__main__':
     sys_main()
