@@ -8,7 +8,6 @@ app = Flask(__name__)
 def get_time():
     return str(hash(str(time.time())))
 
-
 def extract_url(youtube_id):
     ydl = YoutubeDL()
     ydl.add_default_info_extractors()
