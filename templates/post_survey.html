@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<main role="main" class="flex-shrink-0">
+
+  <div class="container">
+    
+  <div class="py-5 text-center">
+    <h2>Video Quality Survey</h2>
+    <p class="lead">This survey can help us understand your watching behavior in video viewing. We do appreciate you to fill out the following form.</p>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-12 order-md-1">
+      <form class="needs-validation" novalidate>
+
+      	   <div class="mb-3">
+            <label for="firstannoy">Which factor annoy you the most during video playback</label>
+            <select class="custom-select d-block w-100" id="firstannoy" required>
+              <option value="">Choose...</option>
+              <option>Low Resolution</option>
+              <option>Video Stalls</option>
+              <option>Resolution Change frquently</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid device.
+            </div>
+        </div>
+
+
+      	   <div class="mb-3">
+            <label for="firstannoy">Which factor annoy you the second most during video playback</label>
+            <select class="custom-select d-block w-100" id="firstannoy" required>
+              <option value="">Choose...</option>
+              <option>Low Resolution</option>
+              <option>Video Stalls</option>
+              <option>Resolution Change frquently</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid device.
+            </div>
+        </div>
+
+
+
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="submitForm()">Continue to submit your video quality survey</button>
+        <script type="text/javascript">
+        	function submitForm() {
+        		 var url = '/post/'
+
+      			var httpRequest = new XMLHttpRequest();
+      			var report = "recevied video quality survey sucessfully";
+      			httpRequest.open('POST', url, true);
+     			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+     			httpRequest.send(report);
+      			httpRequest.onreadystatechange = function () {
+         		var json = httpRequest.responseText;
+         		console.log("Sending Status: " + json);
+      };
+			}
+
+        </script>
+      </form>
+    </div>
+  </div>
+
+
+  </div>
+</main>
+
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; University of Chicago</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Contact</a></li>
+    </ul>
+  </footer>
+</div>
+{% endblock %}

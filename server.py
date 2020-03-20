@@ -93,6 +93,10 @@ def render_video(page_name):
     video_source = extract_url(page_name)
     return render_template('video_player.html', videosource=video_source)
 
+@app.route('/post_video_survey/')
+def post_survey():
+    return render_template('post_survey.html')
+
 
 @app.route('/signup/')
 def sign_up():

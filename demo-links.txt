@@ -5,3 +5,5 @@ http://127.0.0.1:5000/play/IIOH2sCW13U
 http://linux.cs.uchicago.edu:5000/video/IIOH2sCW13U
 
 http://linux.cs.uchicago.edu:5000/play/$1
+^https://www\.youtube\.com/watch\?v=(.*)
+

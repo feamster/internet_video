@@ -28,3 +28,30 @@ chrome.webRequest.onBeforeRequest.addListener(
   },
   ["blocking"]
 );
+
+var urls = [];
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+
+  if (changeInfo.url) {
+    urls[tabId] = changeInfo.url;
+  }
+});
+
+chrome.tabs.onRemoved.addListener(function(tabId, info) {
+    var urlRegex =  new RegExp("^http://127\\.0\\.0\\.1:5000/play/(.*)");
+    if (urlRegex.test(urls[tabId])) {
+        var newURL = "http://127.0.0.1:5000/post_video_survey/";
+        chrome.tabs.create({
+            url: newURL,
+            active: false
+        }, function (tab) {
+            // After the tab has been created, open a window to inject the tab
+            chrome.windows.create({
+                tabId: tab.id,
+                type: 'popup',
+                focused: true
+                // incognito, top, left, ...
+            });
+        });
+    }
+});
