@@ -1,7 +1,7 @@
 http://127.0.0.1:5000/video/-tzvebu6U08
 http://127.0.0.1:5000/video/BHACKCNDMW8
-http://127.0.0.1:5000/video/IIOH2sCW13U
+http://127.0.0.1:5000/play/IIOH2sCW13U
 
 http://linux.cs.uchicago.edu:5000/video/IIOH2sCW13U
 
-http://linux.cs.uchicago.edu:5000/video/$1
+http://linux.cs.uchicago.edu:5000/play/$1
