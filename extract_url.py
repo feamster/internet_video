@@ -16,7 +16,7 @@ def extract_url(youtube_id):
     info = ydl.extract_info(weburl, download=False)
     outputFileName = youtube_id + "-" + get_time()
     outputFileDir = "templates/" + outputFileName + ".html"
-    webpage_pre = open("webpage_pre.html", mode="r")
+    webpage_pre = open("old_codes/webpage_pre.html", mode="r")
     outputFile = open(outputFileDir, 'w')
     for line in webpage_pre.readlines():
         print(line, file=outputFile)
