@@ -16,6 +16,19 @@
       <form class="needs-validation" novalidate>
 
       	   <div class="mb-3">
+            <label for="firstannoy">How much attention did you pay to the video you just watched?</label>
+            <select class="custom-select d-block w-100" id="firstannoy" required>
+              <option value="">Choose...</option>
+              <option>Very much</option>
+              <option>A bit</option>
+              <option>Not at all</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid device.
+            </div>
+        </div>
+
+          <div class="mb-3">
             <label for="firstannoy">Which factor annoy you the most during video playback</label>
             <select class="custom-select d-block w-100" id="firstannoy" required>
               <option value="">Choose...</option>
@@ -27,6 +40,7 @@
               Please select a valid device.
             </div>
         </div>
+
 
 
       	   <div class="mb-3">
@@ -49,7 +63,6 @@
         <script type="text/javascript">
         	function submitForm() {
         		 var url = '/post/'
-
       			var httpRequest = new XMLHttpRequest();
       			var report = "recevied video quality survey sucessfully";
       			httpRequest.open('POST', url, true);
