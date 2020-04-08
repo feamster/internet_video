@@ -12,7 +12,7 @@
 
     <p class="lead" align="justify"> UChiVideo is a research project started by Department of Computer Science, University of Chicago. More questions see <a href="#">FAQ</a> and <a href="#">Term of participant</a>. If you have any concerns, please <a href="#">contact</a> us.</p>
 
-    <p class="lead" align="justify"> {{userinfo | safe}} </p>
+    <p class="lead" align="justify"> <a href="{{ url_for('loginpage') }}">Log in</a>. Dont have an account? <a href="{{ url_for('sign_up') }}">Sign up here</a> </p>
 
   </div>
 </main>

@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<main role="main" class="flex-shrink-0">
+
+  <div class="container">
+    
+  <div class="py-5 text-center">
+    <h2>Sign-up Form</h2>
+    <p class="lead">This survey can help us understand your watching behavior in video viewing. We do appreciate you to fill out the following form.</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 order-md-1">
+      <form method="POST" action="{{ url_for('signuprequest') }}">
+
+      <h4 class="mb-3">Personal information</h4>
+      <form class="needs-validation" novalidate>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName">First name</label>
+            <input type="text" class="form-control" id="firstName" name="firstname" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Last name</label>
+            <input type="text" class="form-control" id="lastName" name="lastname" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Valid last name is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="username">Username</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">@</span>
+            </div>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+            <div class="invalid-feedback" style="width: 100%;">
+              Your username is required.
+            </div>
+          </div>
+        </div>
+
+<!-- confirm password removed -->
+
+        <div class="mb-3">
+          <!-- <div class="col-md-6 mb-3"> -->
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="" required>
+            <div class="invalid-feedback">
+              Valid first name is required.
+            </div>
+          <!-- </div> -->
+        <!--   <div class="col-md-6 mb-3">
+            <label for="lastName">Confirm Passward</label>
+            <input type="password" class="form-control" id="lastName" placeholder="" value="" required>
+            <div class="invalid-feedback">
+              Valid last name is required.
+            </div>
+          </div> -->
+        </div>
+
+        <div class="mb-3">
+          <label for="email">Email </label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
+          <div class="invalid-feedback">
+            Please enter a valid email address for shipping updates.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="address">Address <span class="text-muted"></span></label>
+          <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St" required>
+          <div class="invalid-feedback">
+            Please enter your shipping address.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+          <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment or suite">
+      	</div>
+
+      	<div class="mb-3">
+            <label for="age">Age</label>
+            <select class="custom-select d-block w-100" id="age" name="age" required>
+              <option value="">Choose...</option>
+              <option>under 18</option>
+              <option>18 - 24</option>
+              <option>25 - 31</option>
+              <option>32 - 38</option>
+              <option>39 - 45</option>
+              <option>46 - 52</option>
+              <option>53 - 59</option>
+              <option>60 and above</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid device.
+            </div>
+        </div>
+
+
+        <hr class="mb-4">
+
+        <h4 class="mb-3">Internet Access</h4>
+
+		 <div class="mb-3">
+            <label for="device">Device you use for our service</label>
+            <select class="custom-select d-block w-100" id="device" name="device" required>
+              <option value="">Choose...</option>
+              <option>Desktop</option>
+              <option>Laptop</option>
+              <option>Tablet</option>
+              <option>Smart Phone</option>
+              <option>Others</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid device.
+            </div>
+          </div>
+
+         <div class="mb-3">
+            <label for="isp">Network Provider</label>
+            <select class="custom-select d-block w-100" id="isp" name="isp" required>
+              <option value="">Choose...</option>
+              <option>Verizon</option>
+              <option>Comcast</option>
+              <option>Mediacom</option>
+              <option>AT&T</option>
+              <option>RCN</option>
+              <option>Sprint</option>
+              <option>Others</option>
+
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid network.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="type">Network Type</label>
+            <select class="custom-select d-block w-100" id="type" name="type" required>
+              <option value="">Choose...</option>
+              <option>WiFi</option>
+              <option>Celluar</option>
+              <option>Cable Network</option>
+              <option>Others</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid network.
+            </div>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="plan"> Internet Plan </label>
+            <select class="custom-select d-block w-100" id="plan" name="plan" required>
+              <option value="">Choose...</option>
+              <option> <25Mbps</option>
+              <option>25-50Mbps</option>
+              <option>50-75Mbps</option>
+              <option>75-100Mbps</option>
+              <option>100-125Mbps</option>
+              <option>125-150Mbps</option>
+              <option>150-200Mbps</option>
+              <option> >200Mbps</option>
+              <option> Not known</option>
+
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid internet plan.
+            </div>
+          </div>
+
+        <hr class="mb-4">
+
+        <h4 class="mb-3">Video Viewing Behavior</h4>
+
+<!-- does not support no choice or more than one choice now -->
+
+  		<div class="mb-3">
+          	<label for="device">Most frequently used video websites: &nbsp&nbsp&nbsp</label>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+			  <label class="form-check-label" for="inlineRadio1">YouTube</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+			  <label class="form-check-label" for="inlineRadio2">Netflix</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+			  <label class="form-check-label" for="inlineRadio3">Amazon</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+			  <label class="form-check-label" for="inlineRadio4">Disney</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio4" value="option5">
+			  <label class="form-check-label" for="inlineRadio5">Others</label>
+			</div>
+		 </div>
+
+          <div class="mb-3">
+            <label for="timespent"> Time spent on YouTube per day </label>
+            <select class="custom-select d-block w-100" id="timespent" name="timespent" required>
+              <option value="">Choose...</option>
+              <option> 0-30 min </option>
+              <option> 30-60 min</option>
+              <option> More than 60 min</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid time.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="resolution"> Resolution of your monitor </label>
+            <select class="custom-select d-block w-100" id="resolution" name="resolution" required>
+              <option value="">Choose...</option>
+              <option> 720p </option>
+              <option> 1080p</option>
+              <option> 1440p</option>
+              <option> 2k </option>
+              <option> 4k</option>
+              <option> Not known</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid resolution.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="msize"> Monitor Size </label>
+            <select class="custom-select d-block w-100" id="msize" name="msize" required>
+              <option value="">Choose...</option>
+              <option> 21" or smaller  </option>
+              <option> 22" - 25" </option>
+              <option> 26" - 29"</option>
+              <option> 30" - </option>
+              <option> Not known</option>
+            </select>
+            <div class="invalid-feedback">
+              Please select a valid size.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">submit your sign-up form</button>
+</form>
+
+<!--         <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="submitForm()">Continue to submit your sign-up form</button>
+        <script type="text/javascript">
+        	function submitForm() {
+        		 var url = '/post/'
+
+      			var httpRequest = new XMLHttpRequest();
+      			var report = "recevied sign-up sucessfully";
+      			httpRequest.open('POST', url, true);
+     			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+     			httpRequest.send(report);
+      			httpRequest.onreadystatechange = function () {
+         		var json = httpRequest.responseText;
+         		console.log("Sending Status: " + json);
+      };
+			}
+
+        </script>
+      </form>
+    </div> -->
+  </div>
+
+
+  </div>
+</main>
+
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; University of Chicago</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Contact</a></li>
+    </ul>
+  </footer>
+</div>
+{% endblock %}

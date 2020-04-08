@@ -1,0 +1,21 @@
+db.createUser({user: "admin",pwd: "63czhj6c8pe",roles: [{ role: "userAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" },{ role: "dbAdminAnyDatabase",   db: "admin" }]});
+db.createUser({user: "uchivideo1",pwd: "63czhj6c8pe",roles: [{ role: "userAdmin", db: "admin" },{ role: "dbAdmin",   db: "admin" },{ role: "readWrite", db: "admin" }]});
+
+mongo -u admin -p 63czhj6c8pe localhost:27017/admin
+db.users.find()
+
+{ "_id" : ObjectId("5e8d9a49a2540d9c847dc0df"), "name" : "test001", "password" : BinData(0,"JDJiJDEyJEdFejI2S0V4S3FwWGdJLjN1YTcwUi5zSjNwVGlBTGVFYnpqekwuNUhBLjlHMDIxZTlxMEhh") }
+{ "_id" : ObjectId("5e8da60b53c588dec2d3d2a8"), "name" : "test002", "password" : BinData(0,"JDJiJDEyJEtKVnY4VWFaVnNBazBmTHF0dTdjUHU1cE1mQWMyVWlzcTZZN2dLVkNMVEUzZnRqcEVIWDhD") }
+{ "_id" : ObjectId("5e8dc53da9a1826ffa4d5d45"), "name" : "test3", "password" : BinData(0,"JDJiJDEyJFlFU1RyL1ZpbnpZQ2x4WFFSOUFQanU3RXRHNEdyaVBsVDdRM1dkb0RvdW5zT3BieGlTaTdD"), "firstname" : "test1", "lastname" : "test2", "email" : "test5@test5.com", "address" : "test6", "address2" : "test7", "age" : "18 - 24", "device" : "Laptop", "isp" : "Verizon", "type" : "WiFi", "plan" : "25-50Mbps", "inlineRadioOptions" : "option1", "timespent" : "0-30 min", "resolution" : "1080p", "msize" : "21\" or smaller" }
+{ "_id" : ObjectId("5e8dc58cde1915c203a98682"), "name" : "t3", "password" : BinData(0,"JDJiJDEyJG1RWVRKM29uRWZwSnRSTTUxblhQVmVHQlVyRS45eFI5bjZ2ZGhQTnM4QldKY1J1ZFhlMzVx"), "firstname" : "t1", "lastname" : "t2", "email" : "t5@t5.com", "address" : "t6", "address2" : "t7", "age" : "under 18", "device" : "Desktop", "isp" : "Verizon", "type" : "WiFi", "plan" : "<25Mbps", "inlineRadioOptions" : "option1", "timespent" : "0-30 min", "resolution" : "720p", "msize" : "21\" or smaller" }
+{ "_id" : ObjectId("5e8dc71b120a399cebe4742b"), "name" : "t4", "password" : BinData(0,"JDJiJDEyJDZ3QVVzWXBrSzVkRFdwUDZ1Q0o2V3V6OUJNN3hwN3dJZTFEbVZyOC5OZ2JzeVFvOXp0TWMu"), "firstname" : "t1", "lastname" : "t2", "email" : "t5@t5.com", "address" : "t6", "address2" : "t7", "age" : "32 - 38", "device" : "Laptop", "isp" : "Comcast", "type" : "Celluar", "plan" : "<25Mbps", "inlineRadioOptions" : "option1", "timespent" : "30-60 min", "resolution" : "1080p", "msize" : "22\" - 25\"" }
+{ "_id" : ObjectId("5e8dcbae09e7e65e3937b2fe"), "name" : "test7", "password" : BinData(0,"JDJiJDEyJFRFTXUyUlNkWHA3VlZacXouYlJ6UmVraW84Z0hzVkpMUU5pY1preVhvZlhkOVJobHNBaFJL"), "firstname" : "t1", "lastname" : "t2", "email" : "t5@t5.com", "address" : "t6", "address2" : "t7", "age" : "46 - 52", "device" : "Laptop", "isp" : "Verizon", "type" : "WiFi", "plan" : "<25Mbps", "inlineRadioOptions" : "option1", "timespent" : "30-60 min", "resolution" : "720p", "msize" : "21\" or smaller" }
+{ "_id" : ObjectId("5e8dd0c8fd7245ced255b9a7"), "name" : "test8", "password" : BinData(0,"JDJiJDEyJEF3d2Z0RFNpbS8zaTdSLzZxcS5maHV2Z0RvQzhBVGY2UHUwb0FGT3JDNzE1R0lmM0lNN3Nl"), "firstname" : "t1", "lastname" : "t2", "email" : "t5@t5.com", "address" : "t6", "address2" : "t7", "age" : "18 - 24", "device" : "Laptop", "isp" : "Comcast", "type" : "Celluar", "plan" : "25-50Mbps", "inlineRadioOptions" : "option1", "timespent" : "30-60 min", "resolution" : "720p", "msize" : "21\" or smaller" }
+
+account1
+username: test8
+password: test8
+
+account2
+username: test7
+password: test7
