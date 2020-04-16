@@ -15,6 +15,7 @@
 	                <div class="form-group">
 	                    <label for="exampleInputPassword">Password</label>
 	                    <input type="password" class="form-control" name="password" placeholder="Password">
+	                    <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
 	                </div>
 	                <button type="submit" class="btn btn-primary btn-block">Log In</button>
 	            </form>

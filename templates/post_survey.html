@@ -13,11 +13,11 @@
   <div class="row">
 
     <div class="col-md-12 order-md-1">
-      <form class="needs-validation" novalidate>
-
+      <form method="POST" action="{{ url_for('save_data') }}" class="needs-validation" novalidate>
+        <input type="hidden" name="posttype" value="3">
       	   <div class="mb-3">
-            <label for="firstannoy">How much attention did you pay to the video you just watched?</label>
-            <select class="custom-select d-block w-100" id="firstannoy" required>
+            <label for="attention">How much attention did you pay to the video you just watched?</label>
+            <select class="custom-select d-block w-100" id="attention" name="attention" required>
               <option value="">Choose...</option>
               <option>Very much</option>
               <option>A bit</option>
@@ -29,8 +29,8 @@
         </div>
 
           <div class="mb-3">
-            <label for="firstannoy">Which factor annoy you the most during video playback</label>
-            <select class="custom-select d-block w-100" id="firstannoy" required>
+            <label for="annoyfactor">Which factor annoy you the most during video playback</label>
+            <select class="custom-select d-block w-100" id="annoyfactor" name="annoyfactor" required>
               <option value="">Choose...</option>
               <option>Low Resolution</option>
               <option>Video Stalls</option>
@@ -46,7 +46,7 @@
 
       	   <div class="mb-3">
             <label for="firstannoy">Which factor annoy you the second most during video playback</label>
-            <select class="custom-select d-block w-100" id="firstannoy" required>
+            <select class="custom-select d-block w-100" id="firstannoy" name="firstannoy" required>
               <option value="">Choose...</option>
               <option>Low Resolution</option>
               <option>Video Stalls</option>
@@ -58,11 +58,9 @@
             </div>
         </div>
 
-
-
-        <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="submitForm()">Continue to submit your video quality survey</button>
-        <script type="text/javascript">
+        <button type="submit" class="btn btn-primary btn-block">submit your sign-up form</button>
+        <!-- <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="submitForm()">Continue to submit your video quality survey</button> -->
+  <!--       <script type="text/javascript">
         	function submitForm() {
         		 var url = '/post/'
       			var httpRequest = new XMLHttpRequest();
@@ -76,7 +74,7 @@
       };
 			}
 
-        </script>
+        </script> -->
       </form>
     </div>
   </div>

@@ -15,8 +15,12 @@
       <script>
         videojs('video_player').videoJsResolutionSwitcher()
       </script>
+
+
     </video>
 
+   <p class="lead" align="justify"> {{userinfo | safe}} </p> 
+   
    <script>
     const $ = document.querySelector.bind(document)
     const vid = videojs('video_player')
@@ -58,12 +62,16 @@
       httpRequest.open('POST', url, true);
       httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
+      var webpage_url = document.location.toString();
+      report = "posttype=1&" + "site=" + webpage_url + "&";
+
       for(i=0;i<buffered.length;i++)
       {
         if (buffered.start(i) <= curTime && curTime <= buffered.end(i))
         {
           console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution);
-           report = "Timestamp: " + timestamp + ", "+ "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution;
+          report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution;
+//           report = "Timestamp: " + timestamp + ", "+ "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution;
         }
       }
       httpRequest.send(report);
@@ -87,17 +95,22 @@
     });
 
     slider.on("slideStop", function(sliderValue) {
-              var timestamp = new Date().getTime();
+          var timestamp = new Date().getTime();
           console.log("Current Time: " + timestamp + " User Change Video Score to: " + sliderValue);
 
           var httpRequest = new XMLHttpRequest();
           var report = "";
           var url = '/post/'
 
+          var webpage_url = document.location.toString();
+          report = "posttype=2&" + "site=" + webpage_url + "&";
+          
           httpRequest.open('POST', url, true);
           httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-          report = "Current Time: " + timestamp + " User Change Video Score to: " + sliderValue;
+          report = report + "time=" + timestamp + '&' + "slider=" + sliderValue;
+//          report = "Current Time: " + timestamp + " User Change Video Score to: " + sliderValue;
           httpRequest.send(report);
+          
       httpRequest.onreadystatechange = function () {
          var json = httpRequest.responseText;
       };

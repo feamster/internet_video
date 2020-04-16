@@ -95,8 +95,12 @@ def homepage():
 
 @app.route('/play/<string:page_name>/')
 def render_video(page_name):
+    if 'username' not in session:
+        return redirect(url_for('loginpage', next=request.url))
     video_source = extract_url(page_name)
-    return render_template('video_player.html', videosource=video_source)
+    return render_template(
+        'video_player.html', videosource=video_source,
+        userinfo='You are logged in as ' + session['username'] + '.')
 
 @app.route('/post_video_survey/')
 def post_survey():
@@ -108,14 +112,29 @@ def sign_up():
 
 @app.route('/signuprequest', methods=['POST'])
 def signuprequest():
+    print(request.form)
     if request.method == 'POST':
         users = mongo.db.users
         existing_user = users.find_one({'name' : request.form['username']})
 
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+            video_sites=""
+            temp_req = request.form.to_dict()
+            if 'inlineRadioOptions1' in temp_req:
+                video_sites+=request.form['inlineRadioOptions1']
+            if 'inlineRadioOptions2' in temp_req:
+                video_sites+=request.form['inlineRadioOptions2']
+            if 'inlineRadioOptions3' in temp_req:
+                video_sites+=request.form['inlineRadioOptions3']
+            if 'inlineRadioOptions4' in temp_req:
+                video_sites+=request.form['inlineRadioOptions4']
+            if 'inlineRadioOptions5' in temp_req:
+                video_sites+=request.form['inlineRadioOptions5']
+            print(video_sites)
             users.insert(
                 {
+                    'data':"register",
                     'name':request.form['username'], 
                     'password': hashpass, 
                     'firstname': request.form['firstname'],
@@ -128,7 +147,7 @@ def signuprequest():
                     'isp': request.form['isp'],
                     'type': request.form['type'],
                     'plan': request.form['plan'],
-                    'inlineRadioOptions': request.form['inlineRadioOptions'],
+                    'inlineRadioOptions': video_sites,
                     'timespent': request.form['timespent'],
                     'resolution': request.form['resolution'],
                     'msize': request.form['msize']
@@ -141,28 +160,62 @@ def signuprequest():
 
     return render_template('sign-up-ver2.html')
 
-
 @app.route('/loginpage')
 def loginpage():
     if 'username' in session:
-        return redirect(url_for(hello_world))
+        return redirect(url_for('hello_world'))
     return render_template('login-page.html')
     
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'username' in session:
+        return redirect(url_for(hello_world))
     users = mongo.db.users
     login_user = users.find_one({'name': request.form['username']})
-
     if login_user:
         if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password']) == login_user['password']:
             session['username'] = request.form['username']
+            next_url = request.form.get('next')
+            if next_url:
+                return redirect(next_url)
             return redirect(url_for('hello_world'))
-
     return 'Invalid username or password'
 
 @app.route('/post/', methods=['POST'])
 def save_data():
     print(request.form)
+    user = session['username']
+    if request.method == 'POST': 
+        if request.form['posttype'] == '3':
+            mongo.db.users.insert({
+                'data':"survey",
+                'name':session['username'],
+                'time':int(time.time()),
+                'attention':request.form['attention'],
+                'annoyfactor':request.form['annoyfactor'],
+                'firstannoy':request.form['firstannoy']
+            })
+            return 'Thanks for your feedback!'
+        url = request.form['site']
+        url = url.split('/play/')[1].split('/')[0]
+        if request.form['posttype'] == '2':
+            mongo.db.users.insert({
+                'data':"slider",
+                'name':session['username'],
+                'url':url,
+                'time':request.form['time'],
+                'slider':request.form['slider']
+            })
+        if request.form['posttype'] == '1':
+            mongo.db.users.insert({
+                'data':"video",
+                'name':session['username'],
+                'url':url,
+                'time':request.form['time'],
+                'player':request.form['player'],
+                'buffer':request.form['buffer'],
+                'res':request.form['res']
+            })
     return 'Sending sucessfully'
 
 

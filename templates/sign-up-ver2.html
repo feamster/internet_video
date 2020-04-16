@@ -84,9 +84,9 @@
         <div class="mb-3">
           <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
           <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment or suite">
-      	</div>
+        </div>
 
-      	<div class="mb-3">
+        <div class="mb-3">
             <label for="age">Age</label>
             <select class="custom-select d-block w-100" id="age" name="age" required>
               <option value="">Choose...</option>
@@ -109,7 +109,7 @@
 
         <h4 class="mb-3">Internet Access</h4>
 
-		 <div class="mb-3">
+     <div class="mb-3">
             <label for="device">Device you use for our service</label>
             <select class="custom-select d-block w-100" id="device" name="device" required>
               <option value="">Choose...</option>
@@ -183,29 +183,29 @@
 
 <!-- does not support no choice or more than one choice now -->
 
-  		<div class="mb-3">
-          	<label for="device">Most frequently used video websites: &nbsp&nbsp&nbsp</label>
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-			  <label class="form-check-label" for="inlineRadio1">YouTube</label>
-			</div>
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-			  <label class="form-check-label" for="inlineRadio2">Netflix</label>
-			</div>
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-			  <label class="form-check-label" for="inlineRadio3">Amazon</label>
-			</div>
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio4" value="option4">
-			  <label class="form-check-label" for="inlineRadio4">Disney</label>
-			</div>
-			<div class="form-check form-check-inline">
-			  <input class="form-check-input" type="checkbox" name="inlineRadioOptions" id="inlineRadio4" value="option5">
-			  <label class="form-check-label" for="inlineRadio5">Others</label>
-			</div>
-		 </div>
+      <div class="mb-3">
+            <label for="device">Choose your frequently used video websites: &nbsp&nbsp&nbsp</label>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="inlineRadioOptions1" id="inlineRadio1" value="1">
+        <label class="form-check-label" for="inlineRadio1">YouTube</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="inlineRadioOptions2" id="inlineRadio2" value="2">
+        <label class="form-check-label" for="inlineRadio2">Netflix</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="inlineRadioOptions3" id="inlineRadio3" value="3">
+        <label class="form-check-label" for="inlineRadio3">Amazon</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="inlineRadioOptions4" id="inlineRadio4" value="4">
+        <label class="form-check-label" for="inlineRadio4">Disney</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="inlineRadioOptions5" id="inlineRadio5" value="5">
+        <label class="form-check-label" for="inlineRadio5">Others</label>
+      </div>
+     </div>
 
           <div class="mb-3">
             <label for="timespent"> Time spent on YouTube per day </label>
@@ -256,19 +256,19 @@
 <!--         <hr class="mb-4">
         <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="submitForm()">Continue to submit your sign-up form</button>
         <script type="text/javascript">
-        	function submitForm() {
-        		 var url = '/post/'
+          function submitForm() {
+             var url = '/post/'
 
-      			var httpRequest = new XMLHttpRequest();
-      			var report = "recevied sign-up sucessfully";
-      			httpRequest.open('POST', url, true);
-     			httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-     			httpRequest.send(report);
-      			httpRequest.onreadystatechange = function () {
-         		var json = httpRequest.responseText;
-         		console.log("Sending Status: " + json);
+            var httpRequest = new XMLHttpRequest();
+            var report = "recevied sign-up sucessfully";
+            httpRequest.open('POST', url, true);
+          httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+          httpRequest.send(report);
+            httpRequest.onreadystatechange = function () {
+            var json = httpRequest.responseText;
+            console.log("Sending Status: " + json);
       };
-			}
+      }
 
         </script>
       </form>
