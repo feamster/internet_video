@@ -183,9 +183,9 @@ def login():
 
 @app.route('/post/', methods=['POST'])
 def save_data():
-    print(request.form)
+    print(session['username'], request.form)
     user = session['username']
-    if request.method == 'POST': 
+    if request.method == 'POST':
         if request.form['posttype'] == '3':
             mongo.db.users.insert({
                 'data':"survey",
