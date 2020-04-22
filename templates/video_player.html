@@ -16,7 +16,6 @@
         videojs('video_player').videoJsResolutionSwitcher()
       </script>
 
-
     </video>
 
    <p class="lead" align="justify"> {{userinfo | safe}} </p> 
@@ -48,7 +47,26 @@
   </script>
 
   <script>
+    var Button = videojs.getComponent('Button');
+    var MyButton = videojs.extend(Button, {
+        constructor: function() {
+        Button.apply(this, arguments);
+          /* initialize your button */
+        },
+        handleClick: function() {
+          console.log('have click');
+        },
+      buildCSSClass: function () {
+                        return 'vjs-icon-custombutton1 vjs-control vjs-button'
+                    },
+    });
+    videojs.registerComponent('MyButton', MyButton);
+
     var player = videojs('video_player');
+
+    player.getChild('controlBar').addChild('MyButton', {});
+
+
     var eventPoller = setInterval(function() {
       var buffered = player.buffered();
       var curTime = player.currentTime();
