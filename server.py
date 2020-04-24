@@ -185,9 +185,10 @@ def login():
 def save_data():
     print(session['username'], request.form)
     user = session['username']
+    record = mongo.db.record
     if request.method == 'POST':
         if request.form['posttype'] == '3':
-            mongo.db.users.insert({
+            record.insert({
                 'data':"survey",
                 'name':session['username'],
                 'time':int(time.time()),
@@ -199,7 +200,7 @@ def save_data():
         url = request.form['site']
         url = url.split('/play/')[1].split('/')[0]
         if request.form['posttype'] == '2':
-            mongo.db.users.insert({
+            record.insert({
                 'data':"slider",
                 'name':session['username'],
                 'url':url,
@@ -207,7 +208,7 @@ def save_data():
                 'slider':request.form['slider']
             })
         if request.form['posttype'] == '1':
-            mongo.db.users.insert({
+            record.insert({
                 'data':"video",
                 'name':session['username'],
                 'url':url,

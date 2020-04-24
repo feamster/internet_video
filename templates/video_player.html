@@ -16,10 +16,136 @@
         videojs('video_player').videoJsResolutionSwitcher()
       </script>
 
+     <style>
+      #downloadButton {
+          width: 25px;
+          height: 25px;
+          margin-top: 5px;
+      }
+    </style>
+
+      <script>
+        videojs('video_player').ready(function() {
+          var myPlayer = this,
+            controlBar,
+            newElement = document.createElement('div'),
+            newLink = document.createElement('button'),
+            newImage = document.createElement('img');
+          newElement.id = 'downloadButton';
+          newElement.className = 'downloadStyle vjs-control';
+          newImage.setAttribute('src','{{ url_for('static', filename='p1.png')}}');
+          newLink.setAttribute('onclick', 'facepost(1)');
+          newLink.appendChild(newImage);
+          newElement.appendChild(newLink);
+          controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+          insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+          controlBar.insertBefore(newElement,insertBeforeNode);
+        });
+      </script>
+
+      <script>
+        videojs('video_player').ready(function() {
+          var myPlayer = this,
+            controlBar,
+            newElement = document.createElement('div'),
+            newLink = document.createElement('button'),
+            newImage = document.createElement('img');
+          newElement.id = 'downloadButton';
+          newElement.className = 'downloadStyle vjs-control';
+          newImage.setAttribute('src','{{ url_for('static', filename='p2.png')}}');
+          newLink.setAttribute('onclick', 'facepost(2)');
+          newLink.appendChild(newImage);
+          newElement.appendChild(newLink);
+          controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+          insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+          controlBar.insertBefore(newElement,insertBeforeNode);
+        });
+      </script>
+
+      <script>
+        videojs('video_player').ready(function() {
+          var myPlayer = this,
+            controlBar,
+            newElement = document.createElement('div'),
+            newLink = document.createElement('button'),
+            newImage = document.createElement('img');
+          newElement.id = 'downloadButton';
+          newElement.className = 'downloadStyle vjs-control';
+          newImage.setAttribute('src','{{ url_for('static', filename='p3.png')}}');
+          newLink.setAttribute('onclick', 'facepost(3)');
+          newLink.appendChild(newImage);
+          newElement.appendChild(newLink);
+          controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+          insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+          controlBar.insertBefore(newElement,insertBeforeNode);
+        });
+      </script>
+
+      <script>
+        videojs('video_player').ready(function() {
+          var myPlayer = this,
+            controlBar,
+            newElement = document.createElement('div'),
+            newLink = document.createElement('button'),
+            newImage = document.createElement('img');
+          newElement.id = 'downloadButton';
+          newElement.className = 'downloadStyle vjs-control';
+          newImage.setAttribute('src','{{ url_for('static', filename='p4.png')}}');
+          newLink.appendChild(newImage);
+          newLink.setAttribute('onclick', 'facepost(4)');
+          newElement.appendChild(newLink);
+          controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+          insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+          controlBar.insertBefore(newElement,insertBeforeNode);
+        });
+      </script>
+
+      <script>
+        videojs('video_player').ready(function() {
+          var myPlayer = this,
+            controlBar,
+            newElement = document.createElement('div'),
+            newLink = document.createElement('button'),
+            newImage = document.createElement('img');
+          newElement.id = 'downloadButton';
+          newElement.className = 'downloadStyle vjs-control';
+          newImage.setAttribute('src','{{ url_for('static', filename='p5.png')}}');
+          newLink.appendChild(newImage);
+          newLink.setAttribute('onclick', 'facepost(5)');
+          newElement.appendChild(newLink);
+          controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+          insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+          controlBar.insertBefore(newElement,insertBeforeNode);
+        });
+      </script>
+
+      <script>
+        function facepost(a){
+          var timestamp = new Date().getTime();
+          console.log("Current Time: " + timestamp + " User choose fase #: " + a);
+
+          var httpRequest = new XMLHttpRequest();
+          var report = "";
+          var url = '/post/'
+
+          var webpage_url = document.location.toString();
+          report = "posttype=2&" + "site=" + webpage_url + "&";
+          
+          httpRequest.open('POST', url, true);
+          httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+          report = report + "time=" + timestamp + '&' + "slider=-" + a;
+          httpRequest.send(report);
+          
+          httpRequest.onreadystatechange = function () {
+             var json = httpRequest.responseText;
+          };
+
+        }
+      </script>
     </video>
 
    <p class="lead" align="justify"> {{userinfo | safe}} </p> 
-   
+
    <script>
     const $ = document.querySelector.bind(document)
     const vid = videojs('video_player')
@@ -47,26 +173,7 @@
   </script>
 
   <script>
-    var Button = videojs.getComponent('Button');
-    var MyButton = videojs.extend(Button, {
-        constructor: function() {
-        Button.apply(this, arguments);
-          /* initialize your button */
-        },
-        handleClick: function() {
-          console.log('have click');
-        },
-      buildCSSClass: function () {
-                        return 'vjs-icon-custombutton1 vjs-control vjs-button'
-                    },
-    });
-    videojs.registerComponent('MyButton', MyButton);
-
     var player = videojs('video_player');
-
-    player.getChild('controlBar').addChild('MyButton', {});
-
-
     var eventPoller = setInterval(function() {
       var buffered = player.buffered();
       var curTime = player.currentTime();

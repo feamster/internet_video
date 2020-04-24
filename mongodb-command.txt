@@ -7,6 +7,7 @@ db.users.find()
 { "_id" : ObjectId("5e9879ca05fef2b54b1dd777"), "data" : "register", "name" : "test11", "password" : BinData(0,"JDJiJDEyJG1xL2RTcnpqNjFGc3Rxa21UWmhmNU9QQ05aN3ZhU20zUXFlakU2QkF2Zk84Q2hxZVBheFJT"), "firstname" : "t1", "lastname" : "t2", "email" : "test9@1.com", "address" : "1111", "address2" : "test7", "age" : "25 - 31", "device" : "Laptop", "isp" : "Comcast", "type" : "WiFi", "plan" : "50-75Mbps", "inlineRadioOptions" : "24", "timespent" : "More than 60 min", "resolution" : "1080p", "msize" : "21\" or smaller" }
 { "_id" : ObjectId("5e986da58b101ba7f3c93b81"), "data" : "video", "name" : "test8", "url" : "-tzvebu6U08", "time" : "1587047845935", "player" : "13.046779", "buffer" : "67.593221", "res" : "144p" }
 { "_id" : ObjectId("5e986da68b101ba7f3c93b82"), "data" : "slider", "name" : "test8", "url" : "-tzvebu6U08", "time" : "1587047846818", "slider" : "26" }
+{ "_id" : ObjectId("5ea315035f7f11a93ee71a53"), "data" : "slider", "name" : "test8", "url" : "-tzvebu6U08", "time" : "1587746051140", "slider" : "-4" }
 { "_id" : ObjectId("5e987f56a8253645c4e61dd7"), "data" : "survey", "name" : "test11", "time" : 1587052374, "attention" : "A bit", "annoyfactor" : "Video Stalls", "firstannoy" : "Video Stalls" }
 
 account1
