@@ -196,7 +196,11 @@
         {
           console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution);
           report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution;
-//           report = "Timestamp: " + timestamp + ", "+ "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", " + "Current Resolution: " + currentResolution;
+
+          if (buffered.end(i)-curTime > 10 && currentResolution !== "360p") {
+            player.currentResolution('360p')
+          }
+
         }
       }
       httpRequest.send(report);
@@ -233,7 +237,6 @@
           httpRequest.open('POST', url, true);
           httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
           report = report + "time=" + timestamp + '&' + "slider=" + sliderValue;
-//          report = "Current Time: " + timestamp + " User Change Video Score to: " + sliderValue;
           httpRequest.send(report);
           
       httpRequest.onreadystatechange = function () {

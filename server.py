@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, request, url_for, session
+from flask_login import logout_user
 from youtube_dl import YoutubeDL
 import time
 from flask_pymongo import PyMongo
@@ -11,8 +12,10 @@ app.config['MONGO_URI'] = 'mongodb://uchivideo1:63czhj6c8pe@18.179.39.139:27017/
 
 mongo = PyMongo(app)
 
+
 def get_time():
     return str(hash(str(time.time())))
+
 
 def extract_url(youtube_id):
     ydl = YoutubeDL()
@@ -89,9 +92,11 @@ def hello_world():
         return render_template('home.html', userinfo='You are logged in as ' + session['username'] + '.')
     return render_template('home-not-logged-in.html')
 
+
 @app.route('/home')
 def homepage():
     return render_template('video_player.html')
+
 
 @app.route('/play/<string:page_name>/')
 def render_video(page_name):
@@ -102,13 +107,16 @@ def render_video(page_name):
         'video_player.html', videosource=video_source,
         userinfo='You are logged in as ' + session['username'] + '.')
 
+
 @app.route('/post_video_survey/')
 def post_survey():
     return render_template('post_survey.html')
 
+
 @app.route('/signup/')
 def sign_up():
     return render_template('sign-up-ver2.html')
+
 
 @app.route('/signuprequest', methods=['POST'])
 def signuprequest():
@@ -160,12 +168,14 @@ def signuprequest():
 
     return render_template('sign-up-ver2.html')
 
+
 @app.route('/loginpage')
 def loginpage():
     if 'username' in session:
         return redirect(url_for('hello_world'))
     return render_template('login-page.html')
     
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'username' in session:
@@ -180,6 +190,7 @@ def login():
                 return redirect(next_url)
             return redirect(url_for('hello_world'))
     return 'Invalid username or password'
+
 
 @app.route('/post/', methods=['POST'])
 def save_data():

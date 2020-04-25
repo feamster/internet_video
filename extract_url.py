@@ -80,5 +80,7 @@ def extract_url(youtube_id):
                       "default label=" + quote + resolution[idx] + "p" + quote, "/>", file=outputFile)
 
     return outputFileName
+
+
 if __name__ == '__main__':
     sys_main()
