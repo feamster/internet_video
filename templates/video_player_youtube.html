@@ -2,7 +2,7 @@
 
 {% block page_content %}
 <script src="http://vjs.zencdn.net/5-unsafe/video.js"></script>
-<script src="../jsfiles/Youtube.js"></script>
+<script src="http://127.0.0.1:8887/Youtube.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-resolution-switcher/0.4.2/videojs-resolution-switcher.js"></script>
 <main role="main" class="flex-shrink-0">
 
@@ -50,7 +50,7 @@
                 var buffered = player.buffered();
                 var curTime = player.currentTime();
                 var timestamp = new Date().getTime();
-                var currentResolution = player.currentResolution(null).labels;
+                var currentResolution = player.playbackRate();
 
                 var httpRequest = new XMLHttpRequest();
                 var report = "";
@@ -67,10 +67,6 @@
                         console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution);
                         console.dir(currentResolution);
                         report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution;
-                    }
-
-                    if (curTime>10) {
-                        player.pause();
                     }
                 }
                 httpRequest.send(report);

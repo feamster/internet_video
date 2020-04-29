@@ -559,7 +559,7 @@ THE SOFTWARE. */
     },
 
     playbackRate: function() {
-      return this.ytPlayer ? this.ytPlayer.getPlaybackRate() : 1;
+      return this.ytPlayer.getPlaybackQuality();
     },
 
     setPlaybackRate: function(suggestedRate) {
@@ -568,10 +568,6 @@ THE SOFTWARE. */
       }
 
       this.ytPlayer.setPlaybackRate(suggestedRate);
-    },
-
-    getPlaybackRate: function() {
-      return this.ytPlayer.getPlaybackRate();
     },
 
     duration: function() {
