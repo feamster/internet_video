@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<script src="http://vjs.zencdn.net/5-unsafe/video.js"></script>
+<script src="../jsfiles/Youtube.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-resolution-switcher/0.4.2/videojs-resolution-switcher.js"></script>
+<main role="main" class="flex-shrink-0">
+
+    <div class="container">
+
+        <br/><br/>
+        <br/><br/>
+        <video
+                id="video_player"
+                class="video-js vjs-default-skin"
+                controls
+                autoplay
+                width="1280" height="720"
+                data-setup='{}'
+        >
+        </video>
+
+        <script type="text/javascript">
+            videojs('video_player', {
+                controls: false,
+                techOrder: ["youtube"],
+                sources: [{"type": "video/youtube", "src": "https://www.youtube.com/watch?v=xjS6SftYQaQ"}],
+                youtube: {"ytControls": 2, "enablejsapi":1},
+                fluid: true,
+                children: ["MediaLoader"],
+                plugins: {
+                    videoJsResolutionSwitcher: {
+                        default: 'low',
+                        dynamicLabel: true
+                    }
+                }
+            });
+        </script>
+        <script type="text/javascript">
+            var player = videojs('video_player');
+            player.on('resolutionchange', function () {
+                console.info('Source changed')
+            })
+        </script>
+
+
+        <script>
+            var player = videojs('video_player');
+            var eventPoller = setInterval(function () {
+                var buffered = player.buffered();
+                var curTime = player.currentTime();
+                var timestamp = new Date().getTime();
+                var currentResolution = player.currentResolution(null).labels;
+
+                var httpRequest = new XMLHttpRequest();
+                var report = "";
+                var url = '/post/'
+
+                httpRequest.open('POST', url, true);
+                httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                var webpage_url = document.location.toString();
+                report = "posttype=1&" + "site=" + webpage_url + "&";
+
+                for (i = 0; i < buffered.length; i++) {
+                    if (buffered.start(i) <= curTime && curTime <= buffered.end(i)) {
+                        console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution);
+                        console.dir(currentResolution);
+                        report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution;
+                    }
+
+                    if (curTime>10) {
+                        player.pause();
+                    }
+                }
+                httpRequest.send(report);
+                httpRequest.onreadystatechange = function () {
+                    var json = httpRequest.responseText;
+                };
+            }, 1000)
+        </script>
+
+    </div>
+</main>
+{% endblock %}

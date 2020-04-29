@@ -100,12 +100,14 @@ def homepage():
 
 @app.route('/play/<string:page_name>/')
 def render_video(page_name):
-    if 'username' not in session:
-        return redirect(url_for('loginpage', next=request.url))
-    video_source = extract_url(page_name)
-    return render_template(
-        'video_player.html', videosource=video_source,
-        userinfo='You are logged in as ' + session['username'] + '.')
+    return render_template('video_player_youtube.html')
+# def render_video(page_name):
+#     if 'username' not in session:
+#         return redirect(url_for('loginpage', next=request.url))
+#     video_source = extract_url(page_name)
+#     return render_template(
+#         'video_player.html', videosource=video_source,
+#         userinfo='You are logged in as ' + session['username'] + '.')
 
 
 @app.route('/post_video_survey/')
@@ -228,7 +230,7 @@ def save_data():
                 'buffer':request.form['buffer'],
                 'res':request.form['res']
             })
-    return 'Sending sucessfully'
+    return 'Sending successfully'
 
 
 if __name__ == '__main__':
