@@ -50,7 +50,7 @@
                 var buffered = player.buffered();
                 var curTime = player.currentTime();
                 var timestamp = new Date().getTime();
-                var currentResolution = player.playbackRate();
+                var currentResolution = player.getVideoPlaybackQuality();
 
                 var httpRequest = new XMLHttpRequest();
                 var report = "";

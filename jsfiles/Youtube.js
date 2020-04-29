@@ -559,7 +559,11 @@ THE SOFTWARE. */
     },
 
     playbackRate: function() {
-      return this.ytPlayer.getPlaybackQuality();
+      return this.ytPlayer ? this.ytPlayer.getPlaybackRate() : 1;
+    },
+
+    getVideoPlaybackQuality: function() {
+      return this.ytPlayer ? this.ytPlayer.getPlaybackQuality() : 1;
     },
 
     setPlaybackRate: function(suggestedRate) {
