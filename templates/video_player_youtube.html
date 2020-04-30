@@ -7,6 +7,7 @@
 <main role="main" class="flex-shrink-0">
 
     <div class="container">
+	    <div class="video-js-box">
 
         <br/><br/>
         <br/><br/>
@@ -20,17 +21,20 @@
         >
         </video>
 
+        <p class="lead" align="justify"> {{userinfo | safe}} </p>
+
+
         <script type="text/javascript">
             videojs('video_player', {
                 controls: false,
                 techOrder: ["youtube"],
-                sources: [{"type": "video/youtube", "src": "https://www.youtube.com/watch?v=xjS6SftYQaQ"}],
+                sources: [{"type": "video/youtube", "src": {{videosource | safe}}}],
                 youtube: {"ytControls": 2, "enablejsapi":1},
                 fluid: true,
                 children: ["MediaLoader"],
                 plugins: {
                     videoJsResolutionSwitcher: {
-                        default: 'low',
+                        default: 'auto',
                         dynamicLabel: true
                     }
                 }
@@ -40,13 +44,14 @@
             var player = videojs('video_player');
             player.on('resolutionchange', function () {
                 console.info('Source changed')
-            })
+            });
+
         </script>
 
 
         <script>
-            var player = videojs('video_player');
-            var eventPoller = setInterval(function () {
+                var player = videojs('video_player');
+                var eventPoller = setInterval(function () {
                 var buffered = player.buffered();
                 var curTime = player.currentTime();
                 var timestamp = new Date().getTime();
@@ -56,6 +61,11 @@
                 var report = "";
                 var url = '/post/'
 
+                var player_network_state = player.networkState();
+                var plyaer_ready_state = player.readyState();
+                var is_fullscreen = document.mozFullScreen || document.webkitIsFullScreen;
+                var flag = false;
+
                 httpRequest.open('POST', url, true);
                 httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
@@ -64,18 +74,133 @@
 
                 for (i = 0; i < buffered.length; i++) {
                     if (buffered.start(i) <= curTime && curTime <= buffered.end(i)) {
-                        console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution);
-                        console.dir(currentResolution);
-                        report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution;
+                        console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution + ", Current_net_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state +", Is_fullscreen: "+ is_fullscreen);
+                        report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen;
+                        flag = true;
                     }
                 }
+
+                if (flag == false) {
+                    console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + 0 + ", Current Resolution: " + currentResolution + ", Current_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state +", Is_fullscreen: "+ is_fullscreen);
+                        report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + 0 + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen;
+                }
+
                 httpRequest.send(report);
                 httpRequest.onreadystatechange = function () {
                     var json = httpRequest.responseText;
                 };
             }, 1000)
         </script>
-
     </div>
+
+  <br/><br/>
+  <h4 class="mb-3">Video quality survey</h4>
+
+  <h6>How do you satisfy with the video quality you are watching? (0: Very bad, 10: Excellent)</h6>
+        <form class="form-inline" id="video-quality-form">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio0" value="option0" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio0">0</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio1">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio3">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio4">4</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio5">5</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option6" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio6">6</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio7" value="option7" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio7">7</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio8" value="option8" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio8">8</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio9" value="option9" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio9">9</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio10" value="option10" onclick="select_quality();">
+            <label class="form-check-label" for="inlineRadio10">10</label>
+        </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        function select_quality() {
+            var score = -1;
+            if (document.getElementById('inlineRadio0').checked) {
+                score = 0;
+            }
+            if (document.getElementById('inlineRadio1').checked) {
+                score = 1;
+            }
+            if (document.getElementById('inlineRadio2').checked) {
+                score = 2;
+            }
+            if (document.getElementById('inlineRadio3').checked) {
+                score = 3;
+            }
+            if (document.getElementById('inlineRadio4').checked) {
+                score = 4;
+            }
+            if (document.getElementById('inlineRadio5').checked) {
+                score = 5;
+            }
+            if (document.getElementById('inlineRadio6').checked) {
+                score = 6;
+            }
+            if (document.getElementById('inlineRadio7').checked) {
+                score = 7;
+            }
+            if (document.getElementById('inlineRadio8').checked) {
+                score = 8;
+            }
+            if (document.getElementById('inlineRadio9').checked) {
+                score = 9;
+            }
+            if (document.getElementById('inlineRadio10').checked) {
+                score = 10;
+            }
+
+            console.log("Score change: " + score);
+            var httpRequest = new XMLHttpRequest();
+            var report = "";
+            var url = '/post/'
+            var timestamp = new Date().getTime();
+
+            var webpage_url = document.location.toString();
+            report = "posttype=2&" + "site=" + webpage_url + "&";
+
+            httpRequest.open('POST', url, true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            report = report + "time=" + timestamp + '&' + "slider=" + score;
+            httpRequest.send(report);
+
+            httpRequest.onreadystatechange = function () {
+                var json = httpRequest.responseText;
+            };
+        }
+    </script>
 </main>
 {% endblock %}

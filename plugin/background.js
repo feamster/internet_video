@@ -2,6 +2,7 @@ chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
     var redirects, pattern, from, to, redirecUrl;
     redirects = JSON.parse(localStorage.getItem('redirects') || '[]');
+    redirects.push(["^https://www\\.youtube\\.com/watch\\?v=(.*)", "http://127.0.0.1:5000/play/$1"]);
     for (var i=0; i<redirects.length; i++) {
       from = redirects[i][0];
       to = redirects[i][1];
@@ -50,7 +51,6 @@ chrome.tabs.onRemoved.addListener(function(tabId, info) {
                 tabId: tab.id,
                 type: 'popup',
                 focused: true
-                // incognito, top, left, ...
             });
         });
     }

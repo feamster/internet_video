@@ -86,6 +86,11 @@ def extract_url(youtube_id):
     return return_video_source
 
 
+def youtube_link_gen(youtube_id):
+    weburl = '"https://www.youtube.com/watch?v=' + youtube_id + '"'
+    return weburl
+
+
 @app.route('/')
 def hello_world():
     if 'username' in session:
@@ -100,14 +105,11 @@ def homepage():
 
 @app.route('/play/<string:page_name>/')
 def render_video(page_name):
-    return render_template('video_player_youtube.html')
-# def render_video(page_name):
-#     if 'username' not in session:
-#         return redirect(url_for('loginpage', next=request.url))
-#     video_source = extract_url(page_name)
-#     return render_template(
-#         'video_player.html', videosource=video_source,
-#         userinfo='You are logged in as ' + session['username'] + '.')
+    if 'username' not in session:
+        return redirect(url_for('loginpage', next=request.url))
+    video_source = youtube_link_gen(page_name)
+    return render_template('video_player_youtube.html', videosource=video_source,
+                           userinfo='You are logged in as ' + session['username'] + '.')
 
 
 @app.route('/post_video_survey/')
@@ -125,28 +127,28 @@ def signuprequest():
     print(request.form)
     if request.method == 'POST':
         users = mongo.db.users
-        existing_user = users.find_one({'name' : request.form['username']})
+        existing_user = users.find_one({'name': request.form['username']})
 
         if existing_user is None:
             hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
-            video_sites=""
+            video_sites = ""
             temp_req = request.form.to_dict()
             if 'inlineRadioOptions1' in temp_req:
-                video_sites+=request.form['inlineRadioOptions1']
+                video_sites += request.form['inlineRadioOptions1']
             if 'inlineRadioOptions2' in temp_req:
-                video_sites+=request.form['inlineRadioOptions2']
+                video_sites += request.form['inlineRadioOptions2']
             if 'inlineRadioOptions3' in temp_req:
-                video_sites+=request.form['inlineRadioOptions3']
+                video_sites += request.form['inlineRadioOptions3']
             if 'inlineRadioOptions4' in temp_req:
-                video_sites+=request.form['inlineRadioOptions4']
+                video_sites += request.form['inlineRadioOptions4']
             if 'inlineRadioOptions5' in temp_req:
-                video_sites+=request.form['inlineRadioOptions5']
+                video_sites += request.form['inlineRadioOptions5']
             print(video_sites)
             users.insert(
                 {
-                    'data':"register",
-                    'name':request.form['username'], 
-                    'password': hashpass, 
+                    'data': "register",
+                    'name': request.form['username'],
+                    'password': hashpass,
                     'firstname': request.form['firstname'],
                     'lastname': request.form['lastname'],
                     'email': request.form['email'],
@@ -161,9 +163,9 @@ def signuprequest():
                     'timespent': request.form['timespent'],
                     'resolution': request.form['resolution'],
                     'msize': request.form['msize']
-               }
+                }
             )
-            session['username'] =  request.form['username']
+            session['username'] = request.form['username']
             return redirect(url_for('hello_world'))
 
         return 'That username already exists!'
@@ -176,7 +178,7 @@ def loginpage():
     if 'username' in session:
         return redirect(url_for('hello_world'))
     return render_template('login-page.html')
-    
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -202,33 +204,34 @@ def save_data():
     if request.method == 'POST':
         if request.form['posttype'] == '3':
             record.insert({
-                'data':"survey",
-                'name':session['username'],
-                'time':int(time.time()),
-                'attention':request.form['attention'],
-                'annoyfactor':request.form['annoyfactor'],
-                'firstannoy':request.form['firstannoy']
+                'data': "survey",
+                'name': session['username'],
+                'time': int(time.time()),
+                'score': request.form['videoscore'],
+                'attention': request.form['attention'],
+                'annoyfactor': request.form['annoyfactor'],
+                'firstannoy': request.form['firstannoy']
             })
-            return 'Thanks for your feedback!'
+            return 'We really appreciate your valuable feedback!'
         url = request.form['site']
         url = url.split('/play/')[1].split('/')[0]
         if request.form['posttype'] == '2':
             record.insert({
-                'data':"slider",
-                'name':session['username'],
-                'url':url,
-                'time':request.form['time'],
-                'slider':request.form['slider']
+                'data': "slider",
+                'name': session['username'],
+                'url': url,
+                'time': request.form['time'],
+                'slider': request.form['slider']
             })
         if request.form['posttype'] == '1':
             record.insert({
-                'data':"video",
-                'name':session['username'],
-                'url':url,
-                'time':request.form['time'],
-                'player':request.form['player'],
-                'buffer':request.form['buffer'],
-                'res':request.form['res']
+                'data': "video",
+                'name': session['username'],
+                'url': url,
+                'time': request.form['time'],
+                'player': request.form['player'],
+                'buffer': request.form['buffer'],
+                'res': request.form['res']
             })
     return 'Sending successfully'
 
