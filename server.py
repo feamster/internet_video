@@ -167,9 +167,7 @@ def signuprequest():
             )
             session['username'] = request.form['username']
             return redirect(url_for('hello_world'))
-
         return 'That username already exists!'
-
     return render_template('sign-up-ver2.html')
 
 
@@ -210,7 +208,8 @@ def save_data():
                 'score': request.form['videoscore'],
                 'attention': request.form['attention'],
                 'annoyfactor': request.form['annoyfactor'],
-                'firstannoy': request.form['firstannoy']
+                'firstannoy': request.form['firstannoy'],
+                'networkspeed': request.form['networkspeedarea']
             })
             return 'We really appreciate your valuable feedback!'
         url = request.form['site']

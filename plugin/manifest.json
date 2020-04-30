@@ -3,6 +3,10 @@
   "description": "Redirect YouTube urls",
   "version": "1.0",
   "manifest_version": 2,
+  "icons":
+	{
+		"96": "img/youtube.png"
+	},
   "background": {"scripts":["background.js"]},
   "options_page": "options.html",
   "permissions": [

@@ -1,100 +1,183 @@
 {% extends 'base.html' %}
 
 {% block page_content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/network-js/2.1.0/network.min.js"></script>
+
 <main role="main" class="flex-shrink-0">
 
-  <div class="container">
-    
-  <div class="py-5 text-center">
-    <h2>Video Quality Survey</h2>
-    <p class="lead">This survey can help us understand your watching behavior in video viewing. We do appreciate you to fill out the following form.</p>
-  </div>
+    <div class="container">
 
-  <div class="row">
+        <div class="py-5 text-center">
+            <h2>Video Quality Survey</h2>
+            <p class="lead">This survey can help us understand your watching behavior in video viewing. We do appreciate
+                you to fill out the following form.</p>
+        </div>
 
-    <div class="col-md-12 order-md-1">
-      <form method="POST" action="{{ url_for('save_data') }}" class="needs-validation" novalidate>
-        <input type="hidden" name="posttype" value="3">
+        <div class="row">
 
-          <div class="mb-3">
-            <label for="videoscore">How would you like to rate the video quality? (0: very bad, 10: Excellent)</label>
-            <select class="custom-select d-block w-100" id="videoscore" name="videoscore" required>
-                <option value="">Choose...</option>
-                <option>10</option>
-                <option>9</option>
-                <option>8</option>
-                <option>7</option>
-                <option>6</option>
-                <option>5</option>
-                <option>4</option>
-                <option>3</option>
-                <option>2</option>
-                <option>1</option>
-                <option>0</option>
-            </select>
-            <div class="invalid-feedback">
-              Please select a valid device.
+            <div class="col-md-12 order-md-1">
+                <form method="POST" action="{{ url_for('save_data') }}" class="needs-validation" novalidate>
+                    <input type="hidden" name="posttype" value="3">
+
+                    <div class="mb-3">
+                        <label for="videoscore">How would you like to rate the visual quality of the video you just watched? (0: very bad, 10:
+                            Excellent)</label>
+                        <select class="custom-select d-block w-100" id="videoscore" name="videoscore" required>
+                            <option value="">Choose...</option>
+                            <option>10</option>
+                            <option>9</option>
+                            <option>8</option>
+                            <option>7</option>
+                            <option>6</option>
+                            <option>5</option>
+                            <option>4</option>
+                            <option>3</option>
+                            <option>2</option>
+                            <option>1</option>
+                            <option>0</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid device.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="attention">How much attention did you pay to the video you just watched?</label>
+                        <select class="custom-select d-block w-100" id="attention" name="attention" required>
+                            <option value="">Choose...</option>
+                            <option>Very much</option>
+                            <option>A bit</option>
+                            <option>Not at all</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid device.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="annoyfactor">Which factor annoy you the most during video playback</label>
+                        <select class="custom-select d-block w-100" id="annoyfactor" name="annoyfactor" required>
+                            <option value="">Choose...</option>
+                            <option>Low Resolution</option>
+                            <option>Video Stalls</option>
+                            <option>Resolution Change frquently</option>
+                            <option>No factors</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid device.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="firstannoy">Which factor annoy you the second most during video playback</label>
+                        <select class="custom-select d-block w-100" id="firstannoy" name="firstannoy" required>
+                            <option value="">Choose...</option>
+                            <option>Low Resolution</option>
+                            <option>Video Stalls</option>
+                            <option>Resolution Change frquently</option>
+                            <option>No factors</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid device.
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit your sign-up form</button>
+
+                    <div class="form-group">
+                        <label for="networkspeedarea">Your network speed</label>
+                        <textarea class="form-control" id="networkspeedarea" rows="3" readonly>Click the "Test your speed" button. Your Internet speed will show here.</textarea>
+                    </div>
+
+                    <button type="button" onclick="test_download()" onclass="btn btn-primary btn-block">Test your speed</button>
+
+                </form>
+
+
             </div>
         </div>
 
-      	   <div class="mb-3">
-            <label for="attention">How much attention did you pay to the video you just watched?</label>
-            <select class="custom-select d-block w-100" id="attention" name="attention" required>
-              <option value="">Choose...</option>
-              <option>Very much</option>
-              <option>A bit</option>
-              <option>Not at all</option>
-            </select>
-            <div class="invalid-feedback">
-              Please select a valid device.
-            </div>
-        </div>
 
-        <div class="mb-3">
-            <label for="annoyfactor">Which factor annoy you the most during video playback</label>
-            <select class="custom-select d-block w-100" id="annoyfactor" name="annoyfactor" required>
-              <option value="">Choose...</option>
-              <option>Low Resolution</option>
-              <option>Video Stalls</option>
-              <option>Resolution Change frquently</option>
-              <option>No factors</option>
-            </select>
-            <div class="invalid-feedback">
-              Please select a valid device.
-            </div>
-        </div>
+        <script type="text/javascript">
+            function test_download() {
+                var imageAddr = "http://127.0.0.1:5000/static/test-5mb.jpg";
+                var downloadSize = 10 * 1024 * 1024; //bytes
 
-        <div class="mb-3">
-            <label for="firstannoy">Which factor annoy you the second most during video playback</label>
-            <select class="custom-select d-block w-100" id="firstannoy" name="firstannoy" required>
-              <option value="">Choose...</option>
-              <option>Low Resolution</option>
-              <option>Video Stalls</option>
-              <option>Resolution Change frquently</option>
-              <option>No factors</option>
-            </select>
-            <div class="invalid-feedback">
-              Please select a valid device.
-            </div>
-        </div>
+                function ShowProgressMessage(msg) {
+                    if (console) {
+                        if (typeof msg == "string") {
+                            console.log(msg);
+                        } else {
+                            for (var i = 0; i < msg.length; i++) {
+                                console.log(msg[i]);
+                            }
+                        }
+                    }
 
-        <button type="submit" class="btn btn-primary btn-block">submit your sign-up form</button>
+                    if (typeof msg == "string") {
+                        document.getElementById("networkspeedarea").value = msg;
+                    } else {
+                        var all_msg = "";
+                        for (var i = 0; i < msg.length; i++) {
+                            all_msg = all_msg + " " + msg[i];
+                        }
+                    }
 
-      </form>
+                    var oProgress = document.getElementById("progress");
+                    if (oProgress) {
+                        var actualHTML = (typeof msg == "string") ? msg : msg.join("<br />");
+                        oProgress.innerHTML = actualHTML;
+                    }
+                }
+
+                function InitiateSpeedDetection() {
+                    ShowProgressMessage("Loading the image, please wait...");
+                    window.setTimeout(MeasureConnectionSpeed, 1);
+                };
+
+                if (window.addEventListener) {
+                    window.addEventListener('load', InitiateSpeedDetection, false);
+                } else if (window.attachEvent) {
+                    window.attachEvent('onload', InitiateSpeedDetection);
+                }
+
+                function MeasureConnectionSpeed() {
+                    var startTime, endTime;
+                    var download = new Image();
+                    download.onload = function () {
+                        endTime = (new Date()).getTime();
+                        showResults();
+                    }
+
+                    download.onerror = function (err, msg) {
+                        ShowProgressMessage("Invalid image, or error downloading. Please click the button \"Submit your sign-up form\"");
+                    }
+
+                    startTime = (new Date()).getTime();
+                    download.src = imageAddr;
+
+                    function showResults() {
+                        var duration = (endTime - startTime) / 1000;
+                        var bitsLoaded = downloadSize * 8;
+                        var speedBps = (bitsLoaded / duration).toFixed(2);
+                        var speedKbps = (speedBps / 1024).toFixed(2);
+                        var speedMbps = (speedKbps / 1024).toFixed(2);
+                        ShowProgressMessage("Your connection speed is: " + speedKbps + " Kbps");
+                    }
+                }
+                MeasureConnectionSpeed();
+            }
+        </script>
     </div>
-  </div>
-
-
-  </div>
 </main>
 
-  <footer class="my-5 pt-5 text-muted text-center text-small">
+<footer class="my-5 pt-5 text-muted text-center text-small">
     <p class="mb-1">&copy; University of Chicago</p>
     <ul class="list-inline">
-      <li class="list-inline-item"><a href="#">Privacy</a></li>
-      <li class="list-inline-item"><a href="#">Terms</a></li>
-      <li class="list-inline-item"><a href="#">Contact</a></li>
+        <li class="list-inline-item"><a href="#">Privacy</a></li>
+        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="#">Contact</a></li>
     </ul>
-  </footer>
+</footer>
 </div>
 {% endblock %}
+
