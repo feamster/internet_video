@@ -230,7 +230,10 @@ def save_data():
                 'time': request.form['time'],
                 'player': request.form['player'],
                 'buffer': request.form['buffer'],
-                'res': request.form['res']
+                'res': request.form['res'],
+                'net_state': request.form['net_state'],
+                'player_state': request.form['player_state'],
+                'is_fullscreen': request.form['is_fullscreen']
             })
     return 'Sending successfully'
 
