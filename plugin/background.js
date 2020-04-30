@@ -41,7 +41,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 chrome.tabs.onRemoved.addListener(function(tabId, info) {
     var urlRegex =  new RegExp("^http://silver\\.cs\\.uchicago\\.edu:5000/play/(.*)");
     if (urlRegex.test(urls[tabId])) {
-        var newURL = "http://127.0.0.1:5000/post_video_survey/";
+        var newURL = "http://silver.cs.uchicago.edu:5000/post_video_survey/";
         chrome.tabs.create({
             url: newURL,
             active: false
