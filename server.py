@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, session
+from flask import Flask, render_template, redirect, request, url_for, session, flash
 from flask_login import logout_user
 from youtube_dl import YoutubeDL
 import time
@@ -97,19 +97,12 @@ def hello_world():
         return render_template('home.html', userinfo='You are logged in as ' + session['username'] + '.')
     return render_template('home-not-logged-in.html')
 
-
-@app.route('/home')
-def homepage():
-    return render_template('video_player.html')
-
-
 @app.route('/play/<string:page_name>/')
 def render_video(page_name):
     if 'username' not in session:
         return redirect(url_for('loginpage', next=request.url))
     video_source = youtube_link_gen(page_name)
-    return render_template('video_player_youtube.html', videosource=video_source,
-                           userinfo='You are logged in as ' + session['username'] + '.')
+    return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.')
 
 
 @app.route('/post_video_survey/')
@@ -177,6 +170,20 @@ def loginpage():
         return redirect(url_for('hello_world'))
     return render_template('login-page.html')
 
+@app.route('/logoutpage')
+def logoutpage():
+    session.clear()
+    return redirect(url_for('hello_world'))
+
+@app.route('/optoutpage')
+def optoutpage():
+    return render_template('optout-page.html')
+
+@app.route('/optout')
+def optout():
+    mongo.db.users.delete_many({'name': session['username']})
+    session.clear()
+    return render_template('optout-success.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -240,4 +247,5 @@ def save_data():
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
-    app.run(debug=True, host='silver.cs.uchicago.edu', port=5000)
+    app.run(debug=True,port=5000)
+   # app.run(debug=True, host='silver.cs.uchicago.edu', port=5000)

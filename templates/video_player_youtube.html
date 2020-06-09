@@ -1,13 +1,36 @@
 {% extends 'base.html' %}
 
 {% block page_content %}
-<script src="http://vjs.zencdn.net/5-unsafe/video.js"></script>
+<script src="/static/js/video.js"></script>
 <script src="/static/js/Youtube.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-resolution-switcher/0.4.2/videojs-resolution-switcher.js"></script>
+<script src="/static/js/videojs-resolution-switcher.js"></script>
 <main role="main" class="flex-shrink-0">
+<style>
+    
+    .vjs-has-started .vjs-control-bar{
+        margin-bottom: 5.0em;
+    }
+
+    .video-js .vjs-control{
+        display: none;
+    }
+
+    #customText {
+      width: 180px;
+      height: 40px;
+      margin-top: 8px;
+      font-size: medium;
+      text-align: center;
+    }
+    #customButton {
+      width: 30px;
+      height: 30px;
+      margin-top: 5px;
+    }
+</style>
 
     <div class="container">
-	    <div class="video-js-box">
+        <div class="video-js-box">
 
         <br/><br/>
         <video
@@ -25,12 +48,11 @@
 
         <script type="text/javascript">
             videojs('video_player', {
-                controls: false,
+                controls: true,
                 techOrder: ["youtube"],
                 sources: [{"type": "video/youtube", "src": {{videosource | safe}}}],
                 youtube: {"ytControls": 2, "enablejsapi":1},
                 fluid: true,
-                children: ["MediaLoader"],
                 plugins: {
                     videoJsResolutionSwitcher: {
                         default: 'auto',
@@ -44,8 +66,146 @@
             player.on('resolutionchange', function () {
                 console.info('Source changed')
             });
-
         </script>
+
+
+          <script>
+            videojs('video_player').ready(function() {
+              var myPlayer = this,
+                controlBar,
+                newElement = document.createElement('div'),
+                newLink = document.createElement('button'),
+                newImage = document.createElement('img'),
+                textNode = document.createTextNode('Rate the video quality: ');
+                // Also need to modify width in #customButton0 when modifying text
+              newElement.id = 'customText';
+              newElement.className = 'customText';
+              newElement.appendChild(textNode);
+              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+              controlBar.insertBefore(newElement,insertBeforeNode);
+              
+            });
+          </script>
+
+          <script>
+            videojs('video_player').ready(function() {
+              var myPlayer = this,
+                controlBar,
+                newElement = document.createElement('div'),
+                newLink = document.createElement('button'),
+                newImage = document.createElement('img');
+              newElement.id = 'customButton';
+              newElement.className = 'customButton';
+              newImage.setAttribute('src','{{ url_for('static', filename='p1.png')}}');
+              newLink.setAttribute('onclick', 'facepost(1)');
+              newLink.appendChild(newImage);
+              newElement.appendChild(newLink);
+              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+              controlBar.insertBefore(newElement,insertBeforeNode);
+            });
+          </script>
+
+          <script>
+            videojs('video_player').ready(function() {
+              var myPlayer = this,
+                controlBar,
+                newElement = document.createElement('div'),
+                newLink = document.createElement('button'),
+                newImage = document.createElement('img');
+              newElement.id = 'customButton';
+              newElement.className = 'customButton';
+              newImage.setAttribute('src','{{ url_for('static', filename='p2.png')}}');
+              newLink.setAttribute('onclick', 'facepost(2)');
+              newLink.appendChild(newImage);
+              newElement.appendChild(newLink);
+              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+              controlBar.insertBefore(newElement,insertBeforeNode);
+            });
+          </script>
+
+          <script>
+            videojs('video_player').ready(function() {
+              var myPlayer = this,
+                controlBar,
+                newElement = document.createElement('div'),
+                newLink = document.createElement('button'),
+                newImage = document.createElement('img');
+              newElement.id = 'customButton';
+              newElement.className = 'customButton';
+              newImage.setAttribute('src','{{ url_for('static', filename='p3.png')}}');
+              newLink.setAttribute('onclick', 'facepost(3)');
+              newLink.appendChild(newImage);
+              newElement.appendChild(newLink);
+              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+              controlBar.insertBefore(newElement,insertBeforeNode);
+            });
+          </script>
+
+          <script>
+            videojs('video_player').ready(function() {
+              var myPlayer = this,
+                controlBar,
+                newElement = document.createElement('div'),
+                newLink = document.createElement('button'),
+                newImage = document.createElement('img');
+              newElement.id = 'customButton';
+              newElement.className = 'customButton';
+              newImage.setAttribute('src','{{ url_for('static', filename='p4.png')}}');
+              newLink.setAttribute('onclick', 'facepost(4)');
+              newLink.appendChild(newImage);
+              newElement.appendChild(newLink);
+              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+              controlBar.insertBefore(newElement,insertBeforeNode);
+            });
+          </script>
+
+          <script>
+            videojs('video_player').ready(function() {
+              var myPlayer = this,
+                controlBar,
+                newElement = document.createElement('div'),
+                newLink = document.createElement('button'),
+                newImage = document.createElement('img');
+              newElement.id = 'customButton';
+              newElement.className = 'customButton';
+              newImage.setAttribute('src','{{ url_for('static', filename='p5.png')}}');
+              newLink.setAttribute('onclick', 'facepost(5)');
+              newLink.appendChild(newImage);
+              newElement.appendChild(newLink);
+              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+              controlBar.insertBefore(newElement,insertBeforeNode);
+            });
+          </script>
+
+      <script>
+        function facepost(a){
+          var timestamp = new Date().getTime();
+          // console.log("Current Time: " + timestamp + " User choose fase #: " + a);
+
+          var httpRequest = new XMLHttpRequest();
+          var report = "";
+          var url = '/post/'
+
+          var webpage_url = document.location.toString();
+          report = "posttype=2&" + "site=" + webpage_url + "&";
+          
+          httpRequest.open('POST', url, true);
+          httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+          report = report + "time=" + timestamp + '&' + "slider=-" + a;
+          httpRequest.send(report);
+          
+          httpRequest.onreadystatechange = function () {
+             var json = httpRequest.responseText;
+          };
+
+        }
+      </script>
 
 
         <script>
@@ -88,10 +248,10 @@
                 httpRequest.onreadystatechange = function () {
                     var json = httpRequest.responseText;
                 };
-            }, 1000)
+            }, 10000)
         </script>
     </div>
-
+<!-- 
   <h4 class="mb-3">Video quality survey</h4>
 
   <h6>How do you satisfy with the video quality you are watching? (0: Very bad, 10: Excellent)</h6>
@@ -143,7 +303,7 @@
         </div>
         </form>
     </div>
-
+ -->
     <script type="text/javascript">
         function select_quality() {
             var score = -1;

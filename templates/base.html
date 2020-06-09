@@ -43,10 +43,15 @@
         		</div>
       		</li>
     	</ul>
-
+    
 		<div class="btn-toolbar">
-			<button type="button" class="btn  btn-lg btn-sm mr-1" href="http://127.0.0.1:5000/loginpage">Log in</button>
+			<button type="button" class="btn  btn-lg btn-sm mr-1" onclick="location.href='{{ url_for('logoutpage') }}'">Log out</button>
 		</div>
+
+    <div class="btn-toolbar">
+      <button type="button" class="btn  btn-lg btn-sm mr-1" onclick="location.href='{{ url_for('optoutpage') }}'">Opt out</button>
+    </div>
+
 
   	</div>
 	</nav>

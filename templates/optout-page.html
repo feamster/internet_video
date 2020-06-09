@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<main role="main" class="flex-shrink-0">
+
+    <br/><br/>
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-4 col-md-offset-4">
+	        	By clicking the button below, you will quit this research project. Your account and all the data we have collected from you will be deleted. 
+
+	        	
+                <button type="submit" class="btn btn-primary btn-block" onclick="location.href='{{ url_for('optout') }}'">Delete my account</button>
+	            <br>
+	        </div>
+	    </div>
+	</div>
+
+</main>
+{% endblock %}
