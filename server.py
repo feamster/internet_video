@@ -240,7 +240,9 @@ def save_data():
                 'res': request.form['res'],
                 'net_state': request.form['net_state'],
                 'player_state': request.form['player_state'],
-                'is_fullscreen': request.form['is_fullscreen']
+                'is_fullscreen': request.form['is_fullscreen'],
+                'win_x': request.form['win_x'],
+                'win_y': request.form['win_y']
             })
     return 'Sending successfully'
 
