@@ -4,6 +4,7 @@ from youtube_dl import YoutubeDL
 import time
 from flask_pymongo import PyMongo
 import bcrypt
+import GetComments as gc
 
 app = Flask(__name__, template_folder='templates')
 
@@ -102,7 +103,8 @@ def render_video(page_name):
     if 'username' not in session:
         return redirect(url_for('loginpage', next=request.url))
     video_source = youtube_link_gen(page_name)
-    return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.')
+    video_comments =gc.get_comments(page_name)
+    return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.', comments_list = video_comments)
 
 
 @app.route('/post_video_survey/')

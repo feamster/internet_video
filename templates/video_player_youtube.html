@@ -84,7 +84,6 @@
               controlBar = document.getElementsByClassName('vjs-control-bar')[0];
               insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
               controlBar.insertBefore(newElement,insertBeforeNode);
-              
             });
           </script>
 
@@ -248,7 +247,7 @@
 
                 if (flag == false) {
                     console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + 0 + ", Current Resolution: " + currentResolution + ", Current_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state +", Is_fullscreen: "+ is_fullscreen + ", win_x: " + win_x + ", win_y: " + win_y);
-                        report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + 0 + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen + "&" + "win_x=" + win_x + "&" + "win_y=" + win_y;
+                    report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + 0 + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen + "&" + "win_x=" + win_x + "&" + "win_y=" + win_y;
                 }
 
                 httpRequest.send(report);
@@ -258,6 +257,11 @@
             }, 10000)
         </script>
     </div>
+
+
+
+
+
 <!--
   The following codes are for putting the codes under the
 
@@ -369,5 +373,20 @@
         }
     </script>
  -->
+        <section class="content-item" id="comments">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+
+                        <h3>Comments</h3>
+
+                         {{comments_list | safe}}
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
 </main>
 {% endblock %}
