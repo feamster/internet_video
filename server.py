@@ -119,7 +119,7 @@ def sign_up():
 
 @app.route('/signuprequest', methods=['POST'])
 def signuprequest():
-    print(request.form)
+    # print(request.form)
     if request.method == 'POST':
         users = mongo.db.users
         existing_user = users.find_one({'name': request.form['username']})
@@ -138,7 +138,7 @@ def signuprequest():
                 video_sites += request.form['inlineRadioOptions4']
             if 'inlineRadioOptions5' in temp_req:
                 video_sites += request.form['inlineRadioOptions5']
-            print(video_sites)
+            # print(video_sites)
             users.insert(
                 {
                     'data': "register",
@@ -205,7 +205,7 @@ def login():
 
 @app.route('/post/', methods=['POST'])
 def save_data():
-    print(session['username'], request.form)
+    # print(session['username'], request.form)
     user = session['username']
     record = mongo.db.record
     if request.method == 'POST':
