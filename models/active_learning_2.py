@@ -1,7 +1,4 @@
-#!/usr/bin/env python3
-
 import copy
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -83,7 +80,7 @@ def processing_training_data(n_class=10, train_data=None):
     return X, Y
 
 
-def split_train_test(X, y, test_size):
+def split_train_test(X, y, test_size, n_class):
 
     target = np.unique(y)
     # mapping the targets to 0 to n_classes-1
@@ -93,6 +90,7 @@ def split_train_test(X, y, test_size):
 
     # making sure each class appears ones initially
     init_y_ind = np.array([np.where(y_trn == i)[0][0] for i in range(len(target))])
+
     y_ind = np.array([i for i in range(len(X_trn)) if i not in init_y_ind])
     trn_ds = Dataset(
         np.vstack((X_trn[init_y_ind], X_trn[y_ind])),
@@ -107,7 +105,7 @@ def split_train_test(X, y, test_size):
     cost_matrix = 1.0 * np.ones([len(target), len(target)])
     for ii in range(0, len(target)):
         for jj in range(0, len(target)):
-            cost_matrix[ii, jj] = abs(ii - jj) / 5 / 2
+            cost_matrix[ii, jj] = abs(ii - jj) / n_class
 
     np.fill_diagonal(cost_matrix, 0)
 
@@ -119,22 +117,21 @@ def save_file(file_name, data):
     return 0
 
 
-def train_for_user(user_id=1):
-    test_data = waterloo_iv_processing.get_per_user_data(user_id=user_id, device='hdtv',
+def train_for_user(user_id=1, device_type='uhdtv', n_class=10):
+    test_data = waterloo_iv_processing.get_per_user_data(user_id=user_id, device=device_type,
                                                          video_name=['sports', 'document', 'nature', 'game', 'movie'])
-    X, y = processing_training_data(n_class=5, train_data=test_data)
+    X, y = processing_training_data(n_class=n_class, train_data=test_data)
     test_size = 0.2  # the percentage of samples in the dataset that will be
+    quota = 350  # number of samples to query
 
     result = {'E1': [], 'E2': [], 'E3': []}
     for i in range(20):
         print('exp:', i)
-        trn_ds, tst_ds, fully_labeled_trn_ds, cost_matrix = split_train_test(X=X, y=y, test_size=test_size)
+        trn_ds, tst_ds, fully_labeled_trn_ds, cost_matrix = split_train_test(X=X, y=y, test_size=test_size, n_class=n_class)
         trn_ds2 = copy.deepcopy(trn_ds)
         trn_ds3 = copy.deepcopy(trn_ds)
         lbr = IdealLabeler(fully_labeled_trn_ds)
         model = SVM(kernel='rbf', decision_function_shape='ovr')
-
-        quota = 350  # number of samples to query
 
         qs = UncertaintySampling(
             trn_ds, method='sm', model=SVM(decision_function_shape='ovr'))
@@ -153,10 +150,9 @@ def train_for_user(user_id=1):
     E_out_2 = np.mean(result['E2'], axis=0)
     E_out_3 = np.mean(result['E3'], axis=0)
 
-    save_file('results/user_'+str(user_id)+'_E1.txt', result['E1'])
-    save_file('results/user_'+str(user_id)+'_E2.txt', result['E2'])
-    save_file('results/user_'+str(user_id)+'_E3.txt', result['E3'])
-
+    save_file('results/'+device_type+'_user_'+str(user_id)+'_E1_class_'+str(n_class)+'.txt', result['E1'])
+    save_file('results/'+device_type+'_user_'+str(user_id)+'_E2_class_'+str(n_class)+'.txt', result['E2'])
+    save_file('results/'+device_type+'_user_'+str(user_id)+'_E3_class_'+str(n_class)+'.txt', result['E3'])
 
     print("Uncertainty: ", E_out_1[::5].tolist())
     print("Random: ", E_out_2[::5].tolist())
@@ -169,15 +165,19 @@ def train_for_user(user_id=1):
     plt.xlabel('Number of Queries')
     plt.ylabel('Error')
     plt.title('Experiment Result')
-    plt.legend(handles=[uncert, rd, alce], loc=4)
-
+    plt.legend(handles=[uncert, rd, alce], loc=3)
     plt.show()
 
 
 def sys_main():
-    for usr in range(0, 28):
-        train_for_user(user_id=usr)
+
+    usr_list = list(range(0, 29))
+
+    for usr in usr_list:
+        print('User:', usr)
+        train_for_user(user_id=usr, device_type='phone', n_class=10)
     return 0
+
 
 if __name__ == '__main__':
     sys_main()
