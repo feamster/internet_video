@@ -2,7 +2,7 @@ chrome.webRequest.onBeforeRequest.addListener(
   function(details) {
     var redirects, pattern, from, to, redirecUrl;
     redirects = JSON.parse(localStorage.getItem('redirects') || '[]');
-    redirects.push(["^https://www\\.youtube\\.com/watch\\?v=(.*)", "http://silver.cs.uchicago.edu/play/$1"]);
+    redirects.push(["^https://www\\.youtube\\.com/watch\\?v=(.*)", "http://silver.cs.uchicago.edu:5000/play/$1"]);
     for (var i=0; i<redirects.length; i++) {
       from = redirects[i][0];
       to = redirects[i][1];
