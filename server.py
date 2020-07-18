@@ -63,16 +63,16 @@ def extract_url(youtube_id):
 
     for x in info['formats']:
         idx = x['format_id']
-        if ((idx in audio_list) and first_audio):
+        if (idx in audio_list) and first_audio:
             first_audio = False
             return_video_source += "<audio preload id=\"audio\">"
             return_video_source = return_video_source + "<source src=" + quote + x[
                 'url'] + quote + ' ' + "type=" + quote + audio_type[idx] + quote + ' ' + "/>" + '\n'
             return_video_source += "</audio>\n"
 
-        if ((idx in resolution) and (resolution[idx] not in gen_resolution)):
+        if (idx in resolution) and (resolution[idx] not in gen_resolution):
             gen_resolution.add(resolution[idx])
-            if (not first_video):
+            if not first_video:
                 return_video_source = return_video_source + "<source src=" + quote + x[
                     'url'] + quote + ' ' + "type=" + quote + video_type[idx] + quote + ' ' + "label=" + quote + \
                                       resolution[idx] + "p" + quote + ' ' + "res=" + quote + resolution[
@@ -98,6 +98,7 @@ def hello_world():
         return render_template('home.html', userinfo='You are logged in as ' + session['username'] + '.')
     return render_template('home-not-logged-in.html')
 
+
 @app.route('/play/<string:page_name>/')
 def render_video(page_name):
     if 'username' not in session:
@@ -114,7 +115,7 @@ def post_survey():
 
 @app.route('/signup/')
 def sign_up():
-    return render_template('sign-up-ver2.html')
+    return render_template('sign-up.html')
 
 
 @app.route('/signuprequest', methods=['POST'])
@@ -147,9 +148,6 @@ def signuprequest():
                     'firstname': request.form['firstname'],
                     'lastname': request.form['lastname'],
                     'email': request.form['email'],
-                    'address': request.form['address'],
-                    'address2': request.form['address2'],
-                    'age': request.form['age'],
                     'device': request.form['device'],
                     'isp': request.form['isp'],
                     'type': request.form['type'],
@@ -176,6 +174,10 @@ def loginpage():
 def logoutpage():
     session.clear()
     return redirect(url_for('hello_world'))
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
 
 @app.route('/optoutpage')
 def optoutpage():
@@ -251,5 +253,5 @@ def save_data():
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
-    #app.run(debug=True,port=5000)
-    app.run(debug=False, host='silver.cs.uchicago.edu', port=5000)
+    app.run(debug=True, port=5000)
+    # app.run(debug=False, host='silver.cs.uchicago.edu', port=5000)

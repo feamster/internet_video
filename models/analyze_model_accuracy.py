@@ -6,23 +6,24 @@ import matplotlib.pyplot as plt
 m = 1.3
 def sys_main():
     # folder_path = 'results/5-class/'
-    # folder_path = 'results/10-class/'
-    folder_path = 'results/'
+    folder_path = 'results/10-class/hdtv/'
+    # folder_path = 'results/'
 
     final_results = []
     for usr in range(0, 28):
         # e1: uncertainty; e2: random; e3: alce
-        # file_path_e1 = folder_path + 'user_' + str(usr) + '_E1.txt'
-        # file_path_e2 = folder_path + 'user_' + str(usr) + '_E2.txt'
-        # file_path_e3 = folder_path + 'user_' + str(usr) + '_E3.txt'
+        file_path_e1 = folder_path + 'user_' + str(usr) + '_E1.txt'
+        file_path_e2 = folder_path + 'user_' + str(usr) + '_E2.txt'
+        file_path_e3 = folder_path + 'user_' + str(usr) + '_E3.txt'
 
         # file_path_e1 = folder_path + 'exclude_user_' + str(usr) + '_E1_class_10.txt'
         # file_path_e2 = folder_path + 'exclude_user_' + str(usr) + '_E2_class_10.txt'
         # file_path_e3 = folder_path + 'exclude_user_' + str(usr) + '_E3_class_10.txt'
 
-        file_path_e1 = folder_path + 'exclude_user_' + str(usr) + '_E1_class_5.txt'
-        file_path_e2 = folder_path + 'exclude_user_' + str(usr) + '_E2_class_5.txt'
-        file_path_e3 = folder_path + 'exclude_user_' + str(usr) + '_E3_class_5.txt'
+        # file_path_e1 = folder_path + 'exclude_user_' + str(usr) + '_E1_class_5.txt'
+        # file_path_e2 = folder_path + 'exclude_user_' + str(usr) + '_E2_class_5.txt'
+        # file_path_e3 = folder_path + 'exclude_user_' + str(usr) + '_E3_class_5.txt'
+
         e1_data = np.loadtxt(file_path_e1, delimiter=',') * 200
         e2_data = np.loadtxt(file_path_e2, delimiter=',') * 200
         e3_data = np.loadtxt(file_path_e3, delimiter=',') * 200
