@@ -118,6 +118,11 @@ def sign_up():
     return render_template('sign-up.html')
 
 
+@app.route('/faq/')
+def faq():
+    return render_template('faq.html')
+
+
 @app.route('/signuprequest', methods=['POST'])
 def signuprequest():
     # print(request.form)
