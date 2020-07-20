@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<main role="main" class="flex-shrink-0">
+
+    <div class="container">
+        <br/><br/>
+        <h2 class="bd-title" id="content">Frequent Asked Questions</h2>
+        <h4 class="mt-5">Where Can I Download the Browser Extension?</h4>
+        Please contact Xu Zhang (zhangxu@uchicago.edu)
+
+        <h4 class="mt-5">What Is Our Research?</h4>
+        In this research, you will watch and rate the videos. The purpose of this research project was to automatically
+        detect the quality preferences of the users. By the preferences, the internet video providers could provide
+        better resource allocation scheme that can satisfy as many as users.
+
+        <h4 class="mt-5">How Does It Work?</h4>
+        <ol>
+            <li>If you agree to participate in our program, we will give you an online registration form by which you
+                can have
+                the access to our video proxy. After registration, you can watch the videos through our video proxy
+                which allows
+                us to monitor the quality of video.
+            </li>
+            <li>You will install an extension on web browser which will redirect your webpage to our web proxy if you
+                click a online video link.
+            </li>
+            <li>You will watch the videos through our proxy where we record the quality of your perceived videos and
+                the status of your video player. The data includes the playing progress of the video player, watching
+                video in
+                the fullscreen mode or not, how many seconds of the video have downloaded in your player buffer, the
+                resolution
+                of video you are watching, and your downloading status, and the pixel size of your player.
+            </li>
+            <li>You will rate the video that you are currently watching on the video player provided by our video
+                proxy.
+            </li>
+            <li>After you watch a YouTube video, a webpage might be popped up, and you will ask the questions on that
+                page
+                including your rating to the video you just watch and the annoying factors that affect your experience.
+                You will
+                have an option to test your internet connection speed which will be recorded.
+            </li>
+            <li>You can decide to quit our study and delete all your related data at any time if you feel
+                uncomfortable.
+            </li>
+        </ol>
+
+
+        <h4 class="mt-5">Data Privacy</h4>
+        By default, We stores data about the participants. In each video watching, the quality and the rating of the
+        video is stored, it is sent to the secure servers at University of Chicago. Each participant is given a
+        completely random id that is used to distinguish between participants. This random participant id allows us to
+        anonymize the data and minimize risk to individual participants.
+        We use a crosstalk system to store the mapping from participants' emails and names to the random ID, but this
+        crosstalk system is only for contact use. After the study, we will completely destroy it.
+        We will store the following information:
+        <ul>
+            <li>
+                The Internet plan and the model of the monitor you are using.
+            </li>
+            <li>
+                The quality of the videos you watch including the video resolution, the video stall time, the player's
+                buffer length.
+            </li>
+            <li>
+                The quality rating of the videos.
+            </li>
+        </ul>
+        We will NOT store the following information:
+        <ul>
+            <li>
+                The content of the videos you are watching.
+            </li>
+            <li>
+                The crosstalk system that maps your email and name to the ID.
+            </li>
+            <li>
+                Your name and e-mail address.
+            </li>
+        </ul>
+        You can delete all the information we record any time. To make sure that this research is being carried out in
+        the proper way, the University of Chicago IRB
+        may review study records. The Office of Social and Behavioral Sciences may also look over study records during
+        required reviews.
+
+        <h4 class="mt-5">Is There a Consent Form?</h4>
+        Of course. Please refer to <a href="http://silver.cs.uchicago.edu:5000/terms">Here</a>.
+
+
+        <h4 class="mt-5">Contact and Questions</h4>
+        If you have questions or concerns about the study, you can contact the researcher:
+        <p></p>
+        <h6>Xu Zhang</h6>
+        <h6>773-219-7592</h6>
+        <h6>zhangxu@uchicago.edu</h6>
+        <p></p>
+        <p>If you have any questions about your rights as a participant in this research, feel you have been harmed, or
+            wish to discuss other study-related concerns with someone who is not part of the research team, you can
+            contact
+            the University of Chicago Social & Behavioral Sciences Institutional Review Board (IRB) Office by phone at
+            (773) 702-2915, or by email at sbs-irb@uchicago.edu.</p>
+
+
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; University of Chicago</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="http://silver.cs.uchicago.edu:5000/terms">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Contact</a></li>
+        </ul>
+    </footer>
+</main>
+{% endblock %}
