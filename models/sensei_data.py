@@ -9,7 +9,7 @@ def intersect_video(video1, video2):
 
 def meta_read():
     df_data = pd.read_csv('sensei/user_scores.csv', usecols=['campaign_name', 'num_chunk', 'mturk_id', 'accept'])
-    df_data = df_data[df_data['accept'] > 0]
+    df_data = df_data[df_data['accept'] >= 0]
 
     grouped = df_data.groupby(['mturk_id'])
     count_stats = {}
@@ -47,6 +47,7 @@ def meta_read():
     plt.show()
 
     return count_stats
+
 
 
 def sys_main():
