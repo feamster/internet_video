@@ -20,6 +20,26 @@ from libact.utils import calc_cost
 import waterloo_iv_processing
 
 
+n_of_class = 10
+
+
+def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
+    if Y_predict is None or Y_truth is None:
+        print('No input')
+        return 0
+    error = 0.0
+    if err_cal == 'MSE':
+        Y_dis = Y_predict - Y_truth
+        Y_dis = np.power(Y_dis, 2)
+        error = np.sum(Y_dis)
+    if err_cal == 'Err':
+        Y_dis = Y_predict - Y_truth
+        Y_dis = np.abs(Y_dis)/n_of_class
+        error = np.mean(Y_dis)
+
+
+    return error
+
 def run(trn_ds, tst_ds, lbr, model, qs, quota, cost_matrix):
     C_in, C_out = [], []
 
@@ -45,10 +65,15 @@ def run(trn_ds, tst_ds, lbr, model, qs, quota, cost_matrix):
         # trn_X, trn_y = zip(*trn_ds.get_labeled_entries())
         # tst_X, tst_y = zip(*tst_ds.get_labeled_entries())
 
+        # C_in = np.append(C_in,
+        #                  calc_cost(trn_y, model.predict(trn_X), cost_matrix))
+        # C_out = np.append(C_out,
+        #                   calc_cost(tst_y, model.predict(tst_X), cost_matrix))
+
         C_in = np.append(C_in,
-                         calc_cost(trn_y, model.predict(trn_X), cost_matrix))
+                          error_calculation(Y_truth=trn_y, Y_predict=model.predict(trn_X), err_cal='Err'))
         C_out = np.append(C_out,
-                          calc_cost(tst_y, model.predict(tst_X), cost_matrix))
+                          error_calculation(Y_truth=tst_y, Y_predict=model.predict(tst_X), err_cal='Err'))
 
     return C_in, C_out
 
@@ -119,7 +144,7 @@ def save_file(file_name, data):
     return 0
 
 
-def train_for_user(user_id=1, device_type='uhdtv', n_class=10):
+def train_for_user(user_id=None, device_type=None, n_class=None):
     test_data = waterloo_iv_processing.get_per_user_data(user_id=user_id, device=device_type,
                                                          video_name=['sports', 'document', 'nature', 'game', 'movie'])
     X, y = processing_training_data(n_class=n_class, train_data=test_data)
@@ -127,7 +152,7 @@ def train_for_user(user_id=1, device_type='uhdtv', n_class=10):
     quota = 350  # number of samples to query
 
     result = {'E1': [], 'E2': [], 'E3': []}
-    for i in range(20):
+    for i in range(5):
         print('exp:', i)
         trn_ds, tst_ds, fully_labeled_trn_ds, cost_matrix = split_train_test(X=X, y=y, test_size=test_size, n_class=n_class)
         trn_ds2 = copy.deepcopy(trn_ds)
@@ -177,7 +202,7 @@ def sys_main():
     usr_list = list(range(0, 1))
     for usr in usr_list:
         print('User:', usr)
-        train_for_user(user_id=usr, device_type='hdtv', n_class=10)
+        train_for_user(user_id=usr, device_type='hdtv', n_class=n_of_class)
     return 0
 
 

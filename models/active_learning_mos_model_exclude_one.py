@@ -20,6 +20,26 @@ from libact.utils import calc_cost
 import waterloo_iv_processing
 
 
+n_of_class = 10
+
+
+def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
+    if Y_predict is None or Y_truth is None:
+        print('No input')
+        return 0
+    error = 0.0
+    if err_cal == 'MSE':
+        Y_dis = Y_predict - Y_truth
+        Y_dis = np.power(Y_dis, 2)
+        error = np.sum(Y_dis)
+    if err_cal == 'Err':
+        Y_dis = Y_predict - Y_truth
+        Y_dis = np.abs(Y_dis)/n_of_class
+        error = np.mean(Y_dis)
+
+    return error
+
+
 def run(trn_ds, tst_ds, lbr, model, qs, quota, cost_matrix):
     C_in, C_out = [], []
 
@@ -38,10 +58,15 @@ def run(trn_ds, tst_ds, lbr, model, qs, quota, cost_matrix):
         tst_y = tst_ds.get_labeled_entries()[1]
 
 
+        # C_in = np.append(C_in,
+        #                  calc_cost(trn_y, model.predict(trn_X), cost_matrix))
+        # C_out = np.append(C_out,
+        #                   calc_cost(tst_y, model.predict(tst_X), cost_matrix))
+
         C_in = np.append(C_in,
-                         calc_cost(trn_y, model.predict(trn_X), cost_matrix))
+                          error_calculation(Y_truth=trn_y, Y_predict=model.predict(trn_X), err_cal='Err'))
         C_out = np.append(C_out,
-                          calc_cost(tst_y, model.predict(tst_X), cost_matrix))
+                          error_calculation(Y_truth=tst_y, Y_predict=model.predict(tst_X), err_cal='Err'))
 
     return C_in, C_out
 
@@ -92,10 +117,6 @@ def split_train_test(X, y, test_size, n_class):
     X_tst = X_tst[:, 1:]
     y_tst = y_tst.astype('int32')
 
-    # print(target)
-    # print(y_trn)
-    # print(y)
-
     # making sure each class appears ones initially
     init_y_ind = np.array([np.where(y_trn == i)[0][0] for i in range(len(target))])
 
@@ -113,8 +134,9 @@ def split_train_test(X, y, test_size, n_class):
     cost_matrix = 1.0 * np.ones([len(target), len(target)])
     for ii in range(0, len(target)):
         for jj in range(0, len(target)):
-            cost_matrix[ii, jj] = (ii - jj)*(ii - jj)
+            cost_matrix[ii, jj] = (ii - jj) * (ii - jj)
             # cost_matrix[ii, jj] = abs(ii - jj) / n_class
+
 
     np.fill_diagonal(cost_matrix, 0)
 
@@ -126,7 +148,7 @@ def save_file(file_name, data):
     return 0
 
 
-def train_exclude_user(user_id=1, device_type='uhdtv', n_class=10):
+def train_exclude_user(user_id=None, device_type=None, n_class=None):
 
     test_data = waterloo_iv_processing.get_all_but_one_user(ex_user_id=user_id, device=device_type,
                                                          video_name=['sports', 'document', 'nature', 'game', 'movie'])
@@ -160,9 +182,9 @@ def train_exclude_user(user_id=1, device_type='uhdtv', n_class=10):
     E_out_2 = np.mean(result['E2'], axis=0)
     E_out_3 = np.mean(result['E3'], axis=0)
 
-    save_file('results/exclude_user_'+str(user_id)+'_E1_class_'+str(n_class)+'.txt', result['E1'])
-    save_file('results/exclude_user_'+str(user_id)+'_E2_class_'+str(n_class)+'.txt', result['E2'])
-    save_file('results/exclude_user_'+str(user_id)+'_E3_class_'+str(n_class)+'.txt', result['E3'])
+    save_file('results/exclude_user_' + str(user_id) + '_' + device_type + '_E1_class_'+str(n_class)+'.txt', result['E1'])
+    save_file('results/exclude_user_' + str(user_id) + '_' + device_type + '_E2_class_'+str(n_class)+'.txt', result['E2'])
+    save_file('results/exclude_user_' + str(user_id) + '_' + device_type + '_E3_class_'+str(n_class)+'.txt', result['E3'])
 
 
     print("Uncertainty: ", E_out_1[::5].tolist())
@@ -183,7 +205,7 @@ def train_exclude_user(user_id=1, device_type='uhdtv', n_class=10):
 
 def sys_main():
     for usr in range(0, 1):
-        train_exclude_user(user_id=usr, device_type='hdtv', n_class=10)
+        train_exclude_user(user_id=usr, device_type='hdtv', n_class=n_of_class)
     return 0
 
 if __name__ == '__main__':
