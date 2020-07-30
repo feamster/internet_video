@@ -52,6 +52,49 @@ def get_per_user_data(user_id=None, device=None, video_name=None):
     return ret_data
 
 
+def get_non_normalized_score_data(device=None, video_name=None):
+    if (device is None) or (video_name is None):
+        print('Input should not have null parameters.')
+        return None
+
+    df_data = pd.read_csv('open_dataset/waterloo_dataset/WaterlooSQoE-IV/data.csv', usecols=['streaming_log', 'device', 'content', 'individual_scores', 'mos'])
+    grouped = df_data.groupby(['device', 'content'])
+    video_scores = []
+    streaming_log = []
+
+    for name, group in grouped:
+        if (name[0] == device) and (name[1] in video_name):
+            user_score_str_list = list(group['individual_scores'])
+            streaming_log.extend(list(group['streaming_log']))
+            mos_list = list(group['mos'])
+            for idx in range(0, len(user_score_str_list)):
+                x = user_score_str_list[idx]
+                user_score_int_list = x.strip('][').split(' ')
+                user_score_arr = list(map(float, user_score_int_list))
+                user_score_arr.append(mos_list[idx])
+                video_scores.append(user_score_arr)
+
+    video_scores = np.array(video_scores)
+    print('Size of all user data:', video_scores.shape)
+
+    # ret_data format: vmaf ('vmaf'), rebuffering time ('rebuffering_duration')
+    ret_data = []
+    for i in range(0, len(streaming_log)):
+        log_name = streaming_log[i]
+        f_name = 'open_dataset/waterloo_dataset/WaterlooSQoE-IV/streaming_logs/' + log_name
+        df_log = pd.read_csv(f_name, usecols=['vmaf', 'rebuffering_duration'])
+        rebuf_time = df_log['rebuffering_duration'].tolist()
+        vmaf = df_log['vmaf'].tolist()
+        ret_data_row = []
+        ret_data_row.extend(vmaf)
+        ret_data_row.extend(rebuf_time)
+        ret_data.append(ret_data_row)
+
+    ret_data = np.array(ret_data)
+
+    return video_scores, ret_data
+
+
 def ex_score(user_id, score_arr, video_id):
 
     new_socre = np.delete(score_arr, user_id, 1)
@@ -108,7 +151,6 @@ def get_all_but_one_user(ex_user_id=None, device=None, video_name=None):
         ret_data.append(ret_data_row)
 
     return ret_data
-
 
 def sys_main():
     video_content_arr = ['sports', 'document', 'nature', 'game', 'movie']
