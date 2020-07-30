@@ -20,10 +20,10 @@ from libact.utils import calc_cost
 import waterloo_iv_processing
 
 
-n_of_class = 10
+n_of_class = 5
 
 
-def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
+def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE', cost_matrix=None):
     if Y_predict is None or Y_truth is None:
         print('No input')
         return 0
@@ -33,10 +33,10 @@ def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
         Y_dis = np.power(Y_dis, 2)
         error = np.sum(Y_dis)
     if err_cal == 'Err':
-        Y_dis = Y_predict - Y_truth
-        Y_dis = np.abs(Y_dis)/n_of_class
-        error = np.mean(Y_dis)
-
+        error = calc_cost(Y_truth, Y_predict, cost_matrix)
+        # Y_dis = Y_predict - Y_truth
+        # Y_dis = np.absolute(Y_dis)/n_of_class
+        # error = np.mean(Y_dis)
 
     return error
 
@@ -71,9 +71,9 @@ def run(trn_ds, tst_ds, lbr, model, qs, quota, cost_matrix):
         #                   calc_cost(tst_y, model.predict(tst_X), cost_matrix))
 
         C_in = np.append(C_in,
-                          error_calculation(Y_truth=trn_y, Y_predict=model.predict(trn_X), err_cal='Err'))
+                          error_calculation(Y_truth=trn_y, Y_predict=model.predict(trn_X), err_cal='Err', cost_matrix=cost_matrix))
         C_out = np.append(C_out,
-                          error_calculation(Y_truth=tst_y, Y_predict=model.predict(tst_X), err_cal='Err'))
+                          error_calculation(Y_truth=tst_y, Y_predict=model.predict(tst_X), err_cal='Err', cost_matrix=cost_matrix))
 
     return C_in, C_out
 
@@ -112,7 +112,7 @@ def split_train_test(X, y, test_size, n_class):
     # mapping the targets to 0 to n_classes-1
     # y = np.array([np.where(target == i)[0][0] for i in data['target']])
 
-    X_trn, X_tst, y_trn, y_tst = train_test_split(X, y, test_size=test_size, stratify=y)
+    X_trn, X_tst, y_trn, y_tst = train_test_split(X, y, test_size=test_size)
 
     # making sure each class appears ones initially
     init_y_ind = np.array([np.where(y_trn == i)[0][0] for i in range(len(target))])
@@ -131,8 +131,8 @@ def split_train_test(X, y, test_size, n_class):
     cost_matrix = 1.0 * np.ones([len(target), len(target)])
     for ii in range(0, len(target)):
         for jj in range(0, len(target)):
-            cost_matrix[ii, jj] = (ii - jj)*(ii - jj)
-            # cost_matrix[ii, jj] = abs(ii - jj) / n_class
+            # cost_matrix[ii, jj] = (ii - jj)*(ii - jj)
+            cost_matrix[ii, jj] = abs(ii - jj) / n_class
 
     np.fill_diagonal(cost_matrix, 0)
 
@@ -152,7 +152,7 @@ def train_for_user(user_id=None, device_type=None, n_class=None):
     quota = 350  # number of samples to query
 
     result = {'E1': [], 'E2': [], 'E3': []}
-    for i in range(5):
+    for i in range(20):
         print('exp:', i)
         trn_ds, tst_ds, fully_labeled_trn_ds, cost_matrix = split_train_test(X=X, y=y, test_size=test_size, n_class=n_class)
         trn_ds2 = copy.deepcopy(trn_ds)
@@ -191,7 +191,7 @@ def train_for_user(user_id=None, device_type=None, n_class=None):
     alce, = plt.plot(query_num, E_out_3, 'r', label='ALCE')
     plt.xlabel('Number of Queries')
     plt.ylabel('Error')
-    plt.title('Experiment Result')
+    plt.title('Experiment Result (user ' + str(user_id) + ')')
     plt.legend(handles=[uncert, rd, alce], loc=3)
     plt.show()
 
@@ -199,10 +199,10 @@ def train_for_user(user_id=None, device_type=None, n_class=None):
 def sys_main():
 
     # usr_list = list(range(0, 29))
-    usr_list = list(range(0, 1))
+    usr_list = list(range(0, 29))
     for usr in usr_list:
         print('User:', usr)
-        train_for_user(user_id=usr, device_type='hdtv', n_class=n_of_class)
+        train_for_user(user_id=usr, device_type='phone', n_class=n_of_class)
     return 0
 
 
