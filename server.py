@@ -259,5 +259,5 @@ def save_data():
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
-    app.run(debug=True, port=5000)
-    # app.run(debug=False, host='silver.cs.uchicago.edu', port=8080)
+    # app.run(debug=True, port=5000)
+    app.run(debug=False, host='silver.cs.uchicago.edu', port=5000)
