@@ -30,3 +30,5 @@
 
 ### Install libact
     pi3 install git+https://github.com/hyperpro/libact.git
+
+### Install modAL
