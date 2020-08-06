@@ -5,282 +5,350 @@
 <script src="/static/js/Youtube.js"></script>
 <script src="/static/js/videojs-resolution-switcher.js"></script>
 
-<main role="main" class="flex-shrink-0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-    
-    .vjs-has-started .vjs-control-bar{
-        margin-bottom: 5.0em;
-    }
-
-    .video-js .vjs-control{
+    #more {
         display: none;
     }
-
-    #customText {
-      width: 180px;
-      height: 40px;
-      margin-top: 8px;
-      font-size: medium;
-      text-align: center;
-    }
-    #customButton {
-      width: 30px;
-      height: 30px;
-      margin-top: 5px;
-    }
 </style>
+
+
+<main role="main" class="flex-shrink-0">
+    <style>
+
+        .vjs-has-started .vjs-control-bar {
+            margin-bottom: 5.0em;
+        }
+
+        .video-js .vjs-control {
+            display: none;
+        }
+
+        #customText {
+            width: 180px;
+            height: 40px;
+            margin-top: 8px;
+            font-size: medium;
+            text-align: center;
+        }
+
+        #customButton {
+            width: 30px;
+            height: 30px;
+            margin-top: 5px;
+        }
+    </style>
 
     <div class="container">
         <div class="video-js-box">
 
-        <br/><br/>
-        <video
-                id="video_player"
-                class="video-js vjs-default-skin"
-                controls
-                autoplay
-                width="1280" height="720"
-                data-setup='{}'
-        >
-        </video>
+            <br/><br/>
+            <video
+                    id="video_player"
+                    class="video-js vjs-default-skin"
+                    controls
+                    autoplay
+                    width="1280" height="720"
+                    data-setup='{}'
+            >
+            </video>
 
-        <p class="lead" align="justify"> {{userinfo | safe}} </p>
+            <p class="lead" align="justify"> {{userinfo | safe}} </p>
 
 
-        <script type="text/javascript">
-            videojs('video_player', {
-                controls: true,
-                techOrder: ["youtube"],
-                sources: [{"type": "video/youtube", "src": {{videosource | safe}}}],
-                youtube: {"ytControls": 2, "enablejsapi":1},
+            <script type="text/javascript">
+                videojs('video_player', {
+                    controls: true,
+                    techOrder: ["youtube"],
+                    sources: [{"type": "video/youtube", "src": {{videosource | safe
+                }
+                }
+                }],
+                youtube: {
+                    "ytControls"
+                :
+                    2, "enablejsapi"
+                :
+                    1
+                }
+                ,
                 fluid: true,
-                plugins: {
+                    plugins
+                :
+                {
                     videoJsResolutionSwitcher: {
-                        default: 'auto',
-                        dynamicLabel: true
+                    default:
+                        'auto',
+                            dynamicLabel
+                    :
+                        true
                     }
                 }
-            });
-        </script>
-        <script type="text/javascript">
-            var player = videojs('video_player');
-            player.on('resolutionchange', function () {
-                console.info('Source changed')
-            });
-        </script>
+                })
+                ;
+            </script>
+            <script type="text/javascript">
+                var player = videojs('video_player');
+                player.on('resolutionchange', function () {
+                    console.info('Source changed')
+                });
+            </script>
 
 
-          <script>
-            videojs('video_player').ready(function() {
-              var myPlayer = this,
-                controlBar,
-                newElement = document.createElement('div'),
-                newLink = document.createElement('button'),
-                newImage = document.createElement('img'),
-                textNode = document.createTextNode('Rate the video quality: ');
-                // Also need to modify width in #customButton0 when modifying text
-              newElement.id = 'customText';
-              newElement.className = 'customText';
-              newElement.appendChild(textNode);
-              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
-              controlBar.insertBefore(newElement,insertBeforeNode);
-            });
-          </script>
+            <script>
+                videojs('video_player').ready(function () {
+                    var myPlayer = this,
+                        controlBar,
+                        newElement = document.createElement('div'),
+                        newLink = document.createElement('button'),
+                        newImage = document.createElement('img'),
+                        textNode = document.createTextNode('Rate the video quality: ');
+                    // Also need to modify width in #customButton0 when modifying text
+                    newElement.id = 'customText';
+                    newElement.className = 'customText';
+                    newElement.appendChild(textNode);
+                    controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+                    insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+                    controlBar.insertBefore(newElement, insertBeforeNode);
+                });
+            </script>
 
-          <script>
-            videojs('video_player').ready(function() {
-              var myPlayer = this,
-                controlBar,
-                newElement = document.createElement('div'),
-                newLink = document.createElement('button'),
-                newImage = document.createElement('img');
-              newElement.id = 'customButton';
-              newElement.className = 'customButton';
-              newImage.setAttribute('src','{{ url_for('static', filename='p1.png')}}');
-              newLink.setAttribute('onclick', 'facepost(1)');
-              newLink.appendChild(newImage);
-              newElement.appendChild(newLink);
-              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
-              controlBar.insertBefore(newElement,insertBeforeNode);
-            });
-          </script>
+            <script>
+                videojs('video_player').ready(function () {
+                    var myPlayer = this,
+                        controlBar,
+                        newElement = document.createElement('div'),
+                        newLink = document.createElement('button'),
+                        newImage = document.createElement('img');
+                    newElement.id = 'customButton';
+                    newElement.className = 'customButton';
+                    newImage.setAttribute('src', '{{ url_for('
+                    static
+                    ', filename='
+                    p1.png
+                    ')}}'
+                )
+                    ;
+                    newLink.setAttribute('onclick', 'facepost(1)');
+                    newLink.appendChild(newImage);
+                    newElement.appendChild(newLink);
+                    controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+                    insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+                    controlBar.insertBefore(newElement, insertBeforeNode);
+                });
+            </script>
 
-          <script>
-            videojs('video_player').ready(function() {
-              var myPlayer = this,
-                controlBar,
-                newElement = document.createElement('div'),
-                newLink = document.createElement('button'),
-                newImage = document.createElement('img');
-              newElement.id = 'customButton';
-              newElement.className = 'customButton';
-              newImage.setAttribute('src','{{ url_for('static', filename='p2.png')}}');
-              newLink.setAttribute('onclick', 'facepost(2)');
-              newLink.appendChild(newImage);
-              newElement.appendChild(newLink);
-              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
-              controlBar.insertBefore(newElement,insertBeforeNode);
-            });
-          </script>
+            <script>
+                videojs('video_player').ready(function () {
+                    var myPlayer = this,
+                        controlBar,
+                        newElement = document.createElement('div'),
+                        newLink = document.createElement('button'),
+                        newImage = document.createElement('img');
+                    newElement.id = 'customButton';
+                    newElement.className = 'customButton';
+                    newImage.setAttribute('src', '{{ url_for('
+                    static
+                    ', filename='
+                    p2.png
+                    ')}}'
+                )
+                    ;
+                    newLink.setAttribute('onclick', 'facepost(2)');
+                    newLink.appendChild(newImage);
+                    newElement.appendChild(newLink);
+                    controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+                    insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+                    controlBar.insertBefore(newElement, insertBeforeNode);
+                });
+            </script>
 
-          <script>
-            videojs('video_player').ready(function() {
-              var myPlayer = this,
-                controlBar,
-                newElement = document.createElement('div'),
-                newLink = document.createElement('button'),
-                newImage = document.createElement('img');
-              newElement.id = 'customButton';
-              newElement.className = 'customButton';
-              newImage.setAttribute('src','{{ url_for('static', filename='p3.png')}}');
-              newLink.setAttribute('onclick', 'facepost(3)');
-              newLink.appendChild(newImage);
-              newElement.appendChild(newLink);
-              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
-              controlBar.insertBefore(newElement,insertBeforeNode);
-            });
-          </script>
+            <script>
+                videojs('video_player').ready(function () {
+                    var myPlayer = this,
+                        controlBar,
+                        newElement = document.createElement('div'),
+                        newLink = document.createElement('button'),
+                        newImage = document.createElement('img');
+                    newElement.id = 'customButton';
+                    newElement.className = 'customButton';
+                    newImage.setAttribute('src', '{{ url_for('
+                    static
+                    ', filename='
+                    p3.png
+                    ')}}'
+                )
+                    ;
+                    newLink.setAttribute('onclick', 'facepost(3)');
+                    newLink.appendChild(newImage);
+                    newElement.appendChild(newLink);
+                    controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+                    insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+                    controlBar.insertBefore(newElement, insertBeforeNode);
+                });
+            </script>
 
-          <script>
-            videojs('video_player').ready(function() {
-              var myPlayer = this,
-                controlBar,
-                newElement = document.createElement('div'),
-                newLink = document.createElement('button'),
-                newImage = document.createElement('img');
-              newElement.id = 'customButton';
-              newElement.className = 'customButton';
-              newImage.setAttribute('src','{{ url_for('static', filename='p4.png')}}');
-              newLink.setAttribute('onclick', 'facepost(4)');
-              newLink.appendChild(newImage);
-              newElement.appendChild(newLink);
-              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
-              controlBar.insertBefore(newElement,insertBeforeNode);
-            });
-          </script>
+            <script>
+                videojs('video_player').ready(function () {
+                    var myPlayer = this,
+                        controlBar,
+                        newElement = document.createElement('div'),
+                        newLink = document.createElement('button'),
+                        newImage = document.createElement('img');
+                    newElement.id = 'customButton';
+                    newElement.className = 'customButton';
+                    newImage.setAttribute('src', '{{ url_for('
+                    static
+                    ', filename='
+                    p4.png
+                    ')}}'
+                )
+                    ;
+                    newLink.setAttribute('onclick', 'facepost(4)');
+                    newLink.appendChild(newImage);
+                    newElement.appendChild(newLink);
+                    controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+                    insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+                    controlBar.insertBefore(newElement, insertBeforeNode);
+                });
+            </script>
 
-          <script>
-            videojs('video_player').ready(function() {
-              var myPlayer = this,
-                controlBar,
-                newElement = document.createElement('div'),
-                newLink = document.createElement('button'),
-                newImage = document.createElement('img');
-              newElement.id = 'customButton';
-              newElement.className = 'customButton';
-              newImage.setAttribute('src','{{ url_for('static', filename='p5.png')}}');
-              newLink.setAttribute('onclick', 'facepost(5)');
-              newLink.appendChild(newImage);
-              newElement.appendChild(newLink);
-              controlBar = document.getElementsByClassName('vjs-control-bar')[0];
-              insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
-              controlBar.insertBefore(newElement,insertBeforeNode);
-            });
-          </script>
+            <script>
+                videojs('video_player').ready(function () {
+                    var myPlayer = this,
+                        controlBar,
+                        newElement = document.createElement('div'),
+                        newLink = document.createElement('button'),
+                        newImage = document.createElement('img');
+                    newElement.id = 'customButton';
+                    newElement.className = 'customButton';
+                    newImage.setAttribute('src', '{{ url_for('
+                    static
+                    ', filename='
+                    p5.png
+                    ')}}'
+                )
+                    ;
+                    newLink.setAttribute('onclick', 'facepost(5)');
+                    newLink.appendChild(newImage);
+                    newElement.appendChild(newLink);
+                    controlBar = document.getElementsByClassName('vjs-control-bar')[0];
+                    insertBeforeNode = document.getElementsByClassName('vjs-volume-menu-button')[0];
+                    controlBar.insertBefore(newElement, insertBeforeNode);
+                });
+            </script>
 
-      <script>
-        function facepost(a){
-          var timestamp = new Date().getTime();
-          // console.log("Current Time: " + timestamp + " User choose fase #: " + a);
+            <script>
+                function facepost(a) {
+                    var timestamp = new Date().getTime();
+                    // console.log("Current Time: " + timestamp + " User choose fase #: " + a);
 
-          var httpRequest = new XMLHttpRequest();
-          var report = "";
-          var url = '/post/'
+                    var httpRequest = new XMLHttpRequest();
+                    var report = "";
+                    var url = '/post/'
 
-          var webpage_url = document.location.toString();
-          report = "posttype=2&" + "site=" + webpage_url + "&";
-          
-          httpRequest.open('POST', url, true);
-          httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-          report = report + "time=" + timestamp + '&' + "slider=-" + a;
-          httpRequest.send(report);
-          
-          httpRequest.onreadystatechange = function () {
-             var json = httpRequest.responseText;
-          };
+                    var webpage_url = document.location.toString();
+                    report = "posttype=2&" + "site=" + webpage_url + "&";
 
-        }
-      </script>
+                    httpRequest.open('POST', url, true);
+                    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    report = report + "time=" + timestamp + '&' + "slider=-" + a;
+                    httpRequest.send(report);
+
+                    httpRequest.onreadystatechange = function () {
+                        var json = httpRequest.responseText;
+                    };
+
+                }
+            </script>
 
 
-        <script>
+            <script>
                 // Get the size of the screen, resolution is win_x and win_y.
                 // win_x and win_y are the resolution of the available browser area.
-                var win = window, doc = document, docElem = doc.documentElement, body = doc.getElementsByTagName('body')[0],
-                    win_x = win.innerWidth || docElem.clientWidth || body.clientWidth, win_y = win.innerHeight|| docElem.clientHeight|| body.clientHeight;
+                var win = window, doc = document, docElem = doc.documentElement,
+                    body = doc.getElementsByTagName('body')[0],
+                    win_x = win.innerWidth || docElem.clientWidth || body.clientWidth,
+                    win_y = win.innerHeight || docElem.clientHeight || body.clientHeight;
 
 
                 // Get the status of the player: slider progress, buffer status, full screen, resolution, net state
                 var player = videojs('video_player');
                 var eventPoller = setInterval(function () {
-                var buffered = player.buffered();
-                var curTime = player.currentTime();
-                var timestamp = new Date().getTime();
-                var currentResolution = player.getVideoPlaybackQuality();
+                    var buffered = player.buffered();
+                    var curTime = player.currentTime();
+                    var timestamp = new Date().getTime();
+                    var currentResolution = player.getVideoPlaybackQuality();
 
-                var httpRequest = new XMLHttpRequest();
-                var report = "";
-                var url = '/post/'
+                    var httpRequest = new XMLHttpRequest();
+                    var report = "";
+                    var url = '/post/'
 
-                var player_network_state = player.networkState();
-                var plyaer_ready_state = player.readyState();
-                var is_fullscreen = document.mozFullScreen || document.webkitIsFullScreen;
-                var flag = false;
+                    var player_network_state = player.networkState();
+                    var plyaer_ready_state = player.readyState();
+                    var is_fullscreen = document.mozFullScreen || document.webkitIsFullScreen;
+                    var flag = false;
 
-                httpRequest.open('POST', url, true);
-                httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    httpRequest.open('POST', url, true);
+                    httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-                var webpage_url = document.location.toString();
-                report = "posttype=1&" + "site=" + webpage_url + "&";
+                    var webpage_url = document.location.toString();
+                    report = "posttype=1&" + "site=" + webpage_url + "&";
 
-                for (i = 0; i < buffered.length; i++) {
-                    if (buffered.start(i) <= curTime && curTime <= buffered.end(i)) {
-                        console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution + ", Current_net_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state +", Is_fullscreen: "+ is_fullscreen + ", win_x: " + win_x + ", win_y: " + win_y);
-                        report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen  + "&" + "win_x=" + win_x + "&" + "win_y=" + win_y ;
-                        flag = true;
+                    for (i = 0; i < buffered.length; i++) {
+                        if (buffered.start(i) <= curTime && curTime <= buffered.end(i)) {
+                            console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution + ", Current_net_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state + ", Is_fullscreen: " + is_fullscreen + ", win_x: " + win_x + ", win_y: " + win_y);
+                            report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen + "&" + "win_x=" + win_x + "&" + "win_y=" + win_y;
+                            flag = true;
+                        }
                     }
-                }
 
-                if (flag == false) {
-                    console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + 0 + ", Current Resolution: " + currentResolution + ", Current_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state +", Is_fullscreen: "+ is_fullscreen + ", win_x: " + win_x + ", win_y: " + win_y);
-                    report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + 0 + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen + "&" + "win_x=" + win_x + "&" + "win_y=" + win_y;
-                }
+                    if (flag == false) {
+                        console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + 0 + ", Current Resolution: " + currentResolution + ", Current_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state + ", Is_fullscreen: " + is_fullscreen + ", win_x: " + win_x + ", win_y: " + win_y);
+                        report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + 0 + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen + "&" + "win_x=" + win_x + "&" + "win_y=" + win_y;
+                    }
 
-                httpRequest.send(report);
-                httpRequest.onreadystatechange = function () {
-                    var json = httpRequest.responseText;
-                };
-            }, 1000)
-        </script>
+                    httpRequest.send(report);
+                    httpRequest.onreadystatechange = function () {
+                        var json = httpRequest.responseText;
+                    };
+                }, 1000)
+            </script>
+
 
             <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="100%" SIZE=10>
             <title>{{v_title | safe}}</title>
 
             <h4>{{v_title | safe}}</h4>
-            <p>{{v_description | safe}} </p>
+            {{v_description | safe}}
+            <button onclick="myFunction()" id="showmorebut" class="btn btn-link">show more...</button>
 
 
             <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="100%" SIZE=10>
 
-
-
             <h4>Comments</h4>
             {{comments_list | safe}}
 
+            <script>
+                function myFunction() {
+                    var dots = document.getElementById("dots");
+                    var moreText = document.getElementById("more");
+                    var btnText = document.getElementById("showmorebut");
+
+                    if (dots.style.display === "none") {
+                        dots.style.display = "inline";
+                        btnText.innerHTML = "show more...";
+                        moreText.style.display = "none";
+                    } else {
+                        dots.style.display = "none";
+                        btnText.innerHTML = "show less...";
+                        moreText.style.display = "inline";
+                    }
+                }
+            </script>
 
 
-
-    </div>
-
-
-
-
-
+        </div>
 
 </main>
 {% endblock %}

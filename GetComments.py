@@ -25,13 +25,13 @@ def main():
     request = youtube.commentThreads().list(
         part='snippet,replies',
         maxResults=20,
-        videoId='J0Raq0F76ZU'
+        videoId='jJNgocrAbKA'
     )
     response = request.execute()
 
     request_2 = youtube.videos().list(
         part="snippet,contentDetails,statistics",
-        id="J0Raq0F76ZU"
+        id="jJNgocrAbKA"
     )
     response_2 = request_2.execute()
 
@@ -42,10 +42,17 @@ def main():
     # print(response['nextPageToken'])
     # print(response['items'][0]['snippet']['topLevelComment'])
 
-    print(response_2['items'][0]['snippet']['title'])
-    print(response_2['items'][0]['snippet']['description'])
+    # print(response_2['items'][0]['snippet']['title'])
+    # print(response_2['items'][0]['snippet']['description'])
+    xx = response_2['items'][0]['snippet']['description']
 
+    print(xx[0])
+    for i in range(0, len(xx)):
+        if xx[i] == '\n':
+            print(xx[i-1])
 
+    xx = xx.replace('\n', '<br>')
+    print(xx)
     return 0
 
 
@@ -124,7 +131,13 @@ def get_video_info(video_id=None):
     v_title = response['items'][0]['snippet']['title']
     v_description = response['items'][0]['snippet']['description']
 
-    return v_title, v_description
+    v_description = v_description.replace('\n', '<br>')
+
+    v_description_arr = v_description.split('<br>', 1)
+
+    # v_description = v_description.replace('\n', '<br>')
+
+    return v_title, v_description_arr
 
 
 if __name__ == "__main__":
