@@ -103,7 +103,9 @@ def hello_world():
 def render_video(page_name):
     if 'username' not in session:
         return redirect(url_for('loginpage', next=request.url))
+    page_name = page_name.split('&')[0]
     video_source = youtube_link_gen(page_name)
+
     video_comments =gc.get_comments(page_name)
     v_title, v_description_arr = gc.get_video_info(page_name)
     v_description = ''
@@ -132,7 +134,7 @@ def faq():
 
 @app.route('/signuprequest', methods=['POST'])
 def signuprequest():
-    print(request.form)
+    # print(request.form)
     if request.method == 'POST':
         users = mongo.db.users
         existing_user = users.find_one({'name': request.form['username']})
@@ -264,7 +266,7 @@ def save_data():
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
-    # app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000)
     # app.run(debug=True, host='silver.cs.uchicago.edu', port=5000)
 
-    app.run(debug=False, host='silver.cs.uchicago.edu', port=5000)
+    # app.run(debug=False, host='silver.cs.uchicago.edu', port=5000)
