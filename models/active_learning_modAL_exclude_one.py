@@ -43,6 +43,7 @@ classifiers = [
     RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
     ]
 
+
 def process_label_data(n_class, label_data):
     Y = []
     unit_class = 1.0 / n_class
@@ -90,6 +91,7 @@ def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
         error = np.mean(Y_dis)
 
     return error
+
 
 def get_init_train(X_trn_all, y_trn_all, n_of_class=10):
     trn = []
@@ -157,7 +159,7 @@ def run_model(X, y, test_size, rep_times, n_queries, estimator, fd):
     return avg_err
 
 
-def train_for_user(fd, user_id=1, device_type='uhdtv', n_class=10):
+def train_for_user(fd, user_id=1, device_type='uhdtv', n_class=5):
     test_data = waterloo_iv_processing.get_all_but_one_user(ex_user_id=user_id, device=device_type,
                                                          video_name=['sports', 'document', 'nature', 'game', 'movie'])
 

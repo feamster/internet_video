@@ -132,7 +132,7 @@ def faq():
 
 @app.route('/signuprequest', methods=['POST'])
 def signuprequest():
-    # print(request.form)
+    print(request.form)
     if request.method == 'POST':
         users = mongo.db.users
         existing_user = users.find_one({'name': request.form['username']})
@@ -166,7 +166,6 @@ def signuprequest():
                     'plan': request.form['plan'],
                     'inlineRadioOptions': video_sites,
                     'timespent': request.form['timespent'],
-                    'resolution': request.form['resolution'],
                     'msize': request.form['msize']
                 }
             )

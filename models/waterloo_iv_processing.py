@@ -96,7 +96,6 @@ def get_non_normalized_score_data(device=None, video_name=None):
 
 
 def ex_score(user_id, score_arr, video_id):
-
     new_socre = np.delete(score_arr, user_id, 1)
     ret_data = np.mean(new_socre[video_id, :])
     return ret_data
@@ -124,7 +123,8 @@ def get_all_but_one_user(ex_user_id=None, device=None, video_name=None):
                 user_score_arr = list(map(float, user_score_int_list))
 
                 n_user = len(user_score_arr)
-                exclude_mos = (mos_list[idx]*n_user - user_score_arr[ex_user_id])/(n_user-1)
+                # exclude_mos = (mos_list[idx]*n_user - user_score_arr[ex_user_id])/(n_user-1)
+                exclude_mos  = mos_list[idx]
                 user_score_arr.append(exclude_mos)
                 video_scores.append(user_score_arr)
 
