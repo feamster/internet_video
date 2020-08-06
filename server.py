@@ -111,8 +111,6 @@ def render_video(page_name):
     else:
         v_description = '<p>'+ v_description_arr[0] + '<span id="dots">...</span><span id="more">' + v_description_arr[1] + '</span></p>'
 
-    print(v_description)
-
     return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.', comments_list = video_comments, v_title = v_title, v_description=v_description)
 
 
