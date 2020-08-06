@@ -60,32 +60,9 @@
                 videojs('video_player', {
                     controls: true,
                     techOrder: ["youtube"],
-                    sources: [{"type": "video/youtube", "src": {{videosource | safe
-                }
-                }
-                }],
-                youtube: {
-                    "ytControls"
-                :
-                    2, "enablejsapi"
-                :
-                    1
-                }
-                ,
-                fluid: true,
-                    plugins
-                :
-                {
-                    videoJsResolutionSwitcher: {
-                    default:
-                        'auto',
-                            dynamicLabel
-                    :
-                        true
-                    }
-                }
-                })
-                ;
+                    sources: [{"type": "video/youtube", "src": {{videosource | safe}}}],
+                    youtube: {"ytControls":2, "enablejsapi":1},
+                    fluid: true, plugins:{videoJsResolutionSwitcher: {default:'auto', dynamicLabel:true}}});
             </script>
             <script type="text/javascript">
                 var player = videojs('video_player');
@@ -122,13 +99,7 @@
                         newImage = document.createElement('img');
                     newElement.id = 'customButton';
                     newElement.className = 'customButton';
-                    newImage.setAttribute('src', '{{ url_for('
-                    static
-                    ', filename='
-                    p1.png
-                    ')}}'
-                )
-                    ;
+                    newImage.setAttribute('src', '{{ url_for('static', filename='p1.png')}}');
                     newLink.setAttribute('onclick', 'facepost(1)');
                     newLink.appendChild(newImage);
                     newElement.appendChild(newLink);
@@ -147,13 +118,7 @@
                         newImage = document.createElement('img');
                     newElement.id = 'customButton';
                     newElement.className = 'customButton';
-                    newImage.setAttribute('src', '{{ url_for('
-                    static
-                    ', filename='
-                    p2.png
-                    ')}}'
-                )
-                    ;
+                    newImage.setAttribute('src', '{{ url_for('static', filename='p2.png')}}');
                     newLink.setAttribute('onclick', 'facepost(2)');
                     newLink.appendChild(newImage);
                     newElement.appendChild(newLink);
@@ -172,13 +137,7 @@
                         newImage = document.createElement('img');
                     newElement.id = 'customButton';
                     newElement.className = 'customButton';
-                    newImage.setAttribute('src', '{{ url_for('
-                    static
-                    ', filename='
-                    p3.png
-                    ')}}'
-                )
-                    ;
+                    newImage.setAttribute('src', '{{ url_for('static', filename='p3.png')}}');
                     newLink.setAttribute('onclick', 'facepost(3)');
                     newLink.appendChild(newImage);
                     newElement.appendChild(newLink);
@@ -197,13 +156,7 @@
                         newImage = document.createElement('img');
                     newElement.id = 'customButton';
                     newElement.className = 'customButton';
-                    newImage.setAttribute('src', '{{ url_for('
-                    static
-                    ', filename='
-                    p4.png
-                    ')}}'
-                )
-                    ;
+                    newImage.setAttribute('src', '{{ url_for('static', filename='p4.png')}}');
                     newLink.setAttribute('onclick', 'facepost(4)');
                     newLink.appendChild(newImage);
                     newElement.appendChild(newLink);
@@ -222,13 +175,7 @@
                         newImage = document.createElement('img');
                     newElement.id = 'customButton';
                     newElement.className = 'customButton';
-                    newImage.setAttribute('src', '{{ url_for('
-                    static
-                    ', filename='
-                    p5.png
-                    ')}}'
-                )
-                    ;
+                    newImage.setAttribute('src', '{{ url_for('static', filename='p5.png')}}');
                     newLink.setAttribute('onclick', 'facepost(5)');
                     newLink.appendChild(newImage);
                     newElement.appendChild(newLink);
@@ -254,6 +201,7 @@
                     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     report = report + "time=" + timestamp + '&' + "slider=-" + a;
                     httpRequest.send(report);
+                    alert('Your rating has been received! Thanks!')
 
                     httpRequest.onreadystatechange = function () {
                         var json = httpRequest.responseText;
@@ -320,7 +268,7 @@
             <title>{{v_title | safe}}</title>
 
             <h4>{{v_title | safe}}</h4>
-            {{v_description | safe}}
+            <p>{{v_description | safe}}</p>
             <button onclick="myFunction()" id="showmorebut" class="btn btn-link">show more...</button>
 
 
