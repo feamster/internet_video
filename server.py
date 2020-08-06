@@ -107,7 +107,7 @@ def render_video(page_name):
     video_comments =gc.get_comments(page_name)
     v_title, v_description_arr = gc.get_video_info(page_name)
     if len(v_description_arr)<=1:
-        v_description = '<p>' + v_description_arr[0] + '<p>'
+        v_description = '<p>' + v_description_arr[0] + '</p>'
     else:
         v_description = '<p>'+ v_description_arr[0] + '<span id="dots">...</span><span id="more">' + v_description_arr[1] + '</span></p>'
 
