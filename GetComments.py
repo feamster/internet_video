@@ -134,7 +134,7 @@ def get_video_info(video_id=None):
     v_description = v_description.replace('\n', '<br>')
 
     v_description_arr = v_description.split('<br>', 1)
-
+    print(v_description_arr)
     # v_description = v_description.replace('\n', '<br>')
 
     return v_title, v_description_arr
