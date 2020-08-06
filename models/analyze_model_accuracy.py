@@ -3,7 +3,7 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
-m = 1.3
+# m = 1.3
 def sys_main():
     # folder_path = 'results/5-class/'
     folder_path = 'results/10-class/hdtv/'

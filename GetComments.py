@@ -25,15 +25,26 @@ def main():
     request = youtube.commentThreads().list(
         part='snippet,replies',
         maxResults=20,
-        videoId='jIdq3QMbHCI'
+        videoId='J0Raq0F76ZU'
     )
     response = request.execute()
 
-    print(response.keys())
-    print(response['pageInfo'])
-    print(response['nextPageToken'])
+    request_2 = youtube.videos().list(
+        part="snippet,contentDetails,statistics",
+        id="J0Raq0F76ZU"
+    )
+    response_2 = request_2.execute()
 
-    print(response['items'][0]['snippet']['topLevelComment'])
+    # temp_video_id = 'J0Raq0F76ZU'
+    # print(response)
+    # print(response.keys())
+    # print(response['pageInfo'])
+    # print(response['nextPageToken'])
+    # print(response['items'][0]['snippet']['topLevelComment'])
+
+    print(response_2['items'][0]['snippet']['title'])
+    print(response_2['items'][0]['snippet']['description'])
+
 
     return 0
 
@@ -41,7 +52,7 @@ def main():
 def html_template(display_name=None, text=None, profile_image=None, publish_time=None):
     if (display_name is None) or (text is None) or (profile_image is None) or (publish_time is None):
         return ''
-    html_code = '<div class="media"><div class="pull-left media-top"><img src="' + profile_image + '" class="media-object" style="width:40px" alt=""></div><div class="media-body"><h6 class="media-heading">' + display_name + '<span style="font-size:0.65em;color:#808080">' + publish_time + '</span></h6><p>' + text + '</p></div></div>'
+    html_code = '<div class="media"><div class="pull-left media-top"><img src="' + profile_image + '" class="media-object rounded-circle" style="width:40px" alt=""></div><div class="media-body"><h6 class="media-heading">' + display_name + '<span style="font-size:0.65em;color:#808080"> ' + publish_time + '</span></h6><p>' + text + '</p></div></div>'
     return html_code
 
 
@@ -65,7 +76,7 @@ def comments_process(snippet=None):
     return html_code
 
 
-def get_comments(video_id='', next_token=''):
+def get_comments(video_id=None, next_token=None):
     if video_id is None:
         return ''
 
@@ -88,10 +99,32 @@ def get_comments(video_id='', next_token=''):
         videoId=video_id
     )
     response = request.execute()
-
     html_file = comments_process(response)
 
     return html_file
+
+
+def get_video_info(video_id=None):
+    if video_id is None:
+        return ''
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+    api_service_name = "youtube"
+    api_version = "v3"
+    DEVELOPER_KEY = "AIzaSyD9kVeSJ1Vl_p454l0Maqk15wG6_LWwcPc"
+
+    youtube = googleapiclient.discovery.build(
+        api_service_name, api_version, developerKey=DEVELOPER_KEY)
+
+    request = youtube.videos().list(
+        part="snippet,contentDetails,statistics",
+        id=video_id
+    )
+    response = request.execute()
+
+    v_title = response['items'][0]['snippet']['title']
+    v_description = response['items'][0]['snippet']['description']
+
+    return v_title, v_description
 
 
 if __name__ == "__main__":
