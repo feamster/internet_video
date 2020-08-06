@@ -105,7 +105,8 @@ def render_video(page_name):
         return redirect(url_for('loginpage', next=request.url))
     video_source = youtube_link_gen(page_name)
     video_comments =gc.get_comments(page_name)
-    return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.', comments_list = video_comments)
+    v_title, v_description = gc.get_video_info(page_name)
+    return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.', comments_list = video_comments, v_title = v_title, v_description=v_description)
 
 
 @app.route('/post_video_survey/')
@@ -258,5 +259,5 @@ def save_data():
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
-    # app.run(debug=True, port=5000)
-    app.run(debug=False, host='netvideo.cs.uchicago.edu')
+    app.run(debug=True, port=5000)
+    # app.run(debug=False, host='silver.cs.uchicago.edu', port=8080)
