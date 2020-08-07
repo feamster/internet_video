@@ -29,6 +29,22 @@
     joblib
 
 ### Install libact
-    pi3 install git+https://github.com/hyperpro/libact.git
+    pip3 install git+https://github.com/hyperpro/libact.git
 
 ### Install modAL
+
+modAL requires:
+
+```
+python >= 3.5
+numpy >= 1.13
+scipy >= 0.18
+scikit-learn >= 0.18
+```
+
+Install modAL directly with pip:
+
+```
+pip install modAL
+```
+
