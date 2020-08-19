@@ -5,19 +5,18 @@ import matplotlib.pyplot as plt
 
 def sys_main():
 
-    folder_path = 'results/'
+    folder_path = 'results/10-class/'
 
     final_results = []
-    for usr in range(0, 1):
+    for usr in range(2,3):
         # e1: uncertainty; e2: random; e3: alce
-        file_path_e1 = folder_path + 'exclude_user_' + str(usr) + '_E3_class_10.txt'
-        file_path_e2 = folder_path + 'hdtv_user_' + str(usr) + '_E3_class_10.txt'
-
+        file_path_e1 = folder_path + 'exclude_hdtv/exclude_user_' + str(usr) + '_E3_class_10.txt'
+        file_path_e2 =  folder_path + 'hdtv/user_' + str(usr) + '_E3.txt'
 
         e1_data = np.loadtxt(file_path_e1, delimiter=',') * 200
         e2_data = np.loadtxt(file_path_e2, delimiter=',') * 200
 
-        bins = list(range(0, 350, 20))
+        bins = list(range(0, 50, 1))
 
         e1_sample_data = e1_data[:, bins]
         e1_sample_avg = np.mean(e1_sample_data, axis=0)
@@ -37,14 +36,14 @@ def sys_main():
 
         plt.xlabel('Number of Queries')
         plt.ylabel('MSE')
-        plt.ylim([0, 2500])
+        # plt.ylim([0, 2500])
         plt.title('Experiment Result (User ' + str(usr)+')')
         plt.legend(handles=[uncert, rd], loc=1)
         plt.show()
 
-        print(e1_sample_avg)
+        print(list(e1_sample_std_error))
 
-        print(e2_sample_avg)
+        print(list(e2_sample_std_error))
     return 0
 
 
