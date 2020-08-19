@@ -8,6 +8,7 @@ def intersect_video(video1, video2):
     return_set = list(set(video1).intersection(set(video2)))
     return return_set
 
+
 def extract_data(usr_id=None):
     df_data = pd.read_csv('sensei/user_scores.csv', usecols=['campaign_name', 'num_chunk', 'mturk_id', 'accept', 'chunk1', 'chunk2', 'chunk3', 'chunk4', 'chunk5'])
     df_data = df_data[df_data['accept'] >= 0]
@@ -35,6 +36,7 @@ def extract_data(usr_id=None):
     ret_data = np.array(ret_data)
     y = np.array(y)
     return ret_data, y
+
 
 def reprocess_data():
     df_data = pd.read_csv('sensei/user_scores.csv', usecols=['campaign_name', 'num_chunk', 'mturk_id', 'accept', 'chunk1', 'chunk2', 'chunk3', 'chunk4', 'chunk5'])
@@ -103,6 +105,7 @@ def reprocess_data_2():
     df_data.to_csv('sensei/user_scores_1.csv', index=False)
 
     return 0
+
 
 def meta_read():
     df_data = pd.read_csv('sensei/user_scores.csv', usecols=['campaign_name', 'num_chunk', 'mturk_id', 'accept'])
