@@ -43,7 +43,6 @@ classifiers = [
     RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
     ]
 
-
 def process_label_data(n_class, label_data):
     Y = []
     unit_class = 1.0 / n_class
@@ -72,7 +71,6 @@ def processing_training_data(n_class=10, train_data=None):
     y = process_label_data(n_class=n_class, label_data=train_data[:, 0])
     y_user = process_label_data(n_class=n_class, label_data=train_data[:, 1])
     X[:, 0] = y_user
-
     return X, y
 
 def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
@@ -83,7 +81,7 @@ def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
     if err_cal == 'MSE':
         Y_dis = Y_predict - Y_truth
         Y_dis = np.power(Y_dis, 2)
-        error = np.sum(Y_dis)
+        error = np.mean(Y_dis)
     if err_cal == 'Err':
         # error = calc_cost(Y_truth, Y_predict, cost_matrix)
         Y_dis = Y_predict - Y_truth
@@ -91,7 +89,6 @@ def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
         error = np.mean(Y_dis)
 
     return error
-
 
 def get_init_train(X_trn_all, y_trn_all, n_of_class=10):
     trn = []
@@ -159,25 +156,27 @@ def run_model(X, y, test_size, rep_times, n_queries, estimator, fd):
     return avg_err
 
 
-def train_for_user(fd, user_id=1, device_type='uhdtv', n_class=5):
+def train_for_user(fd, user_id=1, device_type='uhdtv', n_class=10):
     test_data = waterloo_iv_processing.get_all_but_one_user(ex_user_id=user_id, device=device_type,
                                                          video_name=['sports', 'document', 'nature', 'game', 'movie'])
 
     X, y = processing_training_data(n_class=n_class, train_data=test_data)
 
     test_size = 0.2  # the percentage of samples in the dataset that will be
-    rep_times = 10
+    rep_times = 5
     n_queries = 350
 
     err = []
 
     for name, clf in zip(names, classifiers):
-        print('model:', name)
-        print('model:', name, file=fd)
-        E = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
-        err.append(E[-1])
+        # print('model:', name)
+        # print('model:', name, file=fd)
+        if name == 'Random Forest':
+            E = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
+            err = E
+            print(E)
         # print(E[-1], file=f_3)
-        print(E, file=fd)
+            print(E, file=fd)
 
     return err
 
@@ -193,14 +192,19 @@ def sys_main():
     for usr in usr_list:
         print('User:', usr)
         print('User:', usr, file=fd)
-        err = train_for_user(fd, user_id=usr, device_type='hdtv', n_class=10)
-        E1.append(err[0])
-        E2.append(err[1])
-        E3.append(err[2])
-    print('\n', file=fd)
-    print(E1, file=fd) # nearest neighbor
-    print(E2, file=fd) # decision tree
-    print(E3, file=fd) # random forest
+        err = train_for_user(fd, user_id=usr, device_type='hdtv', n_class=5)
+        E1.append(err)
+        # err = np.array(err)
+        # E1.append(err[0])
+        # E2.append(err[1])
+        # E3.append(err[2])
+    # print('\n', file=fd)
+    # print(E1, file=fd) # nearest neighbor
+    # print(E2, file=fd) # decision tree
+    # print(E3, file=fd) # random forest
+    E1 = np.array(E1)
+    np.savetxt('results/modAL-result-exclude-one-numpy.txt', E1, delimiter=',')
+
     return 0
 
 

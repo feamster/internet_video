@@ -79,7 +79,7 @@ def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
     if err_cal == 'MSE':
         Y_dis = Y_predict - Y_truth
         Y_dis = np.power(Y_dis, 2)
-        error = np.sum(Y_dis)
+        error = np.mean(Y_dis)
     if err_cal == 'Err':
         # error = calc_cost(Y_truth, Y_predict, cost_matrix)
         Y_dis = Y_predict - Y_truth
@@ -158,19 +158,21 @@ def train_for_user(fd, user_id=1, device_type='uhdtv', n_class=10):
     X, y = processing_training_data(n_class=n_class, train_data=test_data)
     
     test_size = 0.2  # the percentage of samples in the dataset that will be
-    rep_times = 10
+    rep_times = 5
     n_queries = 350
 
     err = []
 
     for name, clf in zip(names, classifiers):
-        print('model:', name)
-        print('model:', name, file=fd)
-        E = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
-        err.append(E[-1])
+        # print('model:', name)
+        # print('model:', name, file=fd)
+        if name == 'Random Forest':
+            E = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
+            # err.append(E)
+            err = E
+            print(E)
         # print(E[-1], file=f_3)
-        print(E, file=fd)
-
+            print(E, file=fd)
     return err
 
 def sys_main():
@@ -184,14 +186,18 @@ def sys_main():
     for usr in usr_list:
         print('User:', usr)
         print('User:', usr, file=fd)
-        err = train_for_user(fd, user_id=usr, device_type='hdtv', n_class=10)
-        E1.append(err[0])
-        E2.append(err[1])
-        E3.append(err[2])
-    print('\n', file=fd)
-    print(E1, file=fd) # nearest neighbor
-    print(E2, file=fd) # decision tree
-    print(E3, file=fd) # random forest
+        err = train_for_user(fd, user_id=usr, device_type='hdtv', n_class=5)
+        E1.append(err)
+        # E1.append(err[0])
+        # E2.append(err[1])
+        # E3.append(err[2])
+    # print('\n', file=fd)
+    # print(E1, file=fd) # nearest neighbor
+    # print(E2, file=fd) # decision tree
+    # print(E3, file=fd) # random forest
+    E1 = np.array(E1)
+    np.savetxt('results/modAL-result-per-user-model-numpy.txt', E1, delimiter=',')
+
     return 0
 
 if __name__ == '__main__':
