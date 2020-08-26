@@ -116,7 +116,7 @@ def get_init_train(X_trn_all, y_trn_all, n_of_class=5):
 def run_model(X, y, test_size, rep_times, n_queries, estimator, fd):
     performance_history = [[] for i in range(n_queries)]
     for i in range(rep_times):
-        print('exp:', i)
+        # print('exp:', i)
         # print('exp:', i, file=fd)
         
         n_labled_examples = X.shape[0]
@@ -141,11 +141,12 @@ def run_model(X, y, test_size, rep_times, n_queries, estimator, fd):
             performance_history[j].append(err)
 
     avg_err = []
+    sd = []
     for i in range(n_queries):
         avg_err.append(np.mean(performance_history[i]))
+        sd.append(np.std(performance_history[i]))
 
-    return avg_err
-
+    return avg_err, sd
 
 def train_for_user(fd, user_id=1, n_class=5, data_id=None):
     if data_id is None:
@@ -156,30 +157,38 @@ def train_for_user(fd, user_id=1, n_class=5, data_id=None):
     X, y = processing_training_data(n_class=n_class, train_data=test_data)
     
     test_size = 0.2  # the percentage of samples in the dataset that will be
-    rep_times = 50
+    rep_times = 200
     n_queries = 10
 
     err = []
+    all_sd = []
 
     for name, clf in zip(names, classifiers):
-        print('model:', name)
+        # print('model:', name)
         print('model:', name, file=fd)
-        E = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
+        E, sd = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
         err.append(E[-1])
+        all_sd.append(sd[-1])
+
+
         # print(E[-1], file=f_3)
 
         print(E, file=fd)
+        print(sd, file=fd)
         # for x in E: print(x, file=fd)
 
-    return err
+    return err, all_sd
 
 def sys_main():
     usr_list = list(range(0, 30))
 
-    fd = open('results/modAL-result-per-user-model-1.txt','w')
+    fd = open('results/modAL-result-per-user-model-1-200.txt','w')
     E1 = []
     E2 = []
     E3 = []
+    sd1 = []
+    sd2 = []
+    sd3 = []
     # for usr in usr_list:
     for i in range(len(usr_list)):
         E1_all = []
@@ -187,10 +196,15 @@ def sys_main():
         E3_all = []
         print('User:', usr_list[i], usr_list[i])
         print('User:', usr_list[i], usr_list[i], file=fd)
-        err = train_for_user(fd, user_id=usr_list[i], n_class=5, data_id=usr_list[i])
+        err, sd = train_for_user(fd, user_id=usr_list[i], n_class=5, data_id=usr_list[i])
         E1_all.append(err[0])
         E2_all.append(err[1])
         E3_all.append(err[2])
+
+        sd1.append(sd[0])
+        sd2.append(sd[1])
+        sd3.append(sd[2])
+
 
         E1.append(sum(E1_all)/len(E1_all))
         E2.append(sum(E2_all)/len(E2_all))
@@ -198,12 +212,21 @@ def sys_main():
 
         # break
 
+    print(np.mean(E1),np.mean(E2),np.mean(E3))
+
     print('\n', file=fd)
     for x in E1: print(x, file=fd)
     print('\n', file=fd)
+    for x in sd1: print(x, file=fd)
+    print('\n', file=fd)
     for x in E2: print(x, file=fd)
     print('\n', file=fd)
+    for x in sd1: print(x, file=fd)
+    print('\n', file=fd)
     for x in E3: print(x, file=fd)
+    print('\n', file=fd)
+    for x in sd1: print(x, file=fd)
+
 
     # print(E1, file=fd) # nearest neighbor
     # print(E2, file=fd) # decision tree
