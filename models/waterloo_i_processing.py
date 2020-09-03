@@ -85,8 +85,6 @@ def get_per_user_data(user_id=None):
         ssim_smooth.append(float(mos_data[8][i+1]))
         ssimplus_smooth.append(float(mos_data[9][i+1]))
 
-
-    
     user_scores = normalize(user_scores)
     mos_scores = normalize(mos_scores)
     mssim_scores = normalize(mssim_scores)
@@ -116,7 +114,10 @@ def get_per_user_data(user_id=None):
         ssim_s = ssim_smooth[i]
         ssimplus_s = ssimplus_smooth[i]
 
-        ret_data_row = [usr_score, psnr, psnr_s] 
+        rebuffer_type = video_name[i][-1]
+        # print(i, video_name[i], rebuffer_type)
+
+        ret_data_row = [usr_score, psnr, psnr_s, rebuffer_type] 
         # ret_data_row.extend(video_name[i])
         ret_data.append(ret_data_row)
 
@@ -264,7 +265,10 @@ def get_all_but_one_user(ex_user_id=None, device=None, video_name=None):
         ssim_s = ssim_smooth[i]
         ssimplus_s = ssimplus_smooth[i]
 
-        ret_data_row = [usr_score, psnr, psnr_s] 
+        rebuffer_type = video_name[i][-1]
+        # print(i, video_name[i], rebuffer_type)
+
+        ret_data_row = [usr_score, psnr, psnr_s, rebuffer_type] 
 
         # ret_data_row = [usr_score, psnr, psnr_s] !! 
         # ret_data_row.extend(video_name[i])
