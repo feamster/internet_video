@@ -158,7 +158,7 @@ def train_for_user(fd, user_id=1, device_type='uhdtv', n_class=10):
     X, y = processing_training_data(n_class=n_class, train_data=test_data)
     
     test_size = 0.2  # the percentage of samples in the dataset that will be
-    rep_times = 5
+    rep_times = 30
     n_queries = 350
 
     err = []
@@ -166,7 +166,7 @@ def train_for_user(fd, user_id=1, device_type='uhdtv', n_class=10):
     for name, clf in zip(names, classifiers):
         # print('model:', name)
         # print('model:', name, file=fd)
-        if name == 'Random Forest':
+        if name == names[2]:
             E = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
             # err.append(E)
             err = E
@@ -196,7 +196,7 @@ def sys_main():
     # print(E2, file=fd) # decision tree
     # print(E3, file=fd) # random forest
     E1 = np.array(E1)
-    np.savetxt('results/modAL-result-per-user-model-numpy.txt', E1, delimiter=',')
+    np.savetxt('results/tt_modAL-result-per-user-model-numpy-e3.txt', E1, delimiter=',')
 
     return 0
 

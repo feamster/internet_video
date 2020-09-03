@@ -56,7 +56,7 @@ def get_per_user_data(user_id=None):
         return None
 
     all_data = pd.read_csv('open_dataset/waterloo_dataset/WaterlooSQoE-I/data.csv', header = None)
-    mos_data = pd.read_csv('open_dataset/waterloo_dataset/WaterlooSQoE-I/mos.csv', header=None)
+    mos_data = pd.read_csv('open_dataset/WaterlooSQoE-I/mos.csv', header=None)
 
     video_name = []
     user_scores = []
@@ -181,7 +181,7 @@ def get_all_but_one_user(ex_user_id=None, device=None, video_name=None):
         return None
 
     all_data = pd.read_csv('open_dataset/waterloo_dataset/WaterlooSQoE-I/data.csv', header = None)
-    mos_data = pd.read_csv('open_dataset/waterloo_dataset/WaterlooSQoE-I/mos.csv', header=None)
+    mos_data = pd.read_csv('open_dataset/WaterlooSQoE-I/mos.csv', header=None)
 
     video_name = []
     user_scores = []
@@ -213,6 +213,7 @@ def get_all_but_one_user(ex_user_id=None, device=None, video_name=None):
         psnr_scores.append(float(mos_data[3][i+1]))
         ssim_scores.append(float(mos_data[4][i+1]))
         ssimplus_scores.append(float(mos_data[5][i+1]))
+
 
         mssim_smooth.append(float(mos_data[6][i+1]))
         psnr_smooth.append(float(mos_data[7][i+1]))

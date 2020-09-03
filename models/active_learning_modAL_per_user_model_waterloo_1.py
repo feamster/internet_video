@@ -2,6 +2,7 @@ import copy
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import pandas as pd
 
 try:
     from sklearn.model_selection import train_test_split
@@ -47,6 +48,7 @@ classifiers = [
     RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
     ]
 
+
 def process_label_data(n_class, label_data):
     Y = []
     unit_class = 1.0 / n_class
@@ -74,7 +76,8 @@ def processing_training_data(n_class=5, train_data=None):
     Y = process_label_data(n_class=n_class, label_data=train_data[:, 0])
     return X, Y
 
-def error_calculation(Y_truth=None, Y_predict=None,  err_cal='Err'):
+
+def error_calculation(Y_truth=None, Y_predict=None,  err_cal='MSE'):
     if Y_predict is None or Y_truth is None:
         print('No input')
         return 0
@@ -82,7 +85,7 @@ def error_calculation(Y_truth=None, Y_predict=None,  err_cal='Err'):
     if err_cal == 'MSE':
         Y_dis = Y_predict - Y_truth
         Y_dis = np.power(Y_dis, 2)
-        error = np.sum(Y_dis)
+        error = np.mean(Y_dis)
     if err_cal == 'Err':
         # error = calc_cost(Y_truth, Y_predict, cost_matrix)
         Y_dis = Y_predict - Y_truth
@@ -90,6 +93,7 @@ def error_calculation(Y_truth=None, Y_predict=None,  err_cal='Err'):
         error = np.mean(Y_dis)
 
     return error
+
 
 def get_init_train(X_trn_all, y_trn_all, n_of_class=5):
     trn = []
@@ -112,6 +116,7 @@ def get_init_train(X_trn_all, y_trn_all, n_of_class=5):
     X_trn = np.array(X_trn)
     y_trn = np.array(y_trn)
     return X_trn_min, y_trn_min, X_trn, y_trn
+
 
 def run_model(X, y, test_size, rep_times, n_queries, estimator, fd):
     performance_history = [[] for i in range(n_queries)]
@@ -144,45 +149,46 @@ def run_model(X, y, test_size, rep_times, n_queries, estimator, fd):
     sd = []
     for i in range(n_queries):
         avg_err.append(np.mean(performance_history[i]))
-        sd.append(np.std(performance_history[i]))
+        sd.append(np.std(performance_history[i])/np.sqrt(rep_times))
 
     return avg_err, sd
+
 
 def train_for_user(fd, user_id=1, n_class=5, data_id=None):
     if data_id is None:
         test_data = waterloo_i_processing.get_per_user_data(user_id=user_id)
     else:
         test_data = waterloo_i_processing.get_per_user_data(user_id=data_id)
-
     X, y = processing_training_data(n_class=n_class, train_data=test_data)
-    
+
     test_size = 0.2  # the percentage of samples in the dataset that will be
-    rep_times = 200
-    n_queries = 10
+    rep_times = 50
+    n_queries = 120
 
     err = []
     all_sd = []
 
     for name, clf in zip(names, classifiers):
         # print('model:', name)
-        print('model:', name, file=fd)
-        E, sd = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
-        err.append(E[-1])
-        all_sd.append(sd[-1])
-
+        # print('model:', name, file=fd)
+        if name == names[0]:
+            E, sd = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
+            err = E
+            all_sd = sd
 
         # print(E[-1], file=f_3)
 
-        print(E, file=fd)
-        print(sd, file=fd)
+        # print(E, file=fd)
+        # print(sd, file=fd)
         # for x in E: print(x, file=fd)
 
     return err, all_sd
 
+
 def sys_main():
     usr_list = list(range(0, 30))
 
-    fd = open('results/modAL-result-per-user-model-1-200.txt','w')
+    fd = open('results/modAL-result-per-user-model-1-10.txt','w')
     E1 = []
     E2 = []
     E3 = []
@@ -194,38 +200,46 @@ def sys_main():
         E1_all = []
         E2_all = []
         E3_all = []
-        print('User:', usr_list[i], usr_list[i])
-        print('User:', usr_list[i], usr_list[i], file=fd)
+        # print('User:', usr_list[i], usr_list[i])
+        # print('User:', usr_list[i], usr_list[i], file=fd)
         err, sd = train_for_user(fd, user_id=usr_list[i], n_class=5, data_id=usr_list[i])
-        E1_all.append(err[0])
-        E2_all.append(err[1])
-        E3_all.append(err[2])
+        # E1_all.append(err[0])
+        # E2_all.append(err[1])
+        # E3_all.append(err[2])
+        E1.append(err)
+        sd1.append(sd)
+        print(err[-1])
+        print(sd1[-1])
+        # sd1.append(sd[0])
+        # sd2.append(sd[1])
+        # sd3.append(sd[2])
 
-        sd1.append(sd[0])
-        sd2.append(sd[1])
-        sd3.append(sd[2])
 
-
-        E1.append(sum(E1_all)/len(E1_all))
-        E2.append(sum(E2_all)/len(E2_all))
-        E3.append(sum(E3_all)/len(E3_all))
-
+        # E1.append(sum(E1_all)/len(E1_all))
+        # E2.append(sum(E2_all)/len(E2_all))
+        # E3.append(sum(E3_all)/len(E3_all))
         # break
 
-    print(np.mean(E1),np.mean(E2),np.mean(E3))
+    E1 = np.array(E1)
+    sd1 = np.array(sd1)
 
-    print('\n', file=fd)
-    for x in E1: print(x, file=fd)
-    print('\n', file=fd)
-    for x in sd1: print(x, file=fd)
-    print('\n', file=fd)
-    for x in E2: print(x, file=fd)
-    print('\n', file=fd)
-    for x in sd1: print(x, file=fd)
-    print('\n', file=fd)
-    for x in E3: print(x, file=fd)
-    print('\n', file=fd)
-    for x in sd1: print(x, file=fd)
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1.txt', E1, delimiter=',')
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_sd_e1.txt', sd1, delimiter=',')
+
+    # print(np.mean(E1),np.mean(E2),np.mean(E3))
+
+    # print('\n', file=fd)
+    # for x in E1: print(x, file=fd)
+    # print('\n', file=fd)
+    # for x in sd1: print(x, file=fd)
+    # print('\n', file=fd)
+    # for x in E2: print(x, file=fd)
+    # print('\n', file=fd)
+    # for x in sd1: print(x, file=fd)
+    # print('\n', file=fd)
+    # for x in E3: print(x, file=fd)
+    # print('\n', file=fd)
+    # for x in sd1: print(x, file=fd)
 
 
     # print(E1, file=fd) # nearest neighbor
