@@ -195,7 +195,7 @@ def train_for_user(fd, user_id=1, n_class=5, data_id=None):
 def sys_main():
     usr_list = list(range(0, 30))
 
-    fd = open('results/modAL-result-exclude-one-model-1-10.txt','w')
+    fd = open('results/misc_data_folder/modAL-result-exclude-one-model-1-10.txt', 'w')
     E1 = []
     E2 = []
     E3 = []

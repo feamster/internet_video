@@ -185,7 +185,7 @@ def sys_main():
 
     usr_list = list(range(0, 29))
     # usr_list = list(range(0, 1))
-    fd = open('results/modAL-result-exclude-one.txt','w')
+    fd = open('results/misc_data_folder/modAL-result-exclude-one.txt', 'w')
     E1 = []
     E2 = []
     E3 = []
