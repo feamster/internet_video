@@ -36,9 +36,18 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
+from modAL.uncertainty import entropy_sampling
+from modAL.uncertainty import margin_sampling
 
 # names = ["Nearest Neighbors"]
 # classifiers = [KNeighborsClassifier(3)]
+
+
+def random_sampling(classifier, X_pool):
+    n_samples = len(X_pool)
+    query_idx = np.random.choice(range(n_samples))
+    return query_idx, X_pool[query_idx]
+
 
 names = ["Nearest Neighbors", "Decision Tree", "Random Forest"]
 
@@ -130,7 +139,9 @@ def run_model(X, y, test_size, rep_times, n_queries, estimator, fd):
         X_trn_min, y_trn_min, X_trn, y_trn = get_init_train(X_trn_all, y_trn_all)
         # print('ground truth:', y_tst, file=f_2)
 
-        learner = ActiveLearner(estimator=estimator, X_training=X_trn_min, y_training=y_trn_min)
+        # learner = ActiveLearner(estimator=estimator, X_training=X_trn_min, y_training=y_trn_min)
+
+        learner = ActiveLearner(estimator=estimator,query_strategy=entropy_sampling, X_training=X_trn_min, y_training=y_trn_min)
 
         # prediction with no query
         predictions_0 = learner.predict(X_tst)
@@ -163,7 +174,7 @@ def train_for_user(fd, user_id=1, n_class=5, data_id=None):
 
     test_size = 0.2  # the percentage of samples in the dataset that will be
     rep_times = 50
-    n_queries = 120
+    n_queries = 50
 
     err = []
     all_sd = []
@@ -171,13 +182,12 @@ def train_for_user(fd, user_id=1, n_class=5, data_id=None):
     for name, clf in zip(names, classifiers):
         # print('model:', name)
         # print('model:', name, file=fd)
-        if name == names[0]:
-            E, sd = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
-            err = E
-            all_sd = sd
+
+        E, sd = run_model(X, y, test_size, rep_times, n_queries, clf, fd)
+        err.append(E)
+        all_sd.append(sd)
 
         # print(E[-1], file=f_3)
-
         # print(E, file=fd)
         # print(sd, file=fd)
         # for x in E: print(x, file=fd)
@@ -200,16 +210,26 @@ def sys_main():
         E1_all = []
         E2_all = []
         E3_all = []
-        # print('User:', usr_list[i], usr_list[i])
-        # print('User:', usr_list[i], usr_list[i], file=fd)
+
         err, sd = train_for_user(fd, user_id=usr_list[i], n_class=5, data_id=usr_list[i])
-        # E1_all.append(err[0])
-        # E2_all.append(err[1])
-        # E3_all.append(err[2])
-        E1.append(err)
-        sd1.append(sd)
-        print(err[-1])
-        print(sd1[-1])
+
+        print(len(err))
+        print(len(sd))
+
+        E1.append(err[0])
+        sd1.append(sd[0])
+        print(err[0][-1])
+        print(sd[0][-1])
+
+        E2.append(err[1])
+        sd2.append(sd[1])
+        print(err[1][-1])
+        print(sd[1][-1])
+
+        E3.append(err[2])
+        sd3.append(sd[2])
+        print(err[2][-1])
+        print(sd[2][-1])
         # sd1.append(sd[0])
         # sd2.append(sd[1])
         # sd3.append(sd[2])
@@ -223,8 +243,20 @@ def sys_main():
     E1 = np.array(E1)
     sd1 = np.array(sd1)
 
-    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1.txt', E1, delimiter=',')
-    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_sd_e1.txt', sd1, delimiter=',')
+    E2 = np.array(E2)
+    sd2 = np.array(sd2)
+
+    E3 = np.array(E3)
+    sd3 = np.array(sd3)
+
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_entropy.txt', E1, delimiter=',')
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_sd_e1_entropy.txt', sd1, delimiter=',')
+
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e2_entropy.txt', E2, delimiter=',')
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_sd_e2_entropy.txt', sd2, delimiter=',')
+
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e3_entropy.txt', E3, delimiter=',')
+    np.savetxt('results/tt_modAL-result-per-user-numpy-waterloo_1_sd_e3_entropy.txt', sd3, delimiter=',')
 
     # print(np.mean(E1),np.mean(E2),np.mean(E3))
 

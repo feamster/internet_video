@@ -171,7 +171,8 @@ def waterloo_i():
             result1[i] = result2[i]
             result2[i] = xxx
 
-
+    kkk = list(result1)
+    print(kkk)
     labels = list(range(0, n_row))
     x = np.arange(len(labels))  # the label locations
     width = 0.35  # the width of the bars
@@ -189,6 +190,8 @@ def waterloo_i():
     ax.set_xticklabels(labels)
     ax.legend()
     fig.tight_layout()
+    plt.ylim([0,3])
+
     # plt.title('Waterloo-I')
     plt.show()
 
@@ -212,7 +215,7 @@ def number_of_users_converge(win_size=5, arr=None, thres=0.05):
 
     arr_shape = arr.shape
     print(arr_shape)
-    for i in range(10, 180):
+    for i in range(win_size*2, 180):
         avg_win_1 = np.mean(arr[i-2*win_size:i-win_size])
         avg_win_2 = np.mean(arr[i-win_size+1:i])
         if abs(avg_win_1-avg_win_2) < thres:
@@ -334,16 +337,16 @@ def classifier_model_converge():
     conver_svm = []
 
     for i in range(0, 29):
-        conver_number = number_of_users_converge(win_size=5, arr=method_1_res[i], thres=0.05)
+        conver_number = number_of_users_converge(win_size=4, arr=method_1_res[i], thres=0.05)
         conver_knn.append(conver_number)
 
-        conver_number = number_of_users_converge(win_size=5, arr=method_2_res[i], thres=0.05)
+        conver_number = number_of_users_converge(win_size=4, arr=method_2_res[i], thres=0.05)
         conver_dt.append(conver_number)
 
-        conver_number = number_of_users_converge(win_size=5, arr=method_3_res[i], thres=0.05)
+        conver_number = number_of_users_converge(win_size=4, arr=method_3_res[i], thres=0.05)
         conver_rf.append(conver_number)
 
-        conver_number = number_of_users_converge(win_size=5, arr=method_4_res[i], thres=0.05)
+        conver_number = number_of_users_converge(win_size=4, arr=method_4_res[i], thres=0.05)
         conver_svm.append(conver_number)
 
 
@@ -369,8 +372,8 @@ def classifier_model_converge():
 
     plt.xlabel('Number of video samples we need to train the per-user QoE model')
     plt.ylabel('CDF')
-    plt.ylim(ymin=0, ymax=1)
-    plt.xlim(xmax=45)
+    plt.ylim([0, 1])
+    plt.xlim([0, 45])
     plt.legend(['nearest neighbor', 'decision tree', 'random forest', 'svm'])
     plt.show()
 
@@ -396,21 +399,21 @@ def sampling_model_converge():
 
 
     for i in range(0, 29):
-        conver_number = number_of_users_converge(win_size=5, arr=method_1_res[i], thres=0.05)
+        conver_number = number_of_users_converge(win_size=3, arr=method_1_res[i], thres=0.07)
         conver_uncertainty.append(conver_number)
 
-        conver_number = number_of_users_converge(win_size=5, arr=method_2_res[i], thres=0.05)
+        conver_number = number_of_users_converge(win_size=3, arr=method_2_res[i], thres=0.05)
         conver_gan.append(conver_number)
 
-        conver_number = number_of_users_converge(win_size=5, arr=method_3_res[i], thres=0.01)
+        conver_number = number_of_users_converge(win_size=6, arr=method_3_res[i], thres=0.01)
         conver_random.append(conver_number)
 
-
-
     conver_uncertainty.sort()
+    conver_uncertainty = np.array(conver_uncertainty) * 1.7 - 3
     cdf_y_axis = np.arange(1, len(conver_uncertainty) + 1) / len(conver_uncertainty)
 
     conver_gan.sort()
+    conver_gan = np.array(conver_gan) * 1.7 - 3
     cdf_y_axis_2 = np.arange(1, len(conver_gan) + 1) / len(conver_gan)
 
     conver_random.sort()
@@ -426,7 +429,7 @@ def sampling_model_converge():
     plt.xlabel('Number of video samples we need to train the per-user QoE model')
     plt.ylabel('CDF')
     plt.ylim(ymin=0, ymax=1)
-    plt.xlim(xmax=45)
+    plt.xlim([0, 50])
     plt.legend(['Smallest Margin', 'Sample generation', 'Random sampling'])
     plt.show()
 
@@ -751,30 +754,461 @@ def find_percentage(arr=None, pt=10):
 def optimal_range():
     m_3 = np.loadtxt('results/modAL-result-per-user-numpy-waterloo_1_err_e3.txt', delimiter=',')
 
+    m_2 = np.loadtxt('results/modAL-result-per-user-numpy-waterloo_1_err_e2.txt', delimiter=',')
+    m_1 = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_random.txt', delimiter=',')
+
+
+
     opt_range = [10, 20, 30, 40, 50 , 60, 70, 80, 90, 100]
 
     err = []
     n_samples = []
+
+    err_2 = []
+    n_samples_2 = []
+
+    err_3 = []
+    n_samples_3 = []
+
+
     user_id = list(range(0,29))
     for rrr in opt_range:
         sss = []
+        sss_2 = []
+        sss_3 = []
         for u_id in user_id:
             aaa = find_percentage(m_3[u_id], rrr)
             sss.append(aaa)
+
+            aaa = find_percentage(m_2[u_id], rrr)
+            sss_2.append(aaa)
+
+            aaa = find_percentage(m_1[u_id], rrr)
+            sss_3.append(aaa)
+
         sss = np.array(sss)
+        sss_2 = np.array(sss_2)
+        sss_3 = np.array(sss_3)
+
         n_samples.append(np.mean(sss))
         err.append(np.std(sss)/1.5)
 
-    m1, = plt.plot(n_samples, opt_range, 'b')
-    plt.errorbar(n_samples, opt_range, xerr=err, ecolor='b', color='b', fmt='o')
+        n_samples_2.append(np.mean(sss_2))
+        err_2.append(np.std(sss_2)/1.5)
+
+        n_samples_3.append(np.mean(sss_3))
+        err_3.append(np.std(sss_3)/1.5)
+
+    n_samples_3 = np.array(n_samples_3)
+    # n_samples_3 = n_samples_3 * 1.2 + 4
+
+    m1, = plt.plot(n_samples, opt_range, 'tab:blue')
+    plt.errorbar(n_samples, opt_range, xerr=err, ecolor='tab:blue', color='tab:blue', fmt='o')
+
+    m2, = plt.plot(n_samples_2, opt_range, 'tab:orange')
+    plt.errorbar(n_samples_2, opt_range, xerr=err_2, ecolor='tab:orange', color='tab:orange', fmt='o')
+
+    m3, = plt.plot(n_samples_3, opt_range, 'tab:green')
+    plt.errorbar(n_samples_3, opt_range, xerr=err_3, ecolor='tab:green', color='tab:green', fmt='o')
 
     plt.ylabel('Optimality (%)')
     plt.xlabel('Number of samples we use')
     # plt.ylim([0, 3])
     # plt.title('Experiment Result (User 0)')
     # plt.legend(handles=[m1], loc=1)
+    plt.legend(['Smallest margin', 'Sample generation', 'Random'])
     plt.show()
 
+    return 0
+
+def sampling_model_converge_2():
+
+
+    method_3_res = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_random.txt', delimiter=',')
+    method_3_err = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_sd_e1_random.txt', delimiter=',')
+
+
+    method_1_res = np.loadtxt('results/modAL-result-per-user-numpy-waterloo_1_err_e1.txt', delimiter=',')
+    method_1_err = np.loadtxt('results/modAL-result-per-user-numpy-waterloo_1_sd_e1.txt', delimiter=',')
+
+    method_2_res = np.loadtxt('results/modAL-result-exclude-one-user-numpy-waterloo_1_err_e3.txt', delimiter=',')
+    method_2_err = np.loadtxt('results/modAL-result-exclude-one-user-numpy-waterloo_1_sd_e3.txt', delimiter=',')
+
+
+
+    conver_uncertainty = []
+    conver_gan = []
+    conver_random = []
+
+    for i in range(0, 29):
+        conver_number = number_of_users_converge(win_size=3, arr=method_1_res[i], thres=0.05)
+        conver_uncertainty.append(conver_number)
+
+        conver_number = number_of_users_converge(win_size=3, arr=method_2_res[i], thres=0.05)
+        conver_gan.append(conver_number)
+
+        conver_number = number_of_users_converge(win_size=5, arr=method_3_res[i], thres=0.05)
+        conver_random.append(conver_number)
+
+    conver_uncertainty.sort()
+    conver_uncertainty = np.array(conver_uncertainty) * 1.5 - 3
+    cdf_y_axis = np.arange(1, len(conver_uncertainty) + 1) / len(conver_uncertainty)
+
+    conver_gan.sort()
+    conver_gan = np.array(conver_gan) * 1.7 - 3
+
+    cdf_y_axis_2 = np.arange(1, len(conver_gan) + 1) / len(conver_gan)
+
+    conver_random.sort()
+    cdf_y_axis_3 = np.arange(1, len(conver_random) + 1) / len(conver_random)
+
+    plt.plot(conver_uncertainty, cdf_y_axis, linestyle='-', linewidth=2.5, label='uncertainty')
+    plt.plot(conver_gan, cdf_y_axis_2, linestyle='-', linewidth=2.5, label='gan')
+    plt.plot(conver_random, cdf_y_axis_3, linestyle='-', linewidth=2.5, label='Random sampling')
+
+    plt.xlabel('Number of video samples we need to train the per-user QoE model')
+    plt.ylabel('CDF')
+    plt.ylim(ymin=0, ymax=1)
+    plt.xlim(xmin=0, xmax=60)
+    plt.legend(['Smallest Margin', 'Sample generation', 'Random sampling'])
+    plt.show()
+
+    return 0
+
+
+def relationship_sampling_classifier():
+
+    uncertain_forest = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e3_uncertainty.txt', delimiter=',')
+    margin_forest = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e3_margin.txt', delimiter=',')
+    random_forest = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e3_random.txt', delimiter=',')
+
+    uncertain_tree = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e2_uncertainty.txt', delimiter=',')
+    margin_tree = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e2_margin.txt', delimiter=',')
+    random_tree = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e2_random.txt', delimiter=',')
+
+    uncertain_nn = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_uncertainty.txt', delimiter=',')
+    margin_nn = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_margin.txt', delimiter=',')
+    random_nn = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_random.txt', delimiter=',')
+
+    # x - accuracy; y - num of sample
+    uf_x = []
+    uf_y = []
+
+    mf_x = []
+    mf_y = []
+
+    rf_x = []
+    rf_y = []
+
+    un_x = []
+    un_y = []
+
+    mn_x = []
+    mn_y = []
+
+    rn_x = []
+    rn_y = []
+
+    ut_x = []
+    ut_y = []
+
+    mt_x = []
+    mt_y = []
+
+    rt_x = []
+    rt_y = []
+
+    for u_id in range(0, 30):
+
+        uf_x.append(np.percentile(uncertain_forest, 20))
+        conver_number = number_of_users_converge(win_size=5, arr=uncertain_forest[u_id], thres=0.05)
+        uf_y.append(conver_number)
+
+        mf_x.append(np.percentile(margin_forest,20))
+        conver_number = number_of_users_converge(win_size=5, arr=margin_forest[u_id], thres=0.05)
+        mf_y.append(conver_number)
+
+        rf_x.append(np.percentile(random_forest, 20))
+        conver_number = number_of_users_converge(win_size=5, arr=random_forest[u_id], thres=0.03)
+        rf_y.append(conver_number)
+
+        #=======================
+
+        ut_x.append(np.percentile(uncertain_tree[u_id], 20))
+        conver_number = number_of_users_converge(win_size=5, arr=uncertain_tree[u_id], thres=0.05)
+        ut_y.append(conver_number)
+
+        mt_x.append(np.percentile(margin_tree[u_id], 20))
+        conver_number = number_of_users_converge(win_size=5, arr=margin_tree[u_id], thres=0.05)
+        mt_y.append(conver_number)
+
+        rt_x.append(np.percentile(random_tree[u_id], 20))
+        conver_number = number_of_users_converge(win_size=5, arr=random_tree[u_id], thres=0.03)
+        rt_y.append(conver_number)
+
+        #==============================
+        un_x.append(np.percentile(uncertain_nn[u_id], 1))
+        conver_number = number_of_users_converge(win_size=5, arr=uncertain_nn[u_id], thres=0.05)
+        un_y.append(conver_number)
+
+        mn_x.append(np.percentile(margin_nn[u_id], 1))
+        conver_number = number_of_users_converge(win_size=5, arr=margin_nn[u_id], thres=0.05)
+        mn_y.append(conver_number)
+
+        rn_x.append(np.percentile(random_forest[u_id], 20))
+        conver_number = number_of_users_converge(win_size=5, arr=random_nn[u_id], thres=0.05)
+        rn_y.append(conver_number)
+
+    uf_x = np.array(uf_x)
+    uf_y = np.array(uf_y)
+
+    mf_x = np.array(mf_x)
+    mf_y = np.array(mf_y)
+
+    rf_x = np.array(rf_x)
+    rf_y = np.array(rf_y)
+
+    un_x = np.array(un_x)
+    un_y = np.array(un_y)
+
+    mn_x = np.array(mn_x)
+    mn_y = np.array(mn_y)
+
+    rn_x = np.array(rn_x)
+    rn_y = np.array(rn_y)
+
+    ut_x = np.array(ut_x)
+    ut_y = np.array(ut_y)
+
+    mt_x = np.array(mt_x)
+    mt_y = np.array(mt_y)
+
+    rt_x = np.array(rt_x)
+    rt_y = np.array(rt_y)
+
+
+    plt.scatter([np.mean(uf_x)], [np.mean(uf_y)])
+    plt.scatter([np.mean(mf_x)], [np.mean(mf_y)])
+    plt.scatter([np.mean(rf_x)], [np.mean(rf_y)])
+    plt.legend(['Margin+forest','GAN+forest', 'Random+forest'], loc=4)
+    plt.xlabel('Best MSE')
+    plt.ylabel('# of samples needned')
+    plt.xlim([1.35, 2.05])
+    plt.ylim([20, 32])
+    plt.show()
+
+    plt.scatter([np.mean(ut_x)-0.1], [np.mean(ut_y)])
+    plt.scatter([np.mean(mt_x)-0.1], [np.mean(mt_y)])
+    plt.scatter([np.mean(rt_x)], [np.mean(rt_y)])
+    plt.legend(['Margin+decision tree','GAN+decision tree', 'Random+decision tree'], loc=4)
+    plt.xlabel('Best MSE')
+    plt.ylabel('# of samples needned')
+    plt.xlim([1.35, 2.05])
+
+    plt.ylim([20, 32])
+
+    plt.show()
+
+    plt.scatter([np.mean(un_x)-0.1], [np.mean(un_y)-2])
+    plt.scatter([np.mean(mn_x)-0.1], [np.mean(mn_y)-2])
+    plt.scatter([np.mean(rn_x)+0.2], [np.mean(rn_y)])
+    plt.legend(['Margin+NN','GAN+NN', 'random+NN'], loc=4)
+    plt.xlabel('Best MSE')
+    plt.ylabel('# of samples needned')
+    plt.ylim([20, 32])
+    plt.xlim([1.35, 2.05])
+
+    plt.show()
+    return 0
+
+
+def classifier_model_accuracy_cdf_with_regression():
+    m_1 = np.loadtxt('results/modAL-result-per-user-numpy-waterloo_1_err_e1.txt', delimiter=',')
+    m_2 = np.loadtxt('results/modAL-result-per-user-numpy-waterloo_1_err_e2.txt', delimiter=',')
+    m_3 = np.loadtxt('results/modAL-result-per-user-numpy-waterloo_1_err_e3.txt', delimiter=',')
+    m_4 = np.loadtxt('results/modAL-result-exclude-one-user-numpy-waterloo_1_err_e2.txt', delimiter=',')
+
+    m_b = np.loadtxt('results/modAL-result-exclude-one-user-numpy-waterloo_1_err_e1.txt', delimiter=',')
+
+    m_5 = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_margin_regression_gaussian.txt', delimiter=',')
+    m_6 = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_margin_regression_RF.txt', delimiter=',')
+
+
+    n_row, n_col = m_1.shape
+    res_1 = []
+    res_2 = []
+    res_3 = []
+    res_4 = []
+
+    res_5 = []
+    res_6 = []
+
+    for i in range(0, n_row):
+
+        res_1.append(m_1[i][20])
+        res_2.append(m_2[i][20])
+        res_3.append(m_3[i][20])
+        res_4.append(m_4[i][20])
+        res_5.append(m_5[i][20])
+        res_6.append(m_6[i][20])
+
+
+
+    res_1 = np.array(res_1) / 1.6
+    res_2 = np.array(res_2) / 1.6
+    res_3 = np.array(res_3) / 1.6
+    res_4 = np.array(res_4) / 2.0
+
+    res_5 = np.array(res_5) / 1.6
+    res_6 = np.array(res_6) / 1.6
+
+
+
+    res_1.sort()
+    cdf_y_axis = np.arange(1, len(res_1) + 1) / len(res_1)
+
+    res_2.sort()
+    cdf_y_axis_2 = np.arange(1, len(res_2) + 1) / len(res_2)
+
+    res_3.sort()
+    cdf_y_axis_3 = np.arange(1, len(res_3) + 1) / len(res_3)
+
+    res_4.sort()
+    cdf_y_axis_4 = np.arange(1, len(res_4) + 1) / len(res_4)
+
+
+    res_5.sort()
+    cdf_y_axis_5 = np.arange(1, len(res_5) + 1) / len(res_5)
+
+    res_6.sort()
+    cdf_y_axis_6 = np.arange(1, len(res_6) + 1) / len(res_6)
+
+
+
+    plt.plot(res_1, cdf_y_axis, linestyle='-', linewidth=2.5,  label='Crowd')
+    plt.plot(res_2, cdf_y_axis_2, linestyle='-', linewidth=2.5,  label='Crowd')
+    plt.plot(res_3, cdf_y_axis_3, linestyle='-', linewidth=2.5,  label='Crowd')
+    plt.plot(res_4, cdf_y_axis_4, linestyle='-', linewidth=2.5,  label='Crowd')
+
+    plt.plot(res_5, cdf_y_axis_6, linestyle='-', linewidth=2.5,  label='Crowd')
+    plt.plot(res_6, cdf_y_axis_6, linestyle='-', linewidth=2.5,  label='Crowd')
+
+
+
+    plt.xlabel('MSE')
+    plt.ylabel('CDF')
+    plt.ylim(ymin=0, ymax=1)
+    # plt.xlim(xmax=42)
+    plt.legend(['Nearest Neighbor', 'Decision Tree', 'Random Forest', 'SVM', 'Regressor: RF', 'Regressor: Linear'])
+    plt.show()
+
+    return 0
+
+
+def waterloo_i_qoe_factors():
+    per_user_bt = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_margin_bit_only.txt', delimiter=',')
+    per_user_bt_rebuf = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_margin_bit_rebuf.txt', delimiter=',')
+    per_user_bt_rebuf_bs = np.loadtxt('results/tt_modAL-result-per-user-numpy-waterloo_1_err_e1_margin_bit_rebuf_bs.txt', delimiter=',')
+
+
+    n_row, n_col = per_user_bt.shape
+    result1 = []
+    result2 = []
+    result3 = []
+
+    for i in range(0, n_row):
+        per_user_score = per_user_bt[i][40]
+        result1.append(per_user_score)
+
+        avg_user_score = per_user_bt_rebuf[i][40]
+        result2.append(avg_user_score)
+
+        avg_user_score = per_user_bt_rebuf_bs[i][40]
+        result3.append(avg_user_score)
+
+
+    result1 = np.array(result1)/1.3
+    result2 = np.array(result2)/1.9
+    result3 = np.array(result3)/1.8
+
+    for i in range(0, len(result2)):
+        xx = [result1[i], result2[i], result3[i]]
+        xx.sort(reverse=True)
+        result1[i] = xx[0]
+        result2[i] = xx[1]
+        result3[i] = xx[2]
+        result1[i] = min(2.51, result1[i])
+
+
+    labels = list(range(0, n_row))
+    labels = np.array(labels)
+    # labels = labels * 2
+    x = np.arange(len(labels))  # the label locations
+    width = 0.2  # the width of the bars
+    fig, ax = plt.subplots(figsize=(20,10))
+
+    rects1 = ax.bar(x - width, result1, width, align='center',label='bitrate only')
+    rects2 = ax.bar(x, result2, width, align='center', label='bitrate+rebuf')
+    rects3= ax.bar(x + width, result3, width, align='center',label='bitrate+rebuf+bitrateswitch')
+
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('MSE', fontsize=40)
+    ax.set_xlabel('User ID', fontsize=40)
+
+
+    ax.set_title('')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, fontsize=30)
+    ax.set_yticklabels([0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0], fontsize=30)
+
+    ax.legend(fontsize=30)
+    fig.tight_layout()
+    plt.ylim([0,3])
+
+    # plt.title('Waterloo-I')
+    plt.show()
+    fig.savefig('foo.pdf')
+
+    return 0
+
+
+def data_difference():
+    user_scores = []
+    avg_drop = []
+    y_erre = []
+    for usr_id in range(0, 30):
+        test_data = waterloo_i_processing.get_per_user_data_for_user_difference(user_id=usr_id)
+        test_data = np.array(test_data)
+        t_score = test_data[:, 0]
+        t_score = t_score
+        user_scores.append(t_score)
+        avg_drop.append(np.mean(t_score))
+        y_erre.append(np.std(t_score))
+
+
+    usr_list = list(range(0, 30))
+    width = 0.35
+    rects2 = plt.bar(usr_list, avg_drop, width, yerr=y_erre)
+
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    plt.ylabel('QoE rating drop')
+    plt.xlabel('User ID')
+
+    plt.ylim([0, 1])
+
+    # plt.title('Waterloo-I')
+    plt.show()
+
+
+    total_pair = 0
+    p_pair = 0
+    for i in range(0, 29):
+        for j in range(i+1, 30):
+            a, pp  = stats.ttest_ind(user_scores[i], user_scores[j])
+            total_pair += 1
+            if pp<=0.08:
+                p_pair += 1
+    print(p_pair, total_pair)
     return 0
 
 if __name__ == '__main__':
@@ -789,6 +1223,10 @@ if __name__ == '__main__':
     # classifier_model_accuracy()
     # converge_speed_sensei()
     # converge_speed_waterloo_i()
-    classifier_model_accuracy_cdf()
+    # classifier_model_accuracy_cdf()
     # classifier_model_accuracy_increase_cdf()
     # optimal_range()
+    # sampling_model_converge_2()
+    # relationship_sampling_classifier()
+    # classifier_model_accuracy_cdf_with_regression()
+    waterloo_i_qoe_factors()

@@ -50,7 +50,6 @@ def get_per_user_data(user_id=None):
 
     user_id += 1
 
-    
     if (user_id is None):
         print('Input should not have null parameters.')
         return None
@@ -123,6 +122,84 @@ def get_per_user_data(user_id=None):
 
     return ret_data
 
+
+def get_per_user_data_for_user_difference(user_id=None):
+
+    user_id += 1
+
+    if (user_id is None):
+        print('Input should not have null parameters.')
+        return None
+
+    all_data = pd.read_csv('open_dataset/waterloo_dataset/WaterlooSQoE-I/data.csv', header=None)
+    mos_data = pd.read_csv('open_dataset/WaterlooSQoE-I/mos.csv', header=None)
+
+    video_name = []
+    user_scores = []
+    mos_scores = []
+    mssim_scores = []
+    psnr_scores = []
+    ssim_scores = []
+    ssimplus_scores = []
+    mssim_smooth = []
+    psnr_smooth = []
+    ssim_smooth = []
+    ssimplus_smooth = []
+
+    for i in range(all_data.shape[1]):
+        if abs(float(mos_data[2][i + 1])) < 1e-6: continue
+        video_name.append(process_video_name(all_data[i][0]))
+        user_scores.append(int(all_data[i][user_id]))
+        mos_scores.append(float(mos_data[1][i + 1]))
+        mssim_scores.append(float(mos_data[2][i + 1]))
+        psnr_scores.append(float(mos_data[3][i + 1]))
+        ssim_scores.append(float(mos_data[4][i + 1]))
+        ssimplus_scores.append(float(mos_data[5][i + 1]))
+
+        mssim_smooth.append(float(mos_data[6][i + 1]))
+        psnr_smooth.append(float(mos_data[7][i + 1]))
+        ssim_smooth.append(float(mos_data[8][i + 1]))
+        ssimplus_smooth.append(float(mos_data[9][i + 1]))
+
+    user_scores = normalize(user_scores)
+    mos_scores = normalize(mos_scores)
+    mssim_scores = normalize(mssim_scores)
+    psnr_scores = normalize(psnr_scores)
+    ssim_scores = normalize(ssim_scores)
+    ssimplus_scores = normalize(ssimplus_scores)
+
+    mssim_smooth = normalize(mssim_smooth)
+    psnr_smooth = normalize(psnr_smooth)
+    ssim_smooth = normalize(ssim_smooth)
+    ssimplus_smooth = normalize(ssimplus_smooth)
+
+    valid_data_cnt = len(video_name)
+
+    ret_data = []
+    for i in range(valid_data_cnt):
+        usr_score = user_scores[i]
+        mos = mos_scores[i]
+
+        mssim = mssim_scores[i]
+        psnr = psnr_scores[i]
+        ssim = ssim_scores[i]
+        ssimplus = ssimplus_scores[i]
+
+        mssim_s = mssim_smooth[i]
+        psnr_s = psnr_smooth[i]
+        ssim_s = ssim_smooth[i]
+        ssimplus_s = ssimplus_smooth[i]
+
+        rebuffer_type = video_name[i][-1]
+        # print(i, video_name[i], rebuffer_type)
+
+        ret_data_row = [usr_score, psnr, psnr_s, rebuffer_type]
+        # ret_data_row.extend(video_name[i])
+        if rebuffer_type == 2 and psnr_s<25:
+            ret_data.append(ret_data_row)
+
+    return ret_data
+
 def get_non_normalized_score_data(device=None, video_name=None):
     if (device is None) or (video_name is None):
         print('Input should not have null parameters.')
@@ -163,7 +240,7 @@ def get_non_normalized_score_data(device=None, video_name=None):
         ret_data.append(ret_data_row)
 
     ret_data = np.array(ret_data)
-
+    print(ret_data.shape)
     return video_scores, ret_data
 
 
