@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Sample Python code for youtube.search.list
+# Sample Python code for youtube.videos.list
 # See instructions for running these code samples locally:
 # https://developers.google.com/explorer-help/guides/code_samples#python
 
@@ -10,19 +10,20 @@ import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
-
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 import pickle
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.file import Storage
 
-scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
+import copy
+
+scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
+
 
 video_list_templates = '<li class="list-group-item list-group-item-action flex-column align-items-start border-0"><div class="container"><div class="row"><div class="col"><a href="VIDEO_LINK_URL"><img src="VIDEO_THUMBNAIL_URL" alt="Barca"class=" img-fluid" width="100%"/></a></div><div class="col"><div class="d-flex w-100 justify-content-between" style="max-height:40px; overflow: hidden; text-overflow:ellipsis; hover:{overflow: visible;}"><a href="VIDEO_LINK_URL" style="color: black"> <h6 class="mb-1"> Video_Title </h6> </a></div><small> <a href="PUBLISHER_LINK_URL" target="_blank" rel="noopener noreferrer" style="color: black">Video_Publisher</a> </small><br><small> NUM_OF_VIEWS views &bull; PUBLISH_TIME</small></div></div></div></li>'
-
 
 def main():
     # Disable OAuthlib's HTTPS verification when running locally.
@@ -51,15 +52,16 @@ def main():
 
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
-    request = youtube.search().list(
-        part="snippet",
+    request = youtube.videos().list(
+        part="snippet,contentDetails,statistics",
+        chart="mostPopular",
         maxResults=5,
-        relatedToVideoId="jIdq3QMbHCI",
-        type="video"
+        regionCode="US"
     )
-    response = request.execute()
 
+    response = request.execute()
     print(response)
+
 
 def process_video_info(snippet=None):
     if snippet is None:
@@ -89,15 +91,12 @@ def process_video_info(snippet=None):
         t_html = t_html.replace("Video_Publisher", publisher_name)
         t_html = t_html.replace("Video_Title", video_title)
 
-        print('video_info: ', video_title, thumbnail_link, publish_time, video_link, view_num_text, publisher_link, publisher_name)
         html_codes = html_codes + t_html
 
     return html_codes
 
 
-def get_rec_videos(video_id=None):
-    # Disable OAuthlib's HTTPS verification when running locally.
-    # *DO NOT* leave this option enabled in production.
+def get_popular_videos():
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
     api_service_name = "youtube"
@@ -122,18 +121,19 @@ def get_rec_videos(video_id=None):
 
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
-    request = youtube.search().list(
-        part="snippet",
+    request = youtube.videos().list(
+        part="snippet,contentDetails,statistics",
+        chart="mostPopular",
         maxResults=5,
-        relatedToVideoId="jIdq3QMbHCI",
-        type="video"
+        regionCode="US"
     )
+
     response = request.execute()
-    print(response)
     html_file = process_video_info(snippet=response)
 
     return html_file
 
+
 if __name__ == "__main__":
-    # main()
-    get_rec_videos('IIOH2sCW13U')
+    main()
+    # get_popular_videos()

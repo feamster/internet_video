@@ -39,7 +39,14 @@
         }
     </style>
 
-    <div class="container">
+    <div class="container-fluid">
+
+         <div class="row">
+                 <div class="col">
+                </div>
+
+             <div class="col-6">
+
         <div class="video-js-box">
 
             <br/><br/>
@@ -55,7 +62,6 @@
 
             <p class="lead" align="justify"> {{userinfo | safe}} </p>
 
-
             <script type="text/javascript">
                 videojs('video_player', {
                     controls: true,
@@ -64,6 +70,7 @@
                     youtube: {"ytControls":2, "enablejsapi":1},
                     fluid: true, plugins:{videoJsResolutionSwitcher: {default:'auto', dynamicLabel:true}}});
             </script>
+
             <script type="text/javascript">
                 var player = videojs('video_player');
                 player.on('resolutionchange', function () {
@@ -212,17 +219,21 @@
 
 
             <script>
-                // Get the size of the screen, resolution is win_x and win_y.
-                // win_x and win_y are the resolution of the available browser area.
-                var win = window, doc = document, docElem = doc.documentElement,
-                    body = doc.getElementsByTagName('body')[0],
-                    win_x = win.innerWidth || docElem.clientWidth || body.clientWidth,
-                    win_y = win.innerHeight || docElem.clientHeight || body.clientHeight;
 
 
                 // Get the status of the player: slider progress, buffer status, full screen, resolution, net state
                 var player = videojs('video_player');
+
+                localStorage.setItem("flag", "false");
+
                 var eventPoller = setInterval(function () {
+                    // Get the size of the screen, resolution is win_x and win_y.
+                    // win_x and win_y are the resolution of the available browser area.
+                    var win = window, doc = document, docElem = doc.documentElement,
+                    body = doc.getElementsByTagName('body')[0],
+                    win_x = win.innerWidth || docElem.clientWidth || body.clientWidth,
+                    win_y = win.innerHeight || docElem.clientHeight || body.clientHeight;
+
                     var buffered = player.buffered();
                     var curTime = player.currentTime();
                     var timestamp = new Date().getTime();
@@ -237,14 +248,26 @@
                     var is_fullscreen = document.mozFullScreen || document.webkitIsFullScreen;
                     var flag = false;
 
+                    var available_levels = player.tech_.ytPlayer.getAvailableQualityLevels();
+
                     httpRequest.open('POST', url, true);
                     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
                     var webpage_url = document.location.toString();
                     report = "posttype=1&" + "site=" + webpage_url + "&";
 
+
                     for (i = 0; i < buffered.length; i++) {
                         if (buffered.start(i) <= curTime && curTime <= buffered.end(i)) {
+
+                            if (currentResolution != available_levels[0] ) {
+                                localStorage.setItem("flag", "true");
+                            }
+
+                            if ( (buffered.end(i) - curTime) < 0.2) {
+                                localStorage.setItem("flag", "true");
+                            }
+
                             console.log("Timestamp: " + timestamp + ", " + "Player Time: " + curTime + ", " + "Current Buffer: " + (buffered.end(i) - curTime) + ", Current Resolution: " + currentResolution + ", Current_net_state: " + player_network_state + ", Ready_state:" + plyaer_ready_state + ", Is_fullscreen: " + is_fullscreen + ", win_x: " + win_x + ", win_y: " + win_y);
                             report = report + "time=" + timestamp + "&" + "player=" + curTime + "&" + "buffer=" + (buffered.end(i) - curTime) + "&" + "res=" + currentResolution + "&" + "net_state=" + player_network_state + "&" + "player_state=" + plyaer_ready_state + "&" + "is_fullscreen=" + is_fullscreen + "&" + "win_x=" + win_x + "&" + "win_y=" + win_y;
                             flag = true;
@@ -261,6 +284,7 @@
                         var json = httpRequest.responseText;
                     };
                 }, 1000)
+                // *********************************************************** Need to be changed back to 1000ms **************************************************************************************
             </script>
 
 
@@ -294,8 +318,34 @@
                 }
             </script>
 
-
         </div>
+        </div>
+
+             <div class="col">
+
+                 <div class="container">
+                     <h4 class="mt-5">Popular videos</h4>
+                     <hr>
+
+                     <div class="list-group">
+
+
+                                {{popular_list | safe}}
+
+                     </div>
+
+
+
+                </div>
+
+
+
+             </div>
+
+         </div>
+    </div>
+
+
 
 </main>
 {% endblock %}

@@ -5,6 +5,8 @@ import time
 from flask_pymongo import PyMongo
 import bcrypt
 import GetComments as gc
+import GetPopularVideos as gcp
+import GetRecommendVideos as gcr
 
 app = Flask(__name__, template_folder='templates')
 
@@ -114,7 +116,14 @@ def render_video(page_name):
     else:
         v_description = v_description_arr[0] + '<span id="dots">...</span><span id="more">' + v_description_arr[1] + '</span>'
 
-    return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.', comments_list = video_comments, v_title = v_title, v_description=v_description)
+    popular_list = gcp.get_popular_videos()
+    return render_template('video_player_youtube.html', videosource=video_source, userinfo='You are logged in as ' + session['username'] + '.', comments_list = video_comments, v_title = v_title, v_description=v_description, popular_list=popular_list)
+
+
+# @app.route('/play/<string:page_name>/')
+# def render_video(page_name):
+#     video_source = extract_url(page_name)
+#     return render_template('youtube_with_ABR.html', videosource=video_source)
 
 
 @app.route('/post_video_survey/')
@@ -269,6 +278,7 @@ def save_data():
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'
-    app.run(debug=True, port=5000)
+    # app.run(debug=True, port=5000)
     # app.run(debug=True, host='silver.cs.uchicago.edu', port=5000)
-    # app.run(debug=False, host='silver.cs.uchicago.edu', port=5000)
+    # app.run(debug=False, host='silver.cs.uchicago.edu', port=5000, threaded=True)
+    app.run(debug=False, host='silver.cs.uchicago.edu', port=5000, processes=30)

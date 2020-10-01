@@ -544,7 +544,6 @@
       return this.ytPlayer ? this.ytPlayer.getPlaybackQuality() : 1;
     },
 
-
     setPlaybackRate: function(suggestedRate) {
       if (!this.ytPlayer) {
         return;

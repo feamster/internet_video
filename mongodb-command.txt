@@ -1,3 +1,5 @@
+ssh -i "tzn.pem" ec2-user@ec2-18-179-39-139.ap-northeast-1.compute.amazonaws.com
+
 db.createUser({user: "admin",pwd: "63czhj6c8pe",roles: [{ role: "userAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" },{ role: "dbAdminAnyDatabase",   db: "admin" }]});
 db.createUser({user: "uchivideo1",pwd: "63czhj6c8pe",roles: [{ role: "userAdmin", db: "admin" },{ role: "dbAdmin",   db: "admin" },{ role: "readWrite", db: "admin" }]});
 

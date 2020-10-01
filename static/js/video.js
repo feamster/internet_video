@@ -12169,6 +12169,7 @@ var Player = function (_Component) {
     return this.techGet_('getVideoPlaybackQuality');
   };
 
+
   /**
    * Get video width
    *
@@ -17752,6 +17753,8 @@ var Tech = function (_Component) {
   Tech.prototype.getVideoPlaybackQuality = function getVideoPlaybackQuality() {
     return {};
   };
+
+
 
   /**
    * A method to set a poster from a `Tech`.

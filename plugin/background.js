@@ -38,20 +38,32 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   }
 });
 
+
+var flag;
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    flag = request.greeting;
+    sendResponse({farewell: "goodbye"});
+  });
+
 chrome.tabs.onRemoved.addListener(function(tabId, info) {
     var urlRegex =  new RegExp("^http://silver\\.cs\\.uchicago\\.edu:5000/play/(.*)");
+    console.log("our:" + flag);
     if (urlRegex.test(urls[tabId])) {
-        var newURL = "http://silver.cs.uchicago.edu:5000/post_video_survey/";
-        chrome.tabs.create({
-            url: newURL,
-            active: false
-        }, function (tab) {
-            // After the tab has been created, open a window to inject the tab
-            chrome.windows.create({
-                tabId: tab.id,
-                type: 'popup',
-                focused: true
+        if (flag=="true") {
+            flag = "false";
+            var newURL = "http://silver.cs.uchicago.edu:5000/post_video_survey/";
+            chrome.tabs.create({
+                url: newURL,
+                active: false
+            }, function (tab) {
+                // After the tab has been created, open a window to inject the tab
+                chrome.windows.create({
+                    tabId: tab.id,
+                    type: 'popup',
+                    focused: true
+                });
             });
-        });
+        }
     }
 });
