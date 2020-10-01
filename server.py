@@ -243,6 +243,7 @@ def save_data():
                 'time': int(time.time()),
                 'score': request.form['videoscore'],
                 'attention': request.form['attention'],
+                'attention_2': request.form['attention_2'],
                 'annoyfactor': request.form['annoyfactor'],
                 'firstannoy': request.form['firstannoy'],
                 'networkspeed': request.form['networkspeedarea']
